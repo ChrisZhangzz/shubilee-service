@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.OrderOrbitalGatewayDao">
+  <resultMap id="BaseResultMap" type="com.shubilee.entity.OrderOrbitalGateway" >
+    <id column="rec_id" property="recId" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="industry_type" property="industryType" jdbcType="VARCHAR" />
+    <result column="trans_type" property="transType" jdbcType="VARCHAR" />
+    <result column="approval_status" property="approvalStatus" jdbcType="VARCHAR" />
+    <result column="resp_code" property="respCode" jdbcType="VARCHAR" />
+    <result column="retry_trace" property="retryTrace" jdbcType="VARCHAR" />
+    <result column="tx_ref_num" property="txRefNum" jdbcType="VARCHAR" />
+    <result column="tx_ref_idx" property="txRefIdx" jdbcType="INTEGER" />
+    <result column="card_brand" property="cardBrand" jdbcType="VARCHAR" />
+    <result column="resp_date" property="respDate" jdbcType="VARCHAR" />
+    <result column="proc_status" property="procStatus" jdbcType="INTEGER" />
+    <result column="auth_code" property="authCode" jdbcType="VARCHAR" />
+    <result column="retry_times" property="retryTimes" jdbcType="VARCHAR" />
+    <result column="avs_resp_code" property="avsRespCode" jdbcType="VARCHAR" />
+    <result column="cvv_resp_code" property="cvvRespCode" jdbcType="VARCHAR" />
+  </resultMap>
+	<select id="selectOrderOrbitalGatewayByOrderId" parameterType="int"
+		resultMap="BaseResultMap">
+		select * from xysc_order_orbital_gateway where order_id= #{order_id}
+	</select>
+	<insert id="insert" parameterType="com.shubilee.entity.OrderOrbitalGateway">
+		insert into xysc_order_orbital_gateway (order_id, amount,
+		industry_type, trans_type, approval_status,
+		resp_code, retry_trace, tx_ref_num,
+		tx_ref_idx, card_brand, resp_date,
+		proc_status, auth_code, retry_times, avs_resp_code, cvv_resp_code
+		)
+		values (#{orderId,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL},
+		#{industryType,jdbcType=VARCHAR}, #{transType,jdbcType=VARCHAR},
+		#{approvalStatus,jdbcType=VARCHAR},
+		#{respCode,jdbcType=VARCHAR}, #{retryTrace,jdbcType=VARCHAR}, #{txRefNum,jdbcType=VARCHAR},
+		#{txRefIdx,jdbcType=INTEGER}, #{cardBrand,jdbcType=VARCHAR},
+		#{respDate,jdbcType=VARCHAR},
+		#{procStatus,jdbcType=INTEGER}, #{authCode,jdbcType=VARCHAR}, #{retryTimes,jdbcType=VARCHAR},
+		#{avsRespCode,jdbcType=VARCHAR}, #{cvvRespCode,jdbcType=VARCHAR}
+		)
+	</insert>
+ 
+  	   
+</mapper>

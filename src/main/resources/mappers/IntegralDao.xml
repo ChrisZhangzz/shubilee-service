@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.IntegralDao">
+	  <resultMap id="BaseResultMap" type="com.shubilee.entity.Integral">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="integral" jdbcType="VARCHAR" property="integral" />
+    <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
+    <result column="formated_total_fee" jdbcType="VARCHAR" property="formatedTotalFee" />
+    <result column="date" jdbcType="INTEGER" property="date" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="invited" jdbcType="INTEGER" property="invited" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+  </resultMap>
+	<insert id="insertIntegral" parameterType="map">
+		INSERT INTO xysc_integral (
+                integral,
+                date,
+                user_id,
+                type
+		)
+		VALUES
+		(
+			#{integral},
+			#{date},
+			#{user_id},
+		    #{type}
+		)
+	</insert>
+ <insert id="insertSelective" parameterType="com.shubilee.entity.Integral">
+    insert into xysc_integral
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="integral != null">
+        integral,
+      </if>
+      <if test="orderSn != null">
+        order_sn,
+      </if>
+      <if test="formatedTotalFee != null">
+        formated_total_fee,
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="invited != null">
+        invited,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="integral != null">
+        #{integral,jdbcType=VARCHAR},
+      </if>
+      <if test="orderSn != null">
+        #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="formatedTotalFee != null">
+        #{formatedTotalFee,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="invited != null">
+        #{invited,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+</mapper>

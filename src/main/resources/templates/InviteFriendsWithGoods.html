@@ -1,0 +1,95 @@
+<!doctype html>
+
+ <html>
+  <head>
+   <meta charset="UTF-8" />
+  </head>
+
+  <body>
+   <div style="background-color:#F2F2F2;min-height: 100%!important;width: 100%!important;padding:10px;">
+      
+     <div style="width:600px;margin:0 auto;background-color:#FFF;box-shadow:3px 6px 6px -6px #666;">
+     
+      <p style="text-align:center;padding: 10px 0px 0px 0px;margin: 0;">
+       <a href="http://www.yamibuy.com">
+        <img src="http://cdn.yamibuy.com/images/cn/mail/logo.png" width="140" height="62" alt="" />
+       </a>
+      </p>
+      
+      <div style="margin-top:15px;">
+       <div>
+        <div style="padding-bottom:3px;margin:0 30px;border-bottom:2px solid #333;">
+         <table width="100%">
+          <tr>
+           <td align="center">
+             <ul style="margin:0;overflow:hidden;">
+              <li style="float:left;list-style:none;font-size:12px;border-right:1px solid #000;padding:0 10px;width:60px">
+               <a href="http://www.yamibuy.com" style="color:#000;text-decoration:none;font-weight:bold">Home</a>
+              </li>
+              <li style="float:left;list-style:none;font-size:12px;border-right:1px solid #000;padding:0 10px;width:60px">
+               <a href="http://www.yamibuy.com" style="color:#000;text-decoration:none;font-weight:bold">Snack</a>
+              </li>          
+              <li style="float:left;list-style:none;font-size:12px;border-right:1px solid #000;padding:0 10px;width:60px">
+               <a href="http://www.yamibuy.com" style="color:#000;text-decoration:none;font-weight:bold">beauty</a>
+              </li>
+              <li style="float:left;list-style:none;font-size:12px;border-right:1px solid #000;padding:0 10px;width:60px">
+               <a href="http://www.yamibuy.com" style="color:#000;text-decoration:none;font-weight:bold">life</a>
+              </li>
+              <li style="float:left;list-style:none;font-size:12px;padding:0 10px;width:60px">
+               <a href="http://www.yamibuy.com" style="color:#000;text-decoration:none;font-weight:bold">sale</a>
+              </li>
+             </ul>
+            </td>
+           </tr>
+          </table>    
+        </div>
+       </div>
+      </div> 
+                 
+      <div style="min-height:550px">
+      
+      <div style="margin-top:30px;padding:0 50px;overflow:hidden;">
+       <p style="font-size:12px;color:#666;line-height:18px;">我在亚米网上发现一个好物，推荐你来看看</p>
+       <p style="font-size:12px;color:#666;line-height:18px;">亚米网是一站式亚洲商品购物网站，这里有最全最好的亚洲食品，美妆保养，电器百货，给生活在北美的我们带来了极大的便利。全美满$49包邮，还有更多优惠邀请你一起分享。通过此邮件链接注册即可获得300积分($3)，快来看看吧！</p>
+      
+       <a style="width: 100%; display: block;" th:href="${goods_url}">
+       <div style="background-color:#f7f7f7;padding: 15px;margin-bottom: 10px;;font-size:12px;color:#666;line-height:18px;overflow:hidden;">
+        <img style="margin-right: 10px;vertical-align:text-top; float:left;" width="152" th:src="${goods_img}" />
+        <div style="float: left;">
+         <p style="font-size:12px" th:text="${goods_name}"></p>
+         <p style="font-size:16px; color: #F25950; font-weight: bold;" th:text="${goods_price}"></p>
+        </div>
+       </div>   
+       </a>    
+      <p style="font-size: 12px; color: #666;padding-top: 30px;">现在注册还有300积分($3)可以拿哦！</p>
+       <a style="text-decoration:none; text-align: center;" th:href="${register_url}">
+          <div style="background:url(http://cdn.yamibuy.com/themes/default/images/email_btn_bg.png) no-repeat center;width:144px;height:35px;cursor:pointer;">
+           <p style="color:#FFF;line-height:32px;font-size:14px;font-weight:700">现在注册</p>
+          </div> 
+       </a>
+      </div>
+      
+      </div>
+     
+      <!--footer-->
+      <div style="background-color:#F25950;padding:20px;margin-top:30px;">
+       <table width="100%">
+        <tr>
+         <td>
+          <div style="margin-left:50px">
+           <img src="http://cdn.yamibuy.com/images/cn/index/logo-small-ww.png" width="100" />
+          </div> 
+         </td>
+         <td>
+          <p style="color:#FFF;margin:0 0 0 100px;font-size:12px;">For any question please call or email</p>
+          <p style="color:#FFF;margin:0 0 0 100px;font-size:12px;">800-407-9710</p>
+          <p style="color:#FFF;margin:0 0 0 100px;font-size:12px;">customerservice@yamibuy.com</p>
+         </td>
+        </tr>  
+       </table>
+      </div>
+     </div>
+    
+    </div>  
+ </body>
+</html>

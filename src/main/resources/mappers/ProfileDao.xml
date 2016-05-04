@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.ProfileDao">
+	<resultMap id="ProfileResultMap" type="com.shubilee.entity.UserProfile">
+		<id column="profile_id" property="profile_id" jdbcType="VARCHAR" />
+		<result column="user_id" property="user_id" jdbcType="INTEGER" />
+		<result column="firstname" property="firstname" jdbcType="VARCHAR" />
+		<result column="lastname" property="lastname" jdbcType="VARCHAR" />
+		<result column="tail" property="tail" jdbcType="INTEGER" />
+		<result column="exp_year" property="exp_year" jdbcType="VARCHAR" />
+		<result column="exp_month" property="exp_month" jdbcType="VARCHAR" />
+		<result column="address_id" property="address_id" jdbcType="INTEGER" />
+		<result column="card_type" property="card_type" jdbcType="VARCHAR" />
+		<result column="is_primary" property="is_primary" jdbcType="INTEGER" />
+		<association property="address" column="profile_id" javaType="com.shubilee.entity.UserAddress">  
+	        	<id column="address_id" property="address_id" jdbcType="INTEGER" />
+				<result column="address_name" property="address_name" jdbcType="VARCHAR" />
+				<result column="user_id" property="user_id" jdbcType="INTEGER" />
+				<result column="is_primary" property="is_primary" jdbcType="INTEGER" />
+				<result column="consignee" property="consignee" jdbcType="VARCHAR" />
+				<result column="email" property="email" jdbcType="VARCHAR" />
+				<result column="country" property="country" jdbcType="VARCHAR" />
+				<result column="province" property="province" jdbcType="VARCHAR" />
+				<result column="city" property="city" jdbcType="VARCHAR" />
+				<result column="district" property="district" jdbcType="INTEGER" />
+				<result column="address" property="address" jdbcType="VARCHAR" />
+				<result column="address2" property="address2" jdbcType="VARCHAR" />
+				<result column="zipcode" property="zipcode" jdbcType="VARCHAR" />
+				<result column="tel" property="tel" jdbcType="VARCHAR" />
+				<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+				<result column="sign_building" property="sign_building"
+					jdbcType="VARCHAR" />
+				<result column="best_time" property="best_time" jdbcType="VARCHAR" />
+				<result column="consignee_firstname" property="consignee_firstname"
+					jdbcType="VARCHAR" />
+				<result column="consignee_lastname" property="consignee_lastname"
+					jdbcType="VARCHAR" />
+        </association>
+	</resultMap>
+
+	<resultMap id="ProfileMap" type="com.shubilee.entity.Profile">
+		<id column="profile_id" property="profile_id" jdbcType="VARCHAR" />
+		<result column="firstname" property="firstname" jdbcType="VARCHAR" />
+		<result column="lastname" property="lastname" jdbcType="VARCHAR" />
+		<result column="tail" property="tail" jdbcType="INTEGER" />
+		<result column="exp_year" property="exp_year" jdbcType="VARCHAR" />
+		<result column="exp_month" property="exp_month" jdbcType="VARCHAR" />
+		<result column="card_type" property="type" jdbcType="VARCHAR" />
+		<result column="profile_is_primary" property="is_primary" jdbcType="INTEGER" />
+		<association property="address" column="address_id" javaType="com.shubilee.entity.Address" resultMap="com.shubilee.dao.AddressDao.AddressMap"/>
+	</resultMap>
+	
+	<select id="getProfileByUid" parameterType="int" resultMap="ProfileMap">
+		SELECT
+			A.profile_id,
+			A.firstname,
+			A.lastname,
+			A.tail,
+			A.exp_year,
+			A.exp_month,
+			A.card_type,
+			A.is_primary as profile_is_primary,
+			B.address_id,
+			B.is_primary,
+			B.consignee_firstname,
+			B.consignee_lastname,
+			B.province,
+			B.city,
+			B.address,
+			B.address2,
+			B.zipcode,
+			B.tel,
+			B.email
+		FROM
+			xysc_user_profile A
+			left join xysc_user_address B on A.address_id = B.address_id
+		WHERE
+			A.user_id = #{user_id}
+		ORDER BY
+			profile_is_primary DESC
+	</select>
+	<insert id="insert" parameterType="com.shubilee.entity.UserProfile">
+		INSERT INTO xysc_user_profile (
+			profile_id,
+			user_id,
+			firstname,
+			lastname,
+			tail,
+			exp_year,
+			exp_month,
+			card_type,
+			address_id,
+			is_primary
+		)
+		VALUES
+		(
+			#{profile_id,jdbcType=VARCHAR}, #{user_id,jdbcType=INTEGER},
+			#{firstname,jdbcType=VARCHAR},
+			#{lastname,jdbcType=VARCHAR},
+			#{tail,jdbcType=INTEGER}, #{exp_year,jdbcType=VARCHAR},
+			#{exp_month,jdbcType=VARCHAR}, #{card_type,jdbcType=VARCHAR},
+			#{address_id,jdbcType=INTEGER},
+			#{is_primary,jdbcType=INTEGER}
+		)
+	</insert>
+	<select id="countByPrimaryKey" resultType="java.lang.Integer" parameterType="String" >
+    	select count(profile_id) from xysc_user_profile where profile_id = #{profile_id,jdbcType=VARCHAR}
+  	</select>
+	<select id="countByUid" resultType="java.lang.Integer" parameterType="int" >
+    	select count(profile_id) from xysc_user_profile where user_id = #{user_id,jdbcType=INTEGER}
+  	</select>  			
+	<select id="selectByPrimaryKey" resultMap="ProfileResultMap" parameterType="String" >
+    	select * from xysc_user_profile xup left join xysc_user_address xua on xup.address_id=xua.address_id where profile_id = #{profile_id,jdbcType=VARCHAR}
+  	</select>	
+	<update id="updateByPrimaryKey" parameterType="com.shubilee.entity.UserProfile">
+		update xysc_user_profile
+		set user_id = #{user_id,jdbcType=INTEGER},
+			firstname = #{firstname,jdbcType=VARCHAR},
+			lastname = #{lastname,jdbcType=VARCHAR},
+			exp_year = #{exp_year,jdbcType=VARCHAR},
+			exp_month = #{exp_month,jdbcType=VARCHAR},
+			address_id = #{address_id,jdbcType=INTEGER}
+		where profile_id = #{profile_id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateAddressIdByPK" parameterType="Map">
+		update xysc_user_profile
+		set address_id = #{address_id,jdbcType=INTEGER}
+		where profile_id = #{profile_id,jdbcType=VARCHAR}
+	</update>	
+	<update id="updateByAddressId" parameterType="Map">
+		update xysc_user_profile
+		set address_id = 0
+		where address_id = #{address_id,jdbcType=INTEGER}
+		and user_id = #{user_id,jdbcType=INTEGER}
+		<if test="profile_id != null">
+        and profile_id != #{profile_id,jdbcType=VARCHAR}
+        </if>
+		
+	</update>
+	<delete id="deleteByPrimaryKey" parameterType="String">
+		delete from xysc_user_profile
+		where profile_id = #{profile_id,jdbcType=VARCHAR}
+	</delete>	
+	<update id="updateIsPrimaryByPKUid" parameterType="Map">
+		update xysc_user_profile
+		set is_primary = case 
+		when profile_id = #{profile_id,jdbcType=VARCHAR} then 1
+		else 0 
+		end
+		where user_id = #{user_id,jdbcType=INTEGER}
+	</update>	  	
+	<update id="updateIsPrimaryByUid" parameterType="int">
+		update xysc_user_profile
+		set is_primary = 1
+		where user_id = #{user_id,jdbcType=INTEGER} LIMIT 1
+	</update>
+	<select id="selectProfileDefaultByUid" parameterType="int" resultMap="ProfileResultMap">
+		SELECT * FROM xysc_user_profile xup left join xysc_user_address xua on xup.address_id=xua.address_id WHERE xup.user_id = #{user_id} and xup.is_primary = 1 limit 1
+	</select>	
+</mapper>

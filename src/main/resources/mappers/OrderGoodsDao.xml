@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.OrderGoodsDao">
+    <resultMap id="BaseResultMap" type="com.shubilee.entity.OrderGoods" >
+    <id column="rec_id" property="recId" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_ename" property="goodsEname" jdbcType="VARCHAR" />
+    <result column="goods_sn" property="goodsSn" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="goods_number" property="goodsNumber" jdbcType="INTEGER" />
+    <result column="tax" property="tax" jdbcType="DECIMAL" />
+    <result column="cost" property="cost" jdbcType="DECIMAL" />
+    <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
+    <result column="goods_price" property="goodsPrice" jdbcType="DECIMAL" />
+    <result column="deal_price" property="dealPrice" jdbcType="DECIMAL" />
+    <result column="send_number" property="sendNumber" jdbcType="INTEGER" />
+    <result column="is_real" property="isReal" jdbcType="BIT" />
+    <result column="extension_code" property="extensionCode" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="is_gift" property="isGift" jdbcType="INTEGER" />
+    <result column="goods_attr_id" property="goodsAttrId" jdbcType="VARCHAR" />
+    <result column="is_checked" property="isChecked" jdbcType="INTEGER" />
+    <result column="checked_number" property="checkedNumber" jdbcType="INTEGER" />
+    <result column="give_integral" property="giveIntegral" jdbcType="DECIMAL" />
+    <result column="log_time" property="logTime" jdbcType="TIMESTAMP" />
+     <result column="vendor_id" jdbcType="INTEGER" property="vendorId" />
+    <result column="is_on_sale" jdbcType="BIT" property="isOnSale" />
+  	<result column="is_delete" jdbcType="BIT" property="isDelete" />
+  	 <result column="goods_number_onscoke" jdbcType="INTEGER" property="goodsNumberOnscoke" />
+  	<result column="goods_thumb" jdbcType="VARCHAR" property="goodsThumb" />
+  </resultMap>
+  
+  <resultMap id="BaseGoodsMap" type="com.shubilee.entity.Goods">
+    <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="vendor_id" jdbcType="INTEGER" property="vendorId" />
+    <result column="goods_sn" jdbcType="VARCHAR" property="goodsSn" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_ename" jdbcType="VARCHAR" property="goodsEname" />
+    <result column="goods_name_style" jdbcType="VARCHAR" property="goodsNameStyle" />
+    <result column="click_count" jdbcType="INTEGER" property="clickCount" />
+    <result column="brand_id" jdbcType="INTEGER" property="brandId" />
+    <result column="provider_name" jdbcType="VARCHAR" property="providerName" />
+    <result column="goods_number" jdbcType="INTEGER" property="goodsNumber" />
+    <result column="margin_storage" jdbcType="INTEGER" property="marginStorage" />
+    <result column="goods_weight" jdbcType="DECIMAL" property="goodsWeight" />
+    <result column="pieces_per_pack" jdbcType="VARCHAR" property="piecesPerPack" />
+    <result column="weight_unit" jdbcType="VARCHAR" property="weightUnit" />
+    <result column="cost" jdbcType="DECIMAL" property="cost" />
+    <result column="market_price" jdbcType="DECIMAL" property="marketPrice" />
+    <result column="shop_price" jdbcType="DECIMAL" property="shopPrice" />
+    <result column="promote_price" jdbcType="DECIMAL" property="promotePrice" />
+    <result column="promote_start_date" jdbcType="INTEGER" property="promoteStartDate" />
+    <result column="promote_end_date" jdbcType="INTEGER" property="promoteEndDate" />
+    <result column="promote_countdown" jdbcType="VARCHAR" property="promoteCountdown" />
+    <result column="promote_weekly" jdbcType="VARCHAR" property="promoteWeekly" />
+    <result column="warn_number" jdbcType="TINYINT" property="warnNumber" />
+    <result column="keywords" jdbcType="VARCHAR" property="keywords" />
+    <result column="goods_brief" jdbcType="VARCHAR" property="goodsBrief" />
+    <result column="goods_thumb" jdbcType="VARCHAR" property="goodsThumb" />
+    <result column="goods_img" jdbcType="VARCHAR" property="goodsImg" />
+    <result column="original_img" jdbcType="VARCHAR" property="originalImg" />
+    <result column="is_real" jdbcType="TINYINT" property="isReal" />
+    <result column="extension_code" jdbcType="VARCHAR" property="extensionCode" />
+    <result column="is_on_sale" jdbcType="BIT" property="isOnSale" />
+    <result column="is_alone_sale" jdbcType="BIT" property="isAloneSale" />
+    <result column="is_shipping" jdbcType="BIT" property="isShipping" />
+    <result column="integral" jdbcType="INTEGER" property="integral" />
+    <result column="add_time" jdbcType="INTEGER" property="addTime" />
+    <result column="sort_order" jdbcType="INTEGER" property="sortOrder" />
+    <result column="is_delete" jdbcType="BIT" property="isDelete" />
+    <result column="is_best" jdbcType="BIT" property="isBest" />
+    <result column="is_new" jdbcType="BIT" property="isNew" />
+    <result column="is_hot" jdbcType="BIT" property="isHot" />
+    <result column="is_promote" jdbcType="BIT" property="isPromote" />
+    <result column="bonus_type_id" jdbcType="TINYINT" property="bonusTypeId" />
+    <result column="last_update" jdbcType="INTEGER" property="lastUpdate" />
+    <result column="goods_type" jdbcType="INTEGER" property="goodsType" />
+    <result column="seller_note" jdbcType="VARCHAR" property="sellerNote" />
+    <result column="give_integral" jdbcType="INTEGER" property="giveIntegral" />
+    <result column="rank_integral" jdbcType="INTEGER" property="rankIntegral" />
+    <result column="suppliers_id" jdbcType="INTEGER" property="suppliersId" />
+    <result column="is_check" jdbcType="BIT" property="isCheck" />
+    <result column="changwei" jdbcType="VARCHAR" property="changwei" />
+    <result column="huowei" jdbcType="VARCHAR" property="huowei" />
+    <result column="zuhe_name" jdbcType="INTEGER" property="zuheName" />
+    <result column="mark_off_shelf" jdbcType="BIT" property="markOffShelf" />
+    <result column="is_limited" jdbcType="BIT" property="isLimited" />
+    <result column="limited_number" jdbcType="INTEGER" property="limitedNumber" />
+    <result column="limited_quantity" jdbcType="INTEGER" property="limitedQuantity" />
+    <result column="limited_once" jdbcType="INTEGER" property="limitedOnce" />
+    <result column="goods_desc" jdbcType="VARCHAR" property="goodsDesc" />
+       
+  </resultMap>
+  
+  
+  <resultMap id="BaseImagesMap" type="com.shubilee.entity.Goods">
+   		<id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+   		<result column="goods_number" jdbcType="INTEGER" property="goodsNumber" />
+    	<result column="goods_thumb" jdbcType="VARCHAR" property="goodsThumb" />  
+    	<result column="integral" jdbcType="INTEGER" property="integral" />  
+  </resultMap>
+  
+  
+  
+  
+  
+  
+  <insert id="insert" parameterType="Map" >
+	  INSERT INTO xysc_order_goods 
+	 (order_id, goods_id, goods_name, goods_ename, goods_sn, product_id, goods_number, cost,tax, market_price, 
+	 goods_price, goods_attr, is_real, extension_code, parent_id, is_gift, goods_attr_id, deal_price, give_integral,vendor_id)
+	 SELECT #{order_id}, t1.goods_id, t1.goods_name, t1.goods_ename, t1.goods_sn, t1.product_id, t1.goods_number, t1.cost, t1.tax, t1.market_price, 
+	 t1.goods_price, t1.goods_attr, t1.is_real, t1.extension_code, t1.parent_id, t1.is_gift, t1.goods_attr_id, t1.deal_price, 
+	 CASE WHEN m1.give_integral > -1 THEN m1.give_integral ELSE IF(m1.is_promote = 1, m1.promote_price, m1.shop_price) END AS give_integral,#{vendor_id}
+	FROM xysc_cart t1, xysc_goods m1
+	WHERE t1.goods_id = m1.goods_id AND  t1.user_id = #{user_id} AND t1.vendor_id = #{vendor_id}
+  </insert>
+ <insert id="insertOne" parameterType="com.shubilee.entity.OrderGoods">
+    insert into xysc_order_goods (order_id, goods_id, goods_name, goods_ename, goods_sn, 
+     product_id, goods_number, cost,tax, market_price, 
+	 goods_price, goods_attr, is_real, extension_code, parent_id, 
+	 is_gift, goods_attr_id, deal_price, give_integral,vendor_id)
+    values (#{orderId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER},#{goodsName,jdbcType=VARCHAR}, #{goodsEname,jdbcType=VARCHAR}, #{goodsSn,jdbcType=VARCHAR}, 
+      #{productId,jdbcType=INTEGER}, #{goodsNumber,jdbcType=INTEGER}, #{cost,jdbcType=DECIMAL},#{tax,jdbcType=DECIMAL},#{marketPrice,jdbcType=DECIMAL}, 
+      #{goodsPrice,jdbcType=DECIMAL}, #{goodsAttr,jdbcType=LONGVARCHAR},#{isReal,jdbcType=BIT}, #{extensionCode,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, 
+      #{isGift,jdbcType=INTEGER},#{goodsAttrId,jdbcType=VARCHAR},#{dealPrice,jdbcType=DECIMAL},#{giveIntegral,jdbcType=DECIMAL},#{vendorId,jdbcType=INTEGER})
+  </insert>
+   <select id="selectSumOfitemsbyOrdersId" parameterType="int" resultType="int">
+        select if(sum(goods_number) is null,0,sum(goods_number)) from xysc_order_goods where order_id= #{order_id} 
+  </select>
+ 
+  <select id="selectImagesbyOrdersId" parameterType="int" resultMap="BaseImagesMap">                  
+        select a.goods_id,a.goods_number,a.goods_thumb ,b.give_integral AS integral
+		from xysc_goods as a 
+		INNER JOIN xysc_order_goods as b
+		on a.goods_id = b.goods_id
+		where b.order_id = #{order_id}                   
+  </select>
+  
+  
+  <select id="selectOrderGoodsByOrdersId" parameterType="int" resultMap="BaseResultMap">                  
+        select b.*,a.is_on_sale,a.is_delete,a.goods_number as goods_number_onscoke,a.goods_thumb 
+		from xysc_order_goods as b LEFT JOIN xysc_goods as a on b.goods_id = a.goods_id
+		where b.order_id = #{order_id}                   
+  </select>
+  
+    <select id="selectOrderGoodsByOrdersIDList" parameterType="map" resultMap="BaseResultMap">                  
+        select b.*,a.is_on_sale,a.is_delete,a.goods_number as goods_number_onscoke,a.goods_thumb 
+		from xysc_order_goods as b LEFT JOIN xysc_goods as a on b.goods_id = a.goods_id
+		where b.order_id in <foreach collection="orderIdList" item="orderIdList"  open="(" separator="," close=")">#{orderIdList}</foreach>               
+  </select>
+  
+</mapper>

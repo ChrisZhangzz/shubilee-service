@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shubilee.dao.BonusTypeDao">
+  <resultMap id="BaseResultMap" type="com.shubilee.entity.BonusType">
+    <id column="type_id" jdbcType="INTEGER" property="typeId" />
+    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
+    <result column="type_desc" jdbcType="VARCHAR" property="typeDesc" />
+    <result column="type_edesc" jdbcType="VARCHAR" property="typeEdesc" />
+    <result column="is_percent_off" jdbcType="INTEGER" property="isPercentOff" />
+    <result column="is_off_on_amount" jdbcType="INTEGER" property="isOffOnAmount" />
+    <result column="type_money" jdbcType="DECIMAL" property="typeMoney" />
+    <result column="reduce_amount" jdbcType="DECIMAL" property="reduceAmount" />
+    <result column="send_type" jdbcType="TINYINT" property="sendType" />
+    <result column="min_amount" jdbcType="DECIMAL" property="minAmount" />
+    <result column="max_amount" jdbcType="DECIMAL" property="maxAmount" />
+    <result column="send_start_date" jdbcType="INTEGER" property="sendStartDate" />
+    <result column="send_end_date" jdbcType="INTEGER" property="sendEndDate" />
+    <result column="use_start_date" jdbcType="INTEGER" property="useStartDate" />
+    <result column="use_end_date" jdbcType="INTEGER" property="useEndDate" />
+    <result column="min_goods_amount" jdbcType="DECIMAL" property="minGoodsAmount" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="scope" jdbcType="INTEGER" property="scope" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <association property="userBonus" column="bonus_type_id" javaType="com.shubilee.entity.UserBonus">  
+                <id column="target_user_bonus_id" property="bonusId" jdbcType="INTEGER" />
+			    <result column="type_id" property="bonusTypeId" jdbcType="INTEGER" />
+			    <result column="target_user_bonus_sn" property="bonusSn" jdbcType="VARCHAR" />
+			    <result column="target_user_user_id" property="userId" jdbcType="INTEGER" />
+			    <result column="target_user_used_time" property="usedTime" jdbcType="INTEGER" />
+			    <result column="target_user_order_id" property="orderId" jdbcType="INTEGER" />
+			    <result column="target_user_emailed" property="emailed" jdbcType="TINYINT" />
+			    <result column="target_user_bonus_count" property="bonusCount" jdbcType="VARCHAR" />
+			    <result column="target_user_is_delete" property="isDelete" jdbcType="INTEGER" />
+        </association>  
+	    <collection property="lstBonusLookup" column="type_id" ofType="com.shubilee.entity.BonusLookup">  
+		        <result column="type_id" jdbcType="INTEGER" property="typeId" />
+			    <result column="target_goods_id" jdbcType="INTEGER" property="goodsId" />
+			    <result column="target_cat_id" jdbcType="INTEGER" property="catId" />
+			    <result column="target_brand_id" jdbcType="INTEGER" property="brandId" />
+	     </collection>
+	     <collection property="lstBonusVendor" column="type_id" ofType="com.shubilee.entity.BonusVendor">  
+			    <id column="target_rec_id" property="recId" jdbcType="INTEGER" />
+			    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+			    <result column="target_vendor_id" property="vendorId" jdbcType="INTEGER" />
+	     </collection>
+  </resultMap>
+  <select id="selectBonusType" parameterType="int" resultMap="BaseResultMap">
+		SELECT
+			xbt.type_id,
+			xbt.type_name,
+			xbt.type_desc,
+			xbt.type_edesc,
+			xbt.is_percent_off,
+			xbt.is_off_on_amount,
+			xbt.type_money,
+			xbt.reduce_amount,
+			xbt.send_type,
+			xbt.min_amount,
+			xbt.max_amount,
+			xbt.send_start_date,
+			xbt.send_end_date,
+			xbt.use_start_date,
+			xbt.use_end_date,
+			xbt.min_goods_amount,
+			xbt.type,
+			xbt.scope,
+			xbt.is_delete,
+			xub.bonus_id target_user_bonus_id,
+			xub.bonus_sn target_user_bonus_sn,
+			xub.user_id target_user_user_id,
+			xub.used_time target_user_used_time,
+			xub.order_id target_user_order_id,
+			xub.emailed target_user_emailed,
+			xub.bonus_count target_user_bonus_count,
+			xub.is_delete target_user_is_delete,
+			xbl.goods_id target_goods_id,
+			xbl.cat_id target_cat_id,
+			xbl.brand_id target_brand_id,
+		    xbv.rec_id target_rec_id,
+		    xbv.vendor_id target_vendor_id
+		FROM
+			xysc_bonus_type xbt
+		INNER JOIN xysc_user_bonus xub ON xbt.type_id = xub.bonus_type_id
+		LEFT JOIN xysc_bonus_lookup xbl ON xbt.type_id = xbl.type_id
+		LEFT JOIN xysc_bonus_vendor xbv ON xbt.type_id = xbv.type_id
+		WHERE xub.bonus_id =   #{bonus_id} and xbt.is_delete = 0
+    </select>
+</mapper>

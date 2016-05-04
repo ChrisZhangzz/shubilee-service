@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.ShippingDao">
+    <resultMap id="BaseResultMap" type="com.shubilee.entity.Shipping" >
+	    <id column="shipping_id" property="shippingId" jdbcType="TINYINT" />
+	    <result column="shipping_code" property="shippingCode" jdbcType="VARCHAR" />
+	    <result column="shipping_name" property="shippingName" jdbcType="VARCHAR" />
+	    <result column="shipping_desc" property="shippingDesc" jdbcType="VARCHAR" />
+	    <result column="shipping_fee" property="shippingFee" jdbcType="DECIMAL" />
+	    <result column="free_shipping_amount" property="freeShippingAmount" jdbcType="DECIMAL" />
+	    <result column="insure" property="insure" jdbcType="VARCHAR" />
+	    <result column="support_cod" property="supportCod" jdbcType="BIT" />
+	    <result column="enabled" property="enabled" jdbcType="BIT" />
+	    <result column="print_bg" property="printBg" jdbcType="VARCHAR" />
+	    <result column="print_model" property="printModel" jdbcType="BIT" />
+	    <result column="shipping_order" property="shippingOrder" jdbcType="TINYINT" />
+	    <result column="vendor_id" jdbcType="INTEGER" property="vendorId" />
+	    <result column="is_primary" jdbcType="INTEGER" property="isPrimary" />
+	    <result column="ah_flag" jdbcType="INTEGER" property="ahFlag" /> 
+	    <result column="zipcode_limit_id" jdbcType="INTEGER" property="zipcodeLimitId" />
+	     <collection property="lstShippingDistrictZipcode" column="rule_id" ofType="com.shubilee.entity.ShippingDistrictZipcode">
+	     		<id column="rec_id" property="recId" jdbcType="INTEGER" />  
+                <result column="rule_id" property="ruleId" jdbcType="INTEGER" />
+   			    <result column="zipcode" property="zipcode" jdbcType="INTEGER" />
+        </collection>    
+  </resultMap>
+    <select id="selectShippinginfo" resultMap="BaseResultMap" parameterType="java.lang.Byte" >
+        select * from xysc_shipping xs left join xysc_shipping_district_zipcode xszl on xs.zipcode_limit_id = xszl.rule_id where shipping_id=#{shipping_id}
+    </select> 
+    <select id="selectShippingList" resultMap="BaseResultMap">
+        select * from xysc_shipping xs left join xysc_shipping_district_zipcode xszl on xs.zipcode_limit_id = xszl.rule_id where enabled =1 order by order_num
+    </select>  
+    <select id="selectShippingListByVendorId" parameterType="int"  resultMap="BaseResultMap">
+        select * from xysc_shipping xs left join xysc_shipping_district_zipcode xszl on xs.zipcode_limit_id = xszl.rule_id where vendor_id = #{vendor_id} and enabled =1 order by order_num
+    </select> 
+    
+    <select id="selectFreeAmountByVendorId" parameterType="int"  resultType="DECIMAL">
+        select free_shipping_amount from xysc_shipping where vendor_id = #{vendor_id} and is_primary =1
+    </select>
+</mapper>

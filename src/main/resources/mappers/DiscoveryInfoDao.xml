@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.DiscoveryInfoDao">
+   
+    <resultMap id="BaseResultMap" type="com.shubilee.entity.DiscoveryInfo" >
+    <id column="rec_id" property="recId" jdbcType="BIGINT" />
+    <result column="msg_type" property="msgType" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="etitle" property="etitle" jdbcType="VARCHAR" />
+    <result column="image" property="image" jdbcType="VARCHAR" />
+    <result column="eimage" property="eimage" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="INTEGER" />
+    <result column="end_time" property="endTime" jdbcType="INTEGER" />
+    <result column="expire_time" property="expireTime" jdbcType="INTEGER" />
+    <result column="is_top" property="isTop" jdbcType="INTEGER" />
+    <association property="discoveryDetail" column="d_msg_id" javaType="com.shubilee.entity.DiscoveryDetail">  
+        	    <id column="rec_id" property="recId" jdbcType="INTEGER" />
+			    <result column="d_msg_id" property="dMsgId" jdbcType="INTEGER" />
+			    <result column="type" property="type" jdbcType="INTEGER" />
+			    <result column="value" property="value" jdbcType="VARCHAR" />
+			    <result column="evalue" property="evalue" jdbcType="VARCHAR" />
+			    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+			    <result column="goods_ename" property="goodsEname" jdbcType="VARCHAR" />
+			    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+			    <result column="brand_ename" property="brandEname" jdbcType="VARCHAR" />
+			    <result column="cat_name" property="catName" jdbcType="VARCHAR" />
+			    <result column="cat_ename" property="catEname" jdbcType="VARCHAR" />
+			    <result column="goods_ids" jdbcType="VARCHAR" property="goodsIds" />
+    </association> 
+  </resultMap>
+   <resultMap id="MessageMap" type="com.shubilee.entity.Message4Discovery" >
+	    <id column="goods_Id" property="goodsId" jdbcType="INTEGER" />
+	    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+	    <result column="goods_ename" property="goodsEname" jdbcType="VARCHAR" />
+	    <result column="goods_img" property="goodsImg" jdbcType="VARCHAR" />
+	    <result column="content" property="content" jdbcType="VARCHAR" />
+	    <result column="rank" jdbcType="REAL" property="rank" />
+    </resultMap>
+   
+  	<select id="selectMaxRecId" resultType="int">
+        select max(xdi.rec_id) from xysc_discovery_info xdi
+   </select>
+    
+    
+   <select id="selectDiscoveryInfoByRecId" parameterType="int" resultMap="BaseResultMap">
+        SELECT
+				xdi.*,
+				xdd.*,
+			  xg.goods_name,
+			  xg.goods_ename,
+			  xb.brand_name,
+			  xb.brand_ename,
+			  xc.cat_name,
+			  xc.cat_ename
+			FROM
+				xysc_discovery_info xdi
+			  LEFT JOIN xysc_discovery_detail xdd ON xdi.rec_id = xdd.d_msg_id
+				LEFT JOIN xysc_goods xg ON xdd.value = xg.goods_id
+				LEFT JOIN xysc_brand xb ON xdd.value = xb.brand_id
+			  LEFT JOIN xysc_category xc ON xdd.value = xc.cat_id
+			WHERE
+				xdi.rec_id = #{rec_id} 
+   </select>
+    <select id="selectDiscoveryInfos" parameterType="Map" resultMap="BaseResultMap">
+        SELECT xdi.*,
+			   xdd.*,
+			  xg.goods_name,
+			  xg.goods_ename,
+			  xb.brand_name,
+			  xb.brand_ename,
+			  xc.cat_name,
+			  xc.cat_ename
+			FROM
+				xysc_discovery_info xdi
+			LEFT JOIN xysc_discovery_detail xdd ON xdi.rec_id = xdd.d_msg_id
+			LEFT JOIN xysc_goods xg ON xdd.value = xg.goods_id
+			LEFT JOIN xysc_brand xb ON xdd.value = xb.brand_id
+			LEFT JOIN xysc_category xc ON xdd.value = xc.cat_id
+			where xdi.is_top = 0
+			ORDER BY
+				xdi.rec_id DESC
+			LIMIT #{start} ,#{length} 
+   </select> 
+   <select id="selectDiscoveryInfosOfTop" parameterType="Map" resultMap="BaseResultMap">
+        SELECT xdi.*,
+			   xdd.*,
+			  xg.goods_name,
+			  xg.goods_ename,
+			  xb.brand_name,
+			  xb.brand_ename,
+			  xc.cat_name,
+			  xc.cat_ename
+			FROM
+				xysc_discovery_info xdi
+			LEFT JOIN xysc_discovery_detail xdd ON xdi.rec_id = xdd.d_msg_id
+			LEFT JOIN xysc_goods xg ON xdd.value = xg.goods_id
+			LEFT JOIN xysc_brand xb ON xdd.value = xb.brand_id
+			LEFT JOIN xysc_category xc ON xdd.value = xc.cat_id
+			where xdi.is_top = 1 
+			ORDER BY xdi.rec_id DESC
+   </select> 
+   <select id="selectMessage4Discovery" parameterType="int"  resultMap="MessageMap">
+        SELECT
+				xg.goods_id,
+			  xg.goods_name,
+			  xg.goods_ename,
+			  xg.goods_img,
+			  xmp.content,
+			  xmc.rank
+			  
+			FROM
+				xysc_message_post xmp
+			INNER JOIN xysc_message xm ON xmp.mid = xm.mid
+			INNER JOIN xysc_message_comment xmc ON xm.mid = xmc.mid
+			INNER JOIN xysc_goods xg on xm.goods_id=xg.goods_id
+			WHERE xmp.pid =  #{p_id} 
+   </select> 
+   
+</mapper>

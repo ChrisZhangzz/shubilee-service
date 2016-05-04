@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.SearchBarDao">
+   <resultMap id="BaseResultMap" type="com.shubilee.entity.SearchBar" >
+    <id column="rec_id" property="recId" jdbcType="INTEGER" />
+    <result column="placeholder" property="placeholder" jdbcType="VARCHAR" />
+    <result column="placeholder_e" property="placeholderE" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="value" property="value" jdbcType="INTEGER" />
+    <result column="search" property="search" jdbcType="VARCHAR" />
+    <result column="esearch" property="esearch" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="is_active" property="isActive" jdbcType="INTEGER" />
+  </resultMap>
+    <select id="selectSearchBar" resultMap="BaseResultMap">
+        SELECT
+				t1.*
+			FROM
+				xysc_searchbar AS t1
+			JOIN (
+				SELECT
+					ROUND(
+						RAND() * (
+							(SELECT MAX(xsx.rec_id) FROM xysc_searchbar xsx where xsx.is_active=1) - (SELECT MIN(xsn.rec_id) FROM xysc_searchbar xsn where  xsn.is_active=1)
+						) + (SELECT MIN(xs1.rec_id) FROM xysc_searchbar xs1 where xs1.is_active=1)
+					) AS rec_id
+			) AS t2
+			WHERE
+				t1.rec_id >= t2.rec_id
+			  and t1.is_active=1
+			ORDER BY
+				t1.rec_id
+			LIMIT 1;
+    </select>   
+     <select id="selectAllSearchBar" resultMap="BaseResultMap">
+        SELECT * FROM xysc_searchbar where is_active=1;
+
+    </select> 
+</mapper>

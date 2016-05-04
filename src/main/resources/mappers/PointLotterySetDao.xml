@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.PointLotterySetDao">
+    
+  <resultMap id="BaseResultMap" type="com.shubilee.entity.PointLotterySet" >
+    <id column="rec_id" jdbcType="INTEGER" property="recId" />
+    <result column="total_point" jdbcType="INTEGER" property="totalPoint" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="spend" jdbcType="INTEGER" property="spend" />
+    <result column="user_lottery_times_limit" jdbcType="INTEGER" property="userLotteryTimesLimit" />
+    <result column="user_winning_tiimes_limit" jdbcType="INTEGER" property="userWinningTiimesLimit" />
+    <result column="winning_rate" jdbcType="INTEGER" property="winningRate" />
+    <result column="user_lottery_times" jdbcType="INTEGER" property="userLotteryTimes" />
+    <result column="user_winning_tiimes" jdbcType="INTEGER" property="userWinningTiimes" />
+  </resultMap>
+  
+  
+   <select id="getPointLotterySet" parameterType="String" resultMap="BaseResultMap">
+        SELECT * FROM  xysc_point_lottery_set t where t.date = #{date}
+   </select>
+   	<update id="updateTotalPoint4Winning" parameterType="Map">
+		update xysc_point_lottery_set t set t.total_point = t.total_point - #{point},
+											t.user_lottery_times = t.user_lottery_times + 1,
+											t.user_winning_tiimes = t.user_winning_tiimes + 1  
+		where rec_id = #{rec_id}
+	</update>
+	<update id="updateLotterySetNoWinning" parameterType="int">
+		update xysc_point_lottery_set t set t.user_lottery_times = t.user_lottery_times + 1 where rec_id = #{rec_id}
+	</update>
+   <update id="updateUserPayPoint" parameterType="Map">
+		update xysc_users t set t.pay_points = t.pay_points + #{point}  where user_id = #{user_id}
+	</update>
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.KeywordsDao">
+  <resultMap id="BaseResultMap" type="com.shubilee.entity.Keywords" >
+    <id column="key_id" property="keyId" jdbcType="BIGINT" />
+    <result column="key_name" property="keyName" jdbcType="VARCHAR" />
+    <result column="key_ename" property="keyEname" jdbcType="VARCHAR" />
+    <result column="key_url" property="keyUrl" jdbcType="VARCHAR" />
+    <result column="key_cat" property="keyCat" jdbcType="VARCHAR" />
+    <result column="p_natural" property="pNatural" jdbcType="BIGINT" />
+    <result column="p_manual" property="pManual" jdbcType="BIGINT" />
+  </resultMap>
+  
+  <select id="selectKeywords" resultMap="BaseResultMap" parameterType="map" >
+    select * from xysc_keywords t where t.key_cat = #{cat_id} and t.p_manual+t.p_natural >= #{priority} limit #{count}
+  </select>
+  
+</mapper>

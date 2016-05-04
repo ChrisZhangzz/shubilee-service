@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.VendorsDao">
+ <resultMap id="BaseResultMap" type="com.shubilee.entity.Vendors">
+    <id column="vendor_id" jdbcType="INTEGER" property="vendorId" />
+    <result column="vendor_name" jdbcType="VARCHAR" property="vendorName" />
+    <result column="vendor_ename" jdbcType="VARCHAR" property="vendorEname" />
+    <result column="quality" jdbcType="LONGVARCHAR" property="quality" />
+    <result column="quality_en" jdbcType="LONGVARCHAR" property="qualityEn" />
+    <result column="points" jdbcType="LONGVARCHAR" property="points" />
+    <result column="points_en" jdbcType="LONGVARCHAR" property="pointsEn" />
+    <result column="return_policy" jdbcType="LONGVARCHAR" property="returnPolicy" />
+    <result column="return_policy_en" jdbcType="LONGVARCHAR" property="returnPolicyEn" />
+    <result column="delivery" jdbcType="LONGVARCHAR" property="delivery" />
+    <result column="delivery_en" jdbcType="LONGVARCHAR" property="deliveryEn" />
+    <result column="ah_flag" jdbcType="LONGVARCHAR" property="ahFlag" />
+  </resultMap>
+    
+    <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
+        select * from xysc_vendor_info where vendor_id= #{vendor_id}
+    </select>
+    
+      <select id="selectByPrimaryKeyList" parameterType="map" resultMap="BaseResultMap">
+        select * from xysc_vendor_info where vendor_id in <foreach collection="vendorIdList" item="vendorIdList"  open="(" separator="," close=")">#{vendorIdList}</foreach>  
+    </select>
+    
+</mapper>

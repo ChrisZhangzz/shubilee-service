@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+</head>
+
+
+<body>
+    <p>Purchse in blacklist. </p>
+    	<table>
+		<tr>
+			<td>Purchase_id:</td><td><p th:text="${purchase_id}"></p></td>
+        </tr>
+        </table>
+		<p>Order details:</p>
+		<table>
+		<tr>
+			<td>order Number:</td><td><p th:text="${order_sn}"></p></td>
+        </tr>
+        <tr>
+			<td>order id:</td><td><p th:text="${order_id}"></p></td>
+        </tr>
+        <tr>
+			<td>Order Amount: </td><td><p th:text="${amount}"></p></td>
+        </tr>
+        <tr>
+			<td>Buyer username: </td><td><p th:text="${username}"></p></td>
+        </tr>
+        <tr>
+			<td>Buyer name: </td><td><p th:text="${name}"></p></td>
+        </tr>
+         <tr>
+			<td>Buyer e-mail:</td><td><p th:text="${e_mail}"></p></td>
+        </tr>
+         <tr>
+			<td>Buyer shipping address: </td><td><p th:text="${address}"></p></td>
+        </tr>
+        </table>
+    <p>Please check it!</p>
+</body>
+    
+
+</html>

@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.CompositeQueryDao">
+ <resultMap id="GoodsByActidResultMap" type="com.shubilee.entity.Goods">
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="goods_number" jdbcType="INTEGER" property="goodsNumber" />
+  </resultMap>
+   <resultMap id="BonusResultMap" type="com.shubilee.entity.BonusType" >
+    <id column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="type_desc" jdbcType="VARCHAR" property="typeDesc" />
+    <result column="type_edesc" jdbcType="VARCHAR" property="typeEdesc" />
+    <result column="is_percent_off" property="isPercentOff" jdbcType="INTEGER" />
+    <result column="is_off_on_amount" property="isOffOnAmount" jdbcType="INTEGER" />
+    <result column="type_money" property="typeMoney" jdbcType="DECIMAL" />
+    <result column="reduce_amount" property="reduceAmount" jdbcType="DECIMAL" />
+    <result column="send_type" property="sendType" jdbcType="TINYINT" />
+    <result column="min_amount" property="minAmount" jdbcType="DECIMAL" />
+    <result column="max_amount" property="maxAmount" jdbcType="DECIMAL" />
+    <result column="send_start_date" property="sendStartDate" jdbcType="INTEGER" />
+    <result column="send_end_date" property="sendEndDate" jdbcType="INTEGER" />
+    <result column="use_start_date" property="useStartDate" jdbcType="INTEGER" />
+    <result column="use_end_date" property="useEndDate" jdbcType="INTEGER" />
+    <result column="min_goods_amount" property="minGoodsAmount" jdbcType="DECIMAL" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="scope" property="scope" jdbcType="INTEGER" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <collection property="userBonus" column="bonus_type_id" ofType="com.shubilee.entity.UserBonus"> 
+	     <id column="bonus_id" property="bonusId" jdbcType="INTEGER" />
+	    <result column="bonus_sn" property="bonusSn" jdbcType="VARCHAR" />
+	    <result column="user_id" property="userId" jdbcType="INTEGER" />
+	    <result column="used_time" property="usedTime" jdbcType="INTEGER" />
+	    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+	    <result column="emailed" property="emailed" jdbcType="TINYINT" />
+	    <result column="bonus_count" property="bonusCount" jdbcType="VARCHAR" />
+	    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />   
+     </collection> 
+  </resultMap>
+  <resultMap id="VendorsResultMap" type="com.shubilee.entity.Vendors">
+    <id column="vendor_id" property="vendorId" jdbcType="INTEGER" />
+    <result column="vendor_name" property="vendorName" jdbcType="VARCHAR" />
+    <result column="vendor_ename" property="vendorEname" jdbcType="VARCHAR" />
+  </resultMap>
+   <resultMap id="GoodsResultMap" type="com.shubilee.entity.Goods">
+    <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="vendor_id" jdbcType="INTEGER" property="vendorId" />
+    <result column="goods_sn" jdbcType="VARCHAR" property="goodsSn" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_ename" jdbcType="VARCHAR" property="goodsEname" />
+    <result column="goods_name_style" jdbcType="VARCHAR" property="goodsNameStyle" />
+    <result column="click_count" jdbcType="INTEGER" property="clickCount" />
+    <result column="brand_id" jdbcType="INTEGER" property="brandId" />
+    <result column="provider_name" jdbcType="VARCHAR" property="providerName" />
+    <result column="goods_number" jdbcType="INTEGER" property="goodsNumber" />
+    <result column="margin_storage" jdbcType="INTEGER" property="marginStorage" />
+    <result column="goods_weight" jdbcType="DECIMAL" property="goodsWeight" />
+    <result column="pieces_per_pack" jdbcType="VARCHAR" property="piecesPerPack" />
+    <result column="weight_unit" jdbcType="VARCHAR" property="weightUnit" />
+    <result column="cost" jdbcType="DECIMAL" property="cost" />
+    <result column="market_price" jdbcType="DECIMAL" property="marketPrice" />
+    <result column="shop_price" jdbcType="DECIMAL" property="shopPrice" />
+    <result column="promote_price" jdbcType="DECIMAL" property="promotePrice" />
+    <result column="promote_start_date" jdbcType="INTEGER" property="promoteStartDate" />
+    <result column="promote_end_date" jdbcType="INTEGER" property="promoteEndDate" />
+    <result column="promote_countdown" jdbcType="VARCHAR" property="promoteCountdown" />
+    <result column="promote_weekly" jdbcType="VARCHAR" property="promoteWeekly" />
+    <result column="warn_number" jdbcType="TINYINT" property="warnNumber" />
+    <result column="keywords" jdbcType="VARCHAR" property="keywords" />
+    <result column="goods_brief" jdbcType="VARCHAR" property="goodsBrief" />
+    <result column="goods_thumb" jdbcType="VARCHAR" property="goodsThumb" />
+    <result column="goods_img" jdbcType="VARCHAR" property="goodsImg" />
+    <result column="original_img" jdbcType="VARCHAR" property="originalImg" />
+    <result column="is_real" jdbcType="TINYINT" property="isReal" />
+    <result column="extension_code" jdbcType="VARCHAR" property="extensionCode" />
+    <result column="is_on_sale" jdbcType="BIT" property="isOnSale" />
+    <result column="is_alone_sale" jdbcType="BIT" property="isAloneSale" />
+    <result column="is_shipping" jdbcType="BIT" property="isShipping" />
+    <result column="integral" jdbcType="INTEGER" property="integral" />
+    <result column="add_time" jdbcType="INTEGER" property="addTime" />
+    <result column="sort_order" jdbcType="INTEGER" property="sortOrder" />
+    <result column="is_delete" jdbcType="BIT" property="isDelete" />
+    <result column="is_best" jdbcType="BIT" property="isBest" />
+    <result column="is_new" jdbcType="BIT" property="isNew" />
+    <result column="is_hot" jdbcType="BIT" property="isHot" />
+    <result column="is_promote" jdbcType="BIT" property="isPromote" />
+    <result column="bonus_type_id" jdbcType="TINYINT" property="bonusTypeId" />
+    <result column="last_update" jdbcType="INTEGER" property="lastUpdate" />
+    <result column="goods_type" jdbcType="INTEGER" property="goodsType" />
+    <result column="seller_note" jdbcType="VARCHAR" property="sellerNote" />
+    <result column="give_integral" jdbcType="INTEGER" property="giveIntegral" />
+    <result column="rank_integral" jdbcType="INTEGER" property="rankIntegral" />
+    <result column="suppliers_id" jdbcType="INTEGER" property="suppliersId" />
+    <result column="is_check" jdbcType="BIT" property="isCheck" />
+    <result column="changwei" jdbcType="VARCHAR" property="changwei" />
+    <result column="huowei" jdbcType="VARCHAR" property="huowei" />
+    <result column="zuhe_name" jdbcType="INTEGER" property="zuheName" />
+    <result column="mark_off_shelf" jdbcType="BIT" property="markOffShelf" />
+    <result column="is_limited" jdbcType="BIT" property="isLimited" />
+    <result column="limited_number" jdbcType="INTEGER" property="limitedNumber" />
+    <result column="limited_quantity" jdbcType="INTEGER" property="limitedQuantity" />
+    <result column="limited_once" jdbcType="INTEGER" property="limitedOnce" />
+    
+    <result column="goods_desc" jdbcType="VARCHAR" property="goodsDesc" />
+    
+    
+  </resultMap>
+  <resultMap id="OrderResultMap" type="com.shubilee.entity.OrderInfo" >
+    <id column="order_id" property="order_id" jdbcType="INTEGER" />
+    <result column="order_sn" property="orderSn" jdbcType="VARCHAR" />
+    <result column="purchase_id" property="purchaseId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+    <result column="shipping_status" property="shippingStatus" jdbcType="INTEGER" />
+    <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+    <result column="consignee" property="consignee" jdbcType="VARCHAR" />
+    <result column="vendor_id" jdbcType="INTEGER" property="vendorId" />
+    <result column="vendor_name" jdbcType="INTEGER" property="vendorName" />
+    <result column="vendor_ename" jdbcType="INTEGER" property="vendorEname" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="address2" property="address2" jdbcType="VARCHAR" />
+    <result column="zipcode" property="zipcode" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="best_time" property="bestTime" jdbcType="VARCHAR" />
+    <result column="sign_building" property="signBuilding" jdbcType="VARCHAR" />
+    <result column="postscript" property="postscript" jdbcType="VARCHAR" />
+    <result column="shipping_id" property="shippingId" jdbcType="TINYINT" />
+    <result column="shipping_name" property="shippingName" jdbcType="VARCHAR" />
+    <result column="pay_id" property="payId" jdbcType="TINYINT" />
+    <result column="pay_name" property="payName" jdbcType="VARCHAR" />
+    <result column="pay_id" jdbcType="TINYINT" property="payId" />
+    <result column="pay_name" jdbcType="VARCHAR" property="payName" />
+    <result column="profile_id" jdbcType="VARCHAR" property="profileId" />
+    <result column="firstname" jdbcType="VARCHAR" property="firstname" />
+    <result column="lastname" jdbcType="VARCHAR" property="lastname" />
+    <result column="card_type" jdbcType="VARCHAR" property="cardType" />
+    <result column="tail" jdbcType="INTEGER" property="tail" />
+    <result column="exp_year" jdbcType="VARCHAR" property="expYear" />
+    <result column="exp_month" jdbcType="VARCHAR" property="expMonth" />
+    <result column="how_oos" property="howOos" jdbcType="VARCHAR" />
+    <result column="how_surplus" property="howSurplus" jdbcType="VARCHAR" />
+    <result column="pack_name" property="packName" jdbcType="VARCHAR" />
+    <result column="card_name" property="cardName" jdbcType="VARCHAR" />
+    <result column="card_message" property="cardMessage" jdbcType="VARCHAR" />
+    <result column="inv_payee" property="invPayee" jdbcType="VARCHAR" />
+    <result column="inv_content" property="invContent" jdbcType="VARCHAR" />
+    <result column="cost_amount" property="costAmount" jdbcType="DECIMAL" />
+    <result column="goods_amount" property="goodsAmount" jdbcType="DECIMAL" />
+    <result column="shipping_fee" property="shippingFee" jdbcType="DECIMAL" />
+    <result column="insure_fee" property="insureFee" jdbcType="DECIMAL" />
+    <result column="pay_fee" property="payFee" jdbcType="DECIMAL" />
+    <result column="pack_fee" property="packFee" jdbcType="DECIMAL" />
+    <result column="card_fee" property="cardFee" jdbcType="DECIMAL" />
+    <result column="money_paid" property="moneyPaid" jdbcType="DECIMAL" />
+    <result column="surplus" property="surplus" jdbcType="DECIMAL" />
+    <result column="integral" property="integral" jdbcType="INTEGER" />
+    <result column="integral_money" property="integralMoney" jdbcType="DECIMAL" />
+    <result column="gift_card_money" property="giftCardMoney" jdbcType="DECIMAL" />
+    <result column="bonus" property="bonus" jdbcType="DECIMAL" />
+    <result column="order_amount" property="orderAmount" jdbcType="DECIMAL" />
+    <result column="from_ad" property="fromAd" jdbcType="INTEGER" />
+    <result column="referer" property="referer" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="INTEGER" />
+    <result column="confirm_time" property="confirmTime" jdbcType="INTEGER" />
+    <result column="pay_time" property="payTime" jdbcType="INTEGER" />
+    <result column="shipping_time" property="shippingTime" jdbcType="INTEGER" />
+    <result column="pack_id" property="packId" jdbcType="TINYINT" />
+    <result column="card_id" property="cardId" jdbcType="TINYINT" />
+    <result column="bonus_id" property="bonusId" jdbcType="INTEGER" />
+    <result column="invoice_no" property="invoiceNo" jdbcType="VARCHAR" />
+    <result column="extension_code" property="extensionCode" jdbcType="VARCHAR" />
+    <result column="extension_id" property="extensionId" jdbcType="INTEGER" />
+    <result column="to_buyer" property="toBuyer" jdbcType="VARCHAR" />
+    <result column="pay_note" property="payNote" jdbcType="VARCHAR" />
+    <result column="agency_id" property="agencyId" jdbcType="INTEGER" />
+    <result column="ad_track_id" property="adTrackId" jdbcType="BIGINT" />
+    <result column="inv_type" property="invType" jdbcType="VARCHAR" />
+    <result column="tax" property="tax" jdbcType="DECIMAL" />
+    <result column="is_separate" property="isSeparate" jdbcType="BIT" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="discount" property="discount" jdbcType="DECIMAL" />
+    <result column="country_zd" property="countryZd" jdbcType="VARCHAR" />
+    <result column="province_zd" property="provinceZd" jdbcType="VARCHAR" />
+    <result column="city_zd" property="cityZd" jdbcType="VARCHAR" />
+    <result column="address_zd" property="addressZd" jdbcType="VARCHAR" />
+    <result column="address2_zd" property="address2Zd" jdbcType="VARCHAR" />
+    <result column="consignee_zd" property="consigneeZd" jdbcType="VARCHAR" />
+    <result column="zipcode_zd" property="zipcodeZd" jdbcType="VARCHAR" />
+    <result column="mobile_zd" property="mobileZd" jdbcType="VARCHAR" />
+    <result column="tel_zd" property="telZd" jdbcType="VARCHAR" />
+    <result column="email_zd" property="emailZd" jdbcType="VARCHAR" />
+    <result column="lang" property="lang" jdbcType="CHAR" />
+    <result column="gift" property="gift" jdbcType="INTEGER" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="abnormal" jdbcType="TINYINT" property="abnormal" />
+    <result column="bonus_sn" jdbcType="VARCHAR" property="bonusSn" /> 
+  </resultMap>
+   <resultMap id="OrderGoodsResultMap" type="com.shubilee.entity.OrderGoods" >
+    <id column="rec_id" property="recId" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_ename" property="goodsEname" jdbcType="VARCHAR" />
+    <result column="goods_sn" property="goodsSn" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="goods_number" property="goodsNumber" jdbcType="INTEGER" />
+    <result column="tax" property="tax" jdbcType="DECIMAL" />
+    <result column="cost" property="cost" jdbcType="DECIMAL" />
+    <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
+    <result column="goods_price" property="goodsPrice" jdbcType="DECIMAL" />
+    <result column="deal_price" property="dealPrice" jdbcType="DECIMAL" />
+    <result column="send_number" property="sendNumber" jdbcType="INTEGER" />
+    <result column="is_real" property="isReal" jdbcType="BIT" />
+    <result column="extension_code" property="extensionCode" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="is_gift" property="isGift" jdbcType="INTEGER" />
+    <result column="goods_attr_id" property="goodsAttrId" jdbcType="VARCHAR" />
+    <result column="is_checked" property="isChecked" jdbcType="INTEGER" />
+    <result column="checked_number" property="checkedNumber" jdbcType="INTEGER" />
+    <result column="give_integral" property="giveIntegral" jdbcType="DECIMAL" />
+    <result column="log_time" property="logTime" jdbcType="TIMESTAMP" />
+     <result column="vendor_id" jdbcType="INTEGER" property="vendorId" />
+    <result column="is_on_sale" jdbcType="BIT" property="isOnSale" />
+  	<result column="is_delete" jdbcType="BIT" property="isDelete" />
+  	 <result column="goods_number_onscoke" jdbcType="INTEGER" property="goodsNumberOnscoke" />
+  	<result column="goods_thumb" jdbcType="VARCHAR" property="goodsThumb" />
+  	<result column="cat_id" jdbcType="INTEGER" property="catId" />
+  	<result column="cat_name" jdbcType="VARCHAR" property="catName" />
+  	<result column="cat_ename" jdbcType="VARCHAR" property="catEName" />
+  </resultMap>
+  <resultMap id="InviteSummaryMap" type="com.shubilee.bean.InviteSummary" >
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="goods_id" property="email" jdbcType="INTEGER" />
+    <result column="goods_name" property="userName" jdbcType="VARCHAR" />
+    <result column="reg_num" property="regNum" jdbcType="INTEGER" />
+    <result column="order_num" property="orderNum" jdbcType="INTEGER" />
+    <result column="poing_pendding_num" property="pointPenddingNum" jdbcType="INTEGER" />
+    <result column="poing_confirm_num" property="pointConfirmNum" jdbcType="INTEGER" />
+  </resultMap>
+    <select id="selectSubTreeByGid" parameterType="int" resultType="String">
+        SELECT cs.sub_tree FROM xysc_goods_cat as gc,xysc_category_sub as cs  where gc.goods_id = #{goods_id} AND cs.cat_id = gc.cat_id
+    </select>
+     <select id="selectGoodsByActid" parameterType="int" resultMap="GoodsByActidResultMap">
+        SELECT g.goods_id, ag.goods_number FROM xysc_goods AS g,xysc_activity_gift AS ag WHERE ag.goods_id = g.goods_id AND ag.act_id = #{act_id} 
+    </select>
+    
+     <select id="selectBonusByBonusSn" parameterType="String" resultMap="BonusResultMap">
+        select a.*,b.* from xysc_bonus_type as a ,xysc_user_bonus as b where a.type_id = b.bonus_type_id and a.is_delete = 0 and b.bonus_sn = #{bonus_sn} 
+    </select>
+    <select id="selectBonusByBonusId" parameterType="int" resultMap="BonusResultMap">
+        select a.*,b.* from xysc_bonus_type as a ,xysc_user_bonus as b where a.type_id = b.bonus_type_id and a.is_delete = 0 and b.bonus_id = #{bonus_id} 
+    </select>
+    
+    
+    <select id="selectGoodsByActIdOfType3" parameterType="int" resultMap="GoodsResultMap">
+        select xg.* from xysc_goods as xg inner join xysc_activity_lookup as xal on xg.goods_id = xal.goods_id where xal.act_id = #{act_id} 
+    </select>
+    <select id="selectGoodsByActIdOfType2" parameterType="int" resultMap="GoodsResultMap">
+        select xg.* from xysc_goods as xg inner join xysc_activity_lookup as xal on xg.brand_id = xal.brand_id where xal.act_id =  #{act_id} 
+    </select>
+    <select id="selectGoodsByActIdOfType1" parameterType="int" resultMap="GoodsResultMap">
+        select 	distinct re.goods_id,
+	re.cat_id,
+	re.goods_sn,
+	re.goods_name,
+	re.goods_ename,
+	re.goods_name_style,
+	re.click_count,
+	re.brand_id,
+	re.provider_name,
+	re.goods_number,
+	re.margin_storage,
+	re.goods_weight,
+	re.pieces_per_pack,
+	re.weight_unit,
+	re.cost,
+	re.market_price,
+	re.shop_price,
+	re.promote_price,
+	re.promote_start_date,
+	re.promote_end_date,
+	re.promote_countdown,
+	re.promote_weekly,
+	re.warn_number,
+	re.keywords,
+	re.goods_brief,
+	re.goods_desc,
+	re.goods_edesc,
+	re.goods_thumb,
+	re.goods_img,
+	re.original_img,
+	re.is_real,
+	re.extension_code,
+	re.is_on_sale,
+	re.is_alone_sale,
+	re.is_shipping,
+	re.integral,
+	re.add_time,
+	re.sort_order,
+	re.is_delete,
+	re.is_best,
+	re.is_new,
+	re.is_hot,
+	re.is_promote,
+	re.bonus_type_id,
+	re.last_update,
+	re.goods_type,
+	re.seller_note,
+	re.give_integral,
+	re.rank_integral,
+	re.suppliers_id,
+	re.is_check,
+	re.changwei,
+	re.huowei,
+	re.zuhe_name,
+	re.mark_off_shelf,
+	re.is_limited,
+	re.limited_number,
+	re.limited_quantity,
+	re.limited_once,
+	re.first_add_time from 
+(select xg.* from xysc_goods as xg inner join xysc_activity_lookup as xal on xg.cat_id = xal.cat_id where xal.act_id = #{act_id}  
+union
+select xg.* from xysc_goods as xg inner join xysc_goods_cat xgc on xg.goods_id = xgc.goods_id inner join xysc_activity_lookup as xal on xgc.cat_id = xal.cat_id where xal.act_id  =  #{act_id} ) as re
+    </select>
+    
+   <select id="selectPurchaseInfoByUid" parameterType="map" resultMap="OrderResultMap">
+   select t.*,xvi.vendor_name,xvi.vendor_ename,xub.bonus_sn from xysc_order_info t inner join xysc_vendor_info xvi on t.vendor_id = xvi.vendor_id left join xysc_user_bonus xub on t.bonus_id = xub.bonus_id where t.purchase_id =  #{purchase_id} and t.user_id = #{user_id} 
+   </select>
+   <select id="selectOrderGoodsByOrderId" parameterType="map" resultMap="OrderGoodsResultMap">
+   SELECT
+	t.*, xg.goods_thumb,xc.cat_id,xc.cat_name,xc.cat_ename
+		FROM
+			xysc_order_goods t
+		INNER JOIN xysc_goods xg ON t.goods_id = xg.goods_id
+		INNER JOIN xysc_goods_cat xgc on xg.goods_id = xgc.goods_id
+		INNER JOIN xysc_category xc on xgc.cat_id = xc.cat_id
+		WHERE
+	t.order_id = #{order_id}
+   </select> 
+     <select id="selectInviteSummary" parameterType="map" resultMap="InviteSummaryMap">
+			   SELECT
+				xu.user_id,
+			  xu.email,
+			  xu.user_name,
+				IFNULL(re1.number1,0) as reg_num,
+				IFNULL(re2.number2,0) as order_num,
+				IFNULL(re3.number3,0) as poing_pendding_num,
+				IFNULL(re4.number4,0) as poing_confirm_num
+			FROM
+			xysc_users xu 
+			inner join
+				(
+					SELECT
+						xu.parent_id,
+						count(1) number1
+					FROM
+						xysc_users xu
+					WHERE
+						xu.parent_id != 0
+					AND xu.reg_time &gt; #{startDate}
+					AND xu.reg_time &lt; #{endDate}
+					GROUP BY
+						parent_id
+				) re1
+			on  xu.user_id = re1.parent_id
+			LEFT JOIN (
+				SELECT
+					xu.parent_id,
+					count(1) number2
+				FROM
+					xysc_users xu
+				WHERE
+					xu.parent_id != 0
+				AND xu.reg_time &gt; #{startDate}
+				AND xu.reg_time &lt; #{endDate}
+				AND xu.first_order_time IS NOT NULL
+				GROUP BY
+					parent_id
+			) re2 ON re1.parent_id = re2.parent_id
+			LEFT JOIN (
+				SELECT
+					xu.parent_id,
+					count(1) number3
+				FROM
+					xysc_users xu
+				WHERE
+					xu.parent_id != 0
+				AND xu.reg_time &gt; #{startDate}
+				AND xu.reg_time &lt; #{endDate}
+				AND xu.first_order_time IS NOT NULL
+				AND xu.flag = 1
+				GROUP BY
+					parent_id
+			) re3 ON re1.parent_id = re3.parent_id
+			LEFT JOIN (
+				SELECT
+					xu.parent_id,
+					count(1) number4
+				FROM
+					xysc_users xu
+				WHERE
+					xu.parent_id != 0
+				AND xu.reg_time &gt; #{startDate}
+				AND xu.reg_time &lt; #{endDate}
+				AND xu.first_order_time IS NOT NULL
+				AND xu.flag = 0
+				GROUP BY
+					parent_id
+			) re4 ON re1.parent_id = re4.parent_id
+			
+			order by order_num desc
+   </select> 
+</mapper>

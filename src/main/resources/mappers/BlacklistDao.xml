@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.BlacklistDao">
+	<resultMap id="BaseResultMap" type="com.shubilee.entity.Blacklist">
+		<id column="rec_id" property="recId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="account" property="account" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="tel" property="tel" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="address2" property="address2" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="zipcode" property="zipcode" jdbcType="INTEGER" />
+		<result column="bank_card" property="bankCard" jdbcType="CHAR" />
+		<result column="add_time" property="addTime" jdbcType="INTEGER" />
+		<result column="origin" property="origin" jdbcType="INTEGER" />
+	</resultMap>
+
+
+
+  <insert id="insert" parameterType="com.shubilee.entity.Blacklist" >
+    insert into xysc_blacklist (type, user_id, 
+      account, email, mobile, 
+      tel, address, address2, 
+      city, province, zipcode, 
+      bank_card, add_time, origin
+      )
+    values (#{type,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{account,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{tel,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{address2,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{zipcode,jdbcType=INTEGER}, 
+      #{bankCard,jdbcType=CHAR}, #{addTime,jdbcType=INTEGER}, #{origin,jdbcType=INTEGER}
+      )
+  </insert>
+	<select id="selectCountByBankCard" parameterType="String"
+		resultType="int">
+		select count(1) from xysc_blacklist where bank_card=#{bank_card}
+	</select>
+	<select id="selectCountByUserId" parameterType="int"
+		resultType="int">
+		select count(1) from xysc_blacklist where user_id=#{user_id}
+	</select>
+</mapper>

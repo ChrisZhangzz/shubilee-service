@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.PointLotteryConfigDao">
+    
+  <resultMap id="BaseResultMap" type="com.shubilee.entity.PointLotteryConfig">
+    <id column="rec_id" jdbcType="INTEGER" property="recId" />
+    <result column="point_num" jdbcType="INTEGER" property="pointNum" />
+    <result column="winning_num" jdbcType="BIGINT" property="winningNum" />
+    <result column="winning_num_limit" jdbcType="BIGINT" property="winningNumLimit" />
+    <result column="date" jdbcType="DATE" property="date" />
+  </resultMap>
+  
+  
+   <select id="getPointLotteryConfig" resultMap="BaseResultMap">
+        select * from xysc_point_lottery_config t where t.date = #{date}
+   </select>
+   <update id="updatePointLotteryConfigWinningNum" parameterType="Map">
+		update xysc_point_lottery_config t set t.winning_num = t.winning_num + 1  where rec_id = #{rec_id}
+	</update>
+</mapper>

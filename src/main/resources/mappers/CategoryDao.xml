@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.CategoryDao">
+	
+	<resultMap id="ResultShowCategoryMap" type="com.shubilee.entity.CategoryForShow">
+    <result column="cat_id" jdbcType="INTEGER" property="cat_id" />
+    <result column="parent_id" jdbcType="INTEGER" property="parent_id" />
+    <result column="cat_name" jdbcType="VARCHAR" property="cat_name" />
+    <result column="cat_ename" jdbcType="VARCHAR" property="cat_ename" />
+    <result column="is_show" jdbcType="INTEGER" property="is_show" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    </resultMap>
+
+    <select id="selectShowCategory" resultMap="ResultShowCategoryMap">
+        select cat_id,cat_name,cat_ename,parent_id,is_show,icon from xysc_category where is_show =1
+    </select>
+    <select id="selectShowCategory4Index" resultMap="ResultShowCategoryMap">
+        select cat_id,cat_name,cat_ename,parent_id,is_show from xysc_category where parent_id = 0 and is_show =1 ORDER BY sort_order
+    </select>
+    <select id="selectShowCategory4Channel3" resultMap="ResultShowCategoryMap">
+        select cat_id,cat_name,cat_ename,parent_id,is_show from xysc_category where parent_id = 2 and is_show =1 ORDER BY sort_order
+    </select>
+    <select id="selectShowCategory4Channel5" resultMap="ResultShowCategoryMap">
+        select cat_id,cat_name,cat_ename,parent_id,is_show from xysc_category where parent_id = 10 and is_show =1 ORDER BY sort_order
+    </select>
+    <select id="selectShowCategory4Channel2" resultMap="ResultShowCategoryMap">
+        select cat_id,cat_name,cat_ename,parent_id,is_show from xysc_category where parent_id = 1 and is_show =1 ORDER BY sort_order
+    </select>
+    <select id="selectShowCategory4Channel4" resultMap="ResultShowCategoryMap">
+        select cat_id,cat_name,cat_ename,parent_id,is_show from xysc_category where (parent_id = 26 or parent_id = 30) and is_show =1 ORDER BY sort_order
+    </select>
+    <select id="selectCatInfoByGid" parameterType="int" resultType="String">
+        SELECT xcs.sub_tree FROM xysc_category_sub xcs inner join xysc_goods_cat xgc on xcs.cat_id = xgc.cat_id where xgc.goods_id =  #{goods_id};
+    </select>
+    <select id="selectCategoryInfo" parameterType="int" resultMap="ResultShowCategoryMap">
+        select cat_id,cat_name,cat_ename,parent_id,is_show,icon from xysc_category where cat_id = #{cat_id};
+    </select>
+</mapper>

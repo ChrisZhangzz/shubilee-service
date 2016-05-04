@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.GoodsDao">
+	<resultMap id="BaseGalleryThumbMap" type="com.shubilee.entity.GoodsGallery">
+     <id column="img_id" property="imgId" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="img_desc" property="imgDesc" jdbcType="VARCHAR" />
+    <result column="thumb_url" property="thumbUrl" jdbcType="VARCHAR" />
+    <result column="img_original" property="imgOriginal" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <resultMap id="GoodsOfCatItemsMap" type="com.shubilee.entity.GoodsOfCatItems">
+    <result column="goods_id" jdbcType="INTEGER" property="goods_id" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goods_name" />
+    <result column="goods_ename" jdbcType="VARCHAR" property="goods_ename" />
+    <result column="shop_price" jdbcType="DECIMAL" property="shop_price" />
+    <result column="promote_price" jdbcType="DECIMAL" property="promote_price" />  
+    <result column="is_promote" jdbcType="INTEGER" property="is_promote" />
+    <result column="goods_number" jdbcType="INTEGER" property="goods_number" />  
+    <result column="goods_thumb" jdbcType="VARCHAR" property="goods_thumb" />
+    <result column="goods_img" jdbcType="VARCHAR" property="goodsImg" />
+    <result column="original_img" jdbcType="VARCHAR" property="originalImg" />
+    </resultMap>
+    <resultMap id="GoodsCommentMap" type="com.shubilee.entity.GoodsComment">
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="rate" jdbcType="DECIMAL" property="rate" />
+    <result column="date" jdbcType="INTEGER" property="date" />
+    <result column="message" jdbcType="VARCHAR" property="message" />  
+    </resultMap>
+    
+    
+    <resultMap id="BaseResultMap" type="com.shubilee.entity.Goods">
+    <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="vendor_id" jdbcType="INTEGER" property="vendorId" />
+    <result column="goods_sn" jdbcType="VARCHAR" property="goodsSn" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_ename" jdbcType="VARCHAR" property="goodsEname" />
+    <result column="goods_name_style" jdbcType="VARCHAR" property="goodsNameStyle" />
+    <result column="click_count" jdbcType="INTEGER" property="clickCount" />
+    <result column="brand_id" jdbcType="INTEGER" property="brandId" />
+    <result column="provider_name" jdbcType="VARCHAR" property="providerName" />
+    <result column="goods_number" jdbcType="INTEGER" property="goodsNumber" />
+    <result column="margin_storage" jdbcType="INTEGER" property="marginStorage" />
+    <result column="goods_weight" jdbcType="DECIMAL" property="goodsWeight" />
+    <result column="pieces_per_pack" jdbcType="VARCHAR" property="piecesPerPack" />
+    <result column="weight_unit" jdbcType="VARCHAR" property="weightUnit" />
+    <result column="cost" jdbcType="DECIMAL" property="cost" />
+    <result column="market_price" jdbcType="DECIMAL" property="marketPrice" />
+    <result column="shop_price" jdbcType="DECIMAL" property="shopPrice" />
+    <result column="promote_price" jdbcType="DECIMAL" property="promotePrice" />
+    <result column="promote_start_date" jdbcType="INTEGER" property="promoteStartDate" />
+    <result column="promote_end_date" jdbcType="INTEGER" property="promoteEndDate" />
+    <result column="promote_countdown" jdbcType="VARCHAR" property="promoteCountdown" />
+    <result column="promote_weekly" jdbcType="VARCHAR" property="promoteWeekly" />
+    <result column="warn_number" jdbcType="INTEGER" property="warnNumber" />
+    <result column="keywords" jdbcType="VARCHAR" property="keywords" />
+    <result column="goods_brief" jdbcType="VARCHAR" property="goodsBrief" />
+    <result column="goods_thumb" jdbcType="VARCHAR" property="goodsThumb" />
+    <result column="goods_img" jdbcType="VARCHAR" property="goodsImg" />
+    <result column="original_img" jdbcType="VARCHAR" property="originalImg" />
+    <result column="is_real" jdbcType="TINYINT" property="isReal" />
+    <result column="extension_code" jdbcType="VARCHAR" property="extensionCode" />
+    <result column="is_on_sale" jdbcType="BIT" property="isOnSale" />
+    <result column="is_alone_sale" jdbcType="BIT" property="isAloneSale" />
+    <result column="is_shipping" jdbcType="BIT" property="isShipping" />
+    <result column="integral" jdbcType="INTEGER" property="integral" />
+    <result column="add_time" jdbcType="INTEGER" property="addTime" />
+    <result column="sort_order" jdbcType="INTEGER" property="sortOrder" />
+    <result column="is_delete" jdbcType="BIT" property="isDelete" />
+    <result column="is_best" jdbcType="BIT" property="isBest" />
+    <result column="is_new" jdbcType="BIT" property="isNew" />
+    <result column="is_hot" jdbcType="BIT" property="isHot" />
+    <result column="is_promote" jdbcType="BIT" property="isPromote" />
+    <result column="bonus_type_id" jdbcType="TINYINT" property="bonusTypeId" />
+    <result column="last_update" jdbcType="INTEGER" property="lastUpdate" />
+    <result column="goods_type" jdbcType="INTEGER" property="goodsType" />
+    <result column="seller_note" jdbcType="VARCHAR" property="sellerNote" />
+    <result column="give_integral" jdbcType="INTEGER" property="giveIntegral" />
+    <result column="rank_integral" jdbcType="INTEGER" property="rankIntegral" />
+    <result column="suppliers_id" jdbcType="INTEGER" property="suppliersId" />
+    <result column="is_check" jdbcType="BIT" property="isCheck" />
+    <result column="changwei" jdbcType="VARCHAR" property="changwei" />
+    <result column="huowei" jdbcType="VARCHAR" property="huowei" />
+    <result column="zuhe_name" jdbcType="INTEGER" property="zuheName" />
+    <result column="mark_off_shelf" jdbcType="BIT" property="markOffShelf" />
+    <result column="is_limited" jdbcType="BIT" property="isLimited" />
+    <result column="limited_number" jdbcType="INTEGER" property="limitedNumber" />
+    <result column="limited_quantity" jdbcType="INTEGER" property="limitedQuantity" />
+    <result column="limited_once" jdbcType="INTEGER" property="limitedOnce" />
+    
+    <result column="goods_desc" jdbcType="VARCHAR" property="goodsDesc" />
+    <result column="goods_edesc" jdbcType="VARCHAR" property="goodsEdesc" />
+    <result column="is_district" jdbcType="TINYINT" property="isDistrict" />
+    <result column="is_1day" jdbcType="TINYINT" property="is1day" />
+    <result column="zipcode_limit_id" jdbcType="TINYINT" property="zipcodeLimitId" />
+  </resultMap>
+  
+  
+  
+   <resultMap id="GoodsFlashResultMap" type="com.shubilee.entity.GoodsFlash">
+    <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_ename" jdbcType="VARCHAR" property="goodsEname" />
+    <result column="is_promote" jdbcType="BIT" property="isPromote" />
+    <result column="shop_price" jdbcType="DECIMAL" property="shopPrice" />
+    <result column="promote_price" jdbcType="DECIMAL" property="promotePrice" />
+    <result column="promote_start_date" jdbcType="INTEGER" property="promoteStartDate" />
+    <result column="promote_end_date" jdbcType="INTEGER" property="promoteEndDate" />
+    <result column="promote_countdown" jdbcType="VARCHAR" property="promoteCountdown" />
+    <result column="promote_weekly" jdbcType="VARCHAR" property="promoteWeekly" />
+    <result column="goods_thumb" jdbcType="VARCHAR" property="goodsThumb" /> 
+    <result column="goods_img" jdbcType="VARCHAR" property="goodsImg" /> 
+    <result column="original_img" jdbcType="VARCHAR" property="originalImg" /> 
+    <result column="limited_quantity" jdbcType="INTEGER" property="limitedQuantity" />
+    <result column="index_flag" jdbcType="INTEGER" property="indexFlag" /> 
+    <result column="goods_desc" jdbcType="VARCHAR" property="goodsDesc" />
+    <result column="goods_edesc" jdbcType="VARCHAR" property="goodsEdesc" />
+  </resultMap>
+  <resultMap id="GoodsDisplayAppMap" type="com.shubilee.entity.GoodsDisplayApp" >
+    <id column="rec_id" property="recId" jdbcType="BIGINT" />
+    <result column="page" property="page" jdbcType="INTEGER" />
+    <result column="scope" property="scope" jdbcType="INTEGER" />
+    <result column="section" property="section" jdbcType="INTEGER" />
+    <result column="position" property="position" jdbcType="INTEGER" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="search" property="search" jdbcType="VARCHAR" />
+    <result column="esearch" property="esearch" jdbcType="VARCHAR" />
+    <result column="image" property="image" jdbcType="VARCHAR" />
+    <result column="eimage" property="eimage" jdbcType="VARCHAR" />
+     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_ename" jdbcType="VARCHAR" property="goodsEname" />
+    <result column="is_promote" jdbcType="BIT" property="isPromote" />
+    <result column="shop_price" jdbcType="DECIMAL" property="shopPrice" />
+    <result column="promote_price" jdbcType="DECIMAL" property="promotePrice" />
+    <result column="goods_thumb" jdbcType="VARCHAR" property="goodsThumb" />
+    <result column="goods_img" jdbcType="VARCHAR" property="goodsImg" />
+    <result column="original_img" jdbcType="VARCHAR" property="originalImg" />
+    <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+    <result column="brand_ename" jdbcType="VARCHAR" property="brandEname" />
+    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+    <result column="cat_ename" jdbcType="VARCHAR" property="catEname" />
+    <result column="is_image" jdbcType="INTEGER" property="isImage" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="etitle" jdbcType="VARCHAR" property="etitle" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+  </resultMap>
+    <resultMap id="GoodsDisplayDkpMap" type="com.shubilee.entity.GoodsDisplayDkp" >
+    <id column="rec_id" property="recId" jdbcType="BIGINT" />
+    <result column="page" property="page" jdbcType="INTEGER" />
+    <result column="scope" property="scope" jdbcType="INTEGER" />
+    <result column="section" property="section" jdbcType="INTEGER" />
+    <result column="position" property="position" jdbcType="INTEGER" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="search" property="search" jdbcType="VARCHAR" />
+    <result column="esearch" property="esearch" jdbcType="VARCHAR" />
+    <result column="image" property="image" jdbcType="VARCHAR" />
+    <result column="eimage" property="eimage" jdbcType="VARCHAR" />
+     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_ename" jdbcType="VARCHAR" property="goodsEname" />
+    <result column="is_promote" jdbcType="BIT" property="isPromote" />
+    <result column="shop_price" jdbcType="DECIMAL" property="shopPrice" />
+    <result column="promote_price" jdbcType="DECIMAL" property="promotePrice" />
+    <result column="goods_thumb" jdbcType="VARCHAR" property="goodsThumb" />
+    <result column="goods_img" jdbcType="VARCHAR" property="goodsImg" />
+    <result column="original_img" jdbcType="VARCHAR" property="originalImg" />
+    <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+    <result column="brand_ename" jdbcType="VARCHAR" property="brandEname" />
+    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+    <result column="cat_ename" jdbcType="VARCHAR" property="catEname" />
+    <result column="is_image" jdbcType="INTEGER" property="isImage" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="etitle" jdbcType="VARCHAR" property="etitle" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+  </resultMap>
+  <resultMap id="MessageResultMap" type="com.shubilee.entity.Message">
+    <id column="mid" jdbcType="INTEGER" property="mid" />
+    <result column="case_id" jdbcType="INTEGER" property="caseId" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="rid" jdbcType="INTEGER" property="rid" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="type" jdbcType="BIT" property="type" />
+    <result column="dateline" jdbcType="INTEGER" property="dateline" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+  </resultMap>
+  <resultMap id="MessagePostResultMap" type="com.shubilee.entity.MessagePost">
+    <id column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="mid" jdbcType="INTEGER" property="mid" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="rid" jdbcType="INTEGER" property="rid" />
+    <result column="dateline" jdbcType="INTEGER" property="dateline" />
+    <result column="mess_nickname" jdbcType="VARCHAR" property="messNickname" />
+    <result column="p_rank" jdbcType="INTEGER" property="pRank" />
+    <result column="p_rank" jdbcType="INTEGER" property="pRank" />
+    <result column="type" jdbcType="BIT" property="type" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="invisible" jdbcType="INTEGER" property="invisible" />
+  </resultMap>
+  <resultMap id="MessageCommentResultMap" type="com.shubilee.entity.MessageComment">
+    <result column="cid" jdbcType="INTEGER" property="cid" />
+    <result column="mid" jdbcType="INTEGER" property="mid" />
+    <result column="dateline" jdbcType="INTEGER" property="dateline" />
+    <result column="rank" jdbcType="REAL" property="rank" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+  </resultMap>
+  <resultMap id="MessageImageResultMap" type="com.shubilee.entity.MessageImage" >
+    <id column="iid" property="iid" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="dateline" property="dateline" jdbcType="INTEGER" />
+    <result column="img_status" property="imgStatus" jdbcType="INTEGER" />
+  </resultMap>
+   <resultMap id="BrandHotResultMap" type="com.shubilee.entity.BrandHot">
+    <id column="rec_id" jdbcType="INTEGER" property="recId" />
+    <result column="page" jdbcType="INTEGER" property="page" />
+    <result column="position" jdbcType="INTEGER" property="position" />
+    <result column="brand_id" jdbcType="INTEGER" property="brandId" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+    <result column="brand_ename" property="brandEname" jdbcType="VARCHAR" />
+    <result column="brand_logo" property="brandLogo" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="YmZipcodeResultMap" type="com.shubilee.entity.YmZipcode" >
+    <id column="zip" property="zip" jdbcType="INTEGER" />
+    <result column="primary_city" property="primaryCity" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="county" property="county" jdbcType="VARCHAR" />
+    <result column="sd_zone" property="sdZone" jdbcType="TINYINT" />
+  </resultMap>
+  <resultMap id="ShopZipcodeLimitMap" type="com.shubilee.entity.ShopDistrictZipcode" >
+    <result column="rule_id" property="ruleId" jdbcType="INTEGER" />
+    <result column="zipcode" property="zipcode" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectGoodsForNew" parameterType="map" resultMap="BaseResultMap">
+    select a.*
+    from xysc_goods as a
+    where a.is_on_sale=1 AND a.is_delete=0 AND a.cat_id !=31 AND a.cat_id !=97 
+    ORDER BY a.first_add_time DESC  
+    LIMIT #{start},#{leng}
+  </select>
+  <select id="selectGoodsForNewCount" parameterType="map" resultType="int">
+    select count(1)
+    from xysc_goods as a
+    where a.is_on_sale=1 AND a.is_delete=0 AND a.cat_id !=31 AND a.cat_id !=97 
+    ORDER BY a.first_add_time DESC  
+  </select>
+  <select id="selectGoodsEdit" parameterType="map" resultMap="GoodsDisplayAppMap">
+	    SELECT
+		xgda.*, xg.goods_name,
+		xg.goods_ename,
+		xg.is_promote,
+		xg.promote_price,
+		xg.shop_price,
+		xg.goods_thumb,
+		xg.goods_img,
+		xg.original_img,
+		xb.brand_name,
+	    xb.brand_ename,
+	    xc.cat_name,
+	    xc.cat_ename
+	FROM xysc_goods_display_app xgda
+	LEFT JOIN xysc_goods xg ON xgda.id = xg.goods_id
+	LEFT JOIN xysc_brand xb ON xgda.id = xb.brand_id
+    LEFT JOIN xysc_category xc ON xgda.id = xc.cat_id
+	WHERE xgda.page = #{page} 
+	<if test="section != null" >
+	and xgda.section = #{section} 
+	</if>
+	<if test="cat_id != null" >
+	and xgda.cat_id = #{cat_id} 
+	</if>
+	<if test="type != null" >
+	and xgda.type = #{type} 
+	</if>
+	order by xgda.section,xgda.position
+	<if test="leng != null" >
+    LIMIT #{start},#{leng}
+    </if>
+  </select>
+  <select id="selectGoodsEditCount" parameterType="map" resultType="int">
+	    SELECT count(1)
+	FROM xysc_goods_display_app xgda 
+	WHERE xgda.page = #{page} 
+	<if test="section != null" >
+	and xgda.section = #{section} 
+	</if>
+	<if test="cat_id != null" >
+	and xgda.cat_id = #{cat_id} 
+	</if>
+	<if test="type != null" >
+	and xgda.type = #{type} 
+	</if>
+  </select>
+  
+   <select id="selectGoodsDkpEdit" parameterType="map" resultMap="GoodsDisplayDkpMap">
+	    SELECT
+		xgda.*, xg.goods_name,
+		xg.goods_ename,
+		xg.is_promote,
+		xg.promote_price,
+		xg.shop_price,
+		xg.goods_thumb,
+		xg.goods_img,
+		xg.original_img,
+		xb.brand_name,
+	    xb.brand_ename,
+	    xc.cat_name,
+	    xc.cat_ename
+	FROM xysc_goods_display_dkp xgda
+	LEFT JOIN xysc_goods xg ON xgda.id = xg.goods_id
+	LEFT JOIN xysc_brand xb ON xgda.id = xb.brand_id
+    LEFT JOIN xysc_category xc ON xgda.id = xc.cat_id
+	WHERE xgda.page = #{page} 
+	<if test="section != null" >
+	and xgda.section = #{section} 
+	</if>
+	<if test="cat_id != null" >
+	and xgda.cat_id = #{cat_id} 
+	</if>
+	<if test="type != null" >
+	and xgda.type = #{type} 
+	</if>
+	order by xgda.section,xgda.position
+	<if test="leng != null" >
+    LIMIT #{start},#{leng}
+    </if>
+  </select>
+  <select id="selectGoodsDkpEditCount" parameterType="map" resultType="int">
+	    SELECT count(1)
+	FROM xysc_goods_display_dkp xgda 
+	WHERE xgda.page = #{page} 
+	<if test="section != null" >
+	and xgda.section = #{section} 
+	</if>
+	<if test="cat_id != null" >
+	and xgda.cat_id = #{cat_id} 
+	</if>
+	<if test="type != null" >
+	and xgda.type = #{type} 
+	</if>
+  </select>
+  
+  
+  <select id="selectFavoriteByUidandGid" parameterType="map" resultType="int">
+    select count(*)
+    from xysc_collect_goods as a
+    where a.user_id=#{uid} and a.goods_id=#{gid}
+  </select>
+
+
+  <select id="selectGoodsForNewByCatid" parameterType="map" resultMap="BaseResultMap">
+    SELECT distinct a.*
+    FROM xysc_goods as a
+    INNER JOIN xysc_goods_cat AS b
+    ON a.goods_id = b.goods_id 
+    WHERE a.is_on_sale = 1 AND a.is_delete = 0 AND (a.cat_id = #{cat_id} OR b.cat_id = #{cat_id} OR a.cat_id IN (SELECT c.cat_id 
+    																											 FROM xysc_category AS c
+    																											 WHERE c.parent_id = #{cat_id}		
+    																											 )
+                                                    ) 
+    ORDER BY a.first_add_time DESC  
+    LIMIT #{start},#{leng}
+  </select>
+
+
+
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select *
+    from xysc_goods
+    where goods_id = #{goods_id}
+  </select>
+
+  <select id="selectCatItems" parameterType="map" resultMap="GoodsOfCatItemsMap">
+    SELECT distinct a.*,
+    (CASE WHEN goods_number > 0 THEN
+		1
+	ELSE
+		0 
+	END) AS ms
+    FROM xysc_goods AS a
+    INNER JOIN xysc_goods_cat AS b
+    ON a.goods_id = b.goods_id 
+    WHERE a.is_on_sale=1 AND a.is_delete=0 AND (a.cat_id = #{cat_id} OR b.cat_id = #{cat_id} OR a.cat_id IN (SELECT c.cat_id 
+    																									     FROM xysc_category AS c
+    																										 WHERE c.parent_id = #{cat_id}		
+    																									     )
+                                               ) 
+            <!--brand_ide= 0:没有, >0:有--> 
+       		<if test = "brand_id.length == 0">
+       				<choose>
+    	    				<!--is_promote= 0:不打折, 1:打折扣-->
+        					<when test = "is_promote == 0 ">
+        					</when> 	
+            				<when test = "is_promote == 1">
+        	    					 AND a.is_promote= #{is_promote}
+        					</when> 
+        					<otherwise>
+        					</otherwise>    
+        			</choose>
+       		</if>
+       
+       		<if test = "brand_id.length > 0">
+       				<choose>
+        					<when test = "is_promote == 0 ">
+									 AND a.brand_id IN <foreach collection="brand_id" item="brand_id"  open="(" separator="," close=")">#{brand_id}</foreach>
+        					</when> 	
+            				<when test = "is_promote == 1">
+        	    				     AND a.is_promote= #{is_promote} AND a.brand_id IN <foreach collection="brand_id" item="brand_id"  open="(" separator="," close=")">#{brand_id}</foreach>
+        					</when> 
+        					<otherwise>
+        					</otherwise>    
+        			</choose>			
+       		</if>
+    <choose>
+            <!--sort_by= 1:上架, 2:人气,3:销售,4价格-->
+    		<when test="sort_by == 1">
+    				ORDER BY ms DESC, a.first_add_time ASC
+    				LIMIT #{index},#{items_Per_Page}
+    		</when>
+    		<when test="sort_by == 2">
+    				ORDER BY ms DESC, a.click_count DESC 
+    				LIMIT #{index},#{items_Per_Page}
+    		</when>
+    		<when test="sort_by == 3">
+    				ORDER BY ms DESC, a.click_count DESC
+    				LIMIT #{index},#{items_Per_Page}
+    		</when>
+    		<when test="sort_by == 4">
+    				 <choose>
+    				            <!--sort_order= 0:降序, 1:升序--> 
+    							<when test="sort_order == 0">
+    									ORDER BY ms DESC, a.shop_price DESC
+    							        LIMIT #{index},#{items_Per_Page}
+    							</when>
+    							<when test="sort_order == 1">
+    									ORDER BY ms DESC, a.shop_price ASC
+    							        LIMIT #{index},#{items_Per_Page}
+    							</when>
+   					 </choose>
+    		</when>
+    </choose>
+    </select>
+    
+    <select id="selectCatItemsCount" parameterType="map" resultType="int">		                
+    SELECT COUNT(*) as items_count
+    FROM xysc_goods AS a
+    INNER JOIN xysc_goods_cat AS b
+    ON a.goods_id = b.goods_id 
+    WHERE a.is_on_sale=1 AND a.is_delete=0 AND (a.cat_id = #{cat_id} OR b.cat_id = #{cat_id} OR a.cat_id IN (SELECT c.cat_id 
+    																									     FROM xysc_category AS c
+    																										 WHERE c.parent_id = #{cat_id}		
+    																									     )
+                                               ) 				                       	    					                
+            <!--brand_ide= 0:没有, >0:有--> 
+       		<if test = "brand_id.length == 0">
+       				<choose>
+    	    				<!--is_promote= 0:不打折, 1:打折扣-->
+        					<when test = "is_promote == 0 ">
+        					</when> 	
+            				<when test = "is_promote == 1">
+        	    					 AND a.is_promote= #{is_promote}
+        					</when> 
+        					<otherwise>
+        					</otherwise>    
+        			</choose>
+       		</if>
+       
+       		<if test = "brand_id.length > 0">
+       				<choose>
+        					<when test = "is_promote == 0 ">
+									 AND a.brand_id IN <foreach collection="brand_id" item="brand_id"  open="(" separator="," close=")">#{brand_id}</foreach>
+        					</when> 	
+            				<when test = "is_promote == 1">
+        	    				     AND a.is_promote= #{is_promote} AND a.brand_id IN <foreach collection="brand_id" item="brand_id"  open="(" separator="," close=")">#{brand_id}</foreach>
+        					</when> 
+        					<otherwise>
+        					</otherwise>    
+        			</choose>			
+       		</if>
+    </select>
+    
+     <update id="updateGoodsNum" parameterType="map">
+    	update xysc_goods set goods_number = goods_number - #{goods_num}  where goods_id = #{goods_id}
+  	</update> 
+    <update id="updateLimitedNum" parameterType="map">
+    	update xysc_goods set limited_number = limited_number - #{goods_num}  where goods_id = #{goods_id}
+  	</update> 
+    <select id="selectThumbByGid" parameterType="map" resultMap="BaseGalleryThumbMap">
+    	select *
+    	from xysc_goods_gallery
+    	where goods_id = #{gid}
+    	limit #{display_number}
+  	</select>
+    
+    
+     <select id="selectGoodsOfFlash" parameterType="map" resultMap="GoodsFlashResultMap">
+	    	SELECT
+				xg.goods_id,
+				xg.goods_name,
+				xg.goods_ename,
+				xg.is_promote,
+				xg.promote_price,
+				xg.shop_price,
+				xg.promote_start_date,
+				xg.promote_end_date,
+				xg.promote_countdown,xg.promote_weekly,
+				xg.limited_quantity,
+				xg.goods_thumb,
+				xg.goods_img,
+				xg.original_img,
+				xgf.index_flag,
+				xgf.goods_desc,
+				xgf.goods_edesc
+			FROM
+				xysc_goods xg
+			INNER JOIN xysc_goods_flash xgf ON xg.goods_id = xgf.goods_id and xg.is_on_sale = 1 and xg.is_delete = 0 
+			LIMIT #{start},#{length}
+  	</select>
+  	
+  	<select id="selectGoodsOfFlashCount" parameterType="map" resultType="int">
+	    	SELECT count(1)
+			FROM xysc_goods xg
+			INNER JOIN xysc_goods_flash xgf ON xg.goods_id = xgf.goods_id and xg.is_on_sale = 1 and xg.is_delete = 0 
+  	</select>
+  	
+    <select id="selectGoodsOfFlashInIndex" parameterType="map" resultMap="GoodsFlashResultMap">
+	    	SELECT
+				xg.goods_id,
+				xg.goods_name,
+				xg.goods_ename,
+				xg.is_promote,
+				xg.promote_price,
+				xg.shop_price,
+				xg.promote_start_date,
+				xg.promote_end_date,
+				xg.promote_countdown,xg.promote_weekly,
+				xg.limited_quantity,
+				xg.goods_thumb,
+				xg.goods_img,
+				xg.original_img,
+				xgf.index_flag,
+				xgf.goods_desc,
+				xgf.goods_edesc
+			FROM
+				xysc_goods xg
+			INNER JOIN xysc_goods_flash xgf ON xg.goods_id = xgf.goods_id
+			where xgf.index_flag = 1 
+  	</select>
+  	<select id="selectCatNewGoods" parameterType="map" resultMap="BaseResultMap">
+	    	SELECT g.* FROM xysc_goods AS g
+				LEFT JOIN xysc_goods_cat AS xgc ON g.goods_id=xgc.goods_id
+				INNER JOIN xysc_category AS xc ON g.cat_id= xc.cat_id
+				WHERE ((xc.cat_id=#{cat_id} OR xc.parent_id=#{cat_id}) OR xgc.cat_id=#{cat_id} ) and g.is_on_sale = 1 and g.is_delete = 0 
+		    LIMIT  #{start},#{length}
+  	</select>
+  	<select id="selectPersonalizedGoods" parameterType="map" resultMap="BaseResultMap">
+				SELECT xg1.goods_id,xg1.goods_name,xg1.goods_ename,xg1.is_promote,xg1.shop_price,xg1.promote_price,xg1.goods_thumb,xg1.goods_img,xg1.original_img 
+				FROM xysc_goods xg1
+				INNER JOIN xysc_goods_cat xgc1 ON xg1.goods_id = xgc1.goods_id
+				INNER JOIN (
+					SELECT xgc.cat_id
+					FROM xysc_goods_cat xgc
+					WHERE xgc.goods_id = #{gid}
+				) AS re ON xgc1.cat_id = re.cat_id
+				<![CDATA[WHERE xg1.goods_id != #{gid}]]> and xg1.is_on_sale =1 and xg1.is_delete = 0  
+				ORDER BY xg1.first_add_time DESC  
+				LIMIT #{start},#{length}
+  	</select>
+  	<select id="selectPersonalizedGoodsCount" parameterType="int" resultType="int">
+				SELECT Count(1)
+				FROM xysc_goods xg1
+				INNER JOIN xysc_goods_cat xgc1 ON xg1.goods_id = xgc1.goods_id
+				INNER JOIN (
+					SELECT xgc.cat_id
+					FROM xysc_goods_cat xgc
+					WHERE xgc.goods_id = #{gid}
+				) AS re ON xgc1.cat_id = re.cat_id
+				<![CDATA[WHERE xg1.goods_id != #{gid}]]> and xg1.is_on_sale =1 and xg1.is_delete = 0  
+				ORDER BY xg1.first_add_time DESC  
+  	</select>
+  	<select id="selectGoodsComment" parameterType="map" resultMap="GoodsCommentMap">
+	    	SELECT <![CDATA[IF(xmp.mess_nickname<>NULL||xmp.mess_nickname<>'',xmp.mess_nickname,xu.user_name) username,]]>
+			 xm.dateline as date, 
+			 xmc.rank as rate, 
+			 xmp.content as message,
+			 xu.avatar
+			 FROM xysc_message AS xm 
+			 LEFT JOIN xysc_message_post AS xmp ON xm.mid=xmp.mid 
+			 LEFT JOIN xysc_message_comment AS xmc ON xm.mid=xmc.mid 
+			 LEFT JOIN xysc_users AS xu ON xm.uid=xu.user_id 
+			 WHERE xmp.invisible=1 AND xm.goods_id=#{goods_id} and xmp.uid != 0
+			 order by xm.dateline desc
+		     LIMIT  #{start},#{length}
+  	</select>
+  	<select id="selectGoodsCommentCount" parameterType="int" resultType="int">
+	    	SELECT count(1)
+			 FROM xysc_message AS xm 
+			 LEFT JOIN xysc_message_post AS xmp ON xm.mid=xmp.mid 
+			 WHERE xmp.invisible=1 AND xm.goods_id=#{goods_id} 
+  	</select>
+  	<select id="selectGoodsCommentRate" parameterType="int" resultType="String">
+	    	SELECT if(sum(xmc.rank) is null,0,sum(xmc.rank)) as rate
+			 FROM xysc_message AS xm 
+			 LEFT JOIN xysc_message_post AS xmp ON xm.mid=xmp.mid 
+			 LEFT JOIN xysc_message_comment AS xmc ON xm.mid=xmc.mid 
+			 WHERE xmp.invisible=1 AND xm.goods_id=#{goods_id}  
+  	</select>
+  	
+  	<select id="selectGoodsWeekly" parameterType="map" resultMap="BaseResultMap">
+	    	select * from xysc_goods t where t.is_promote = 1 and <![CDATA[ t.promote_weekly >#{nowDate}]]>  and t.is_on_sale = 1 and t.is_delete = 0 
+		    LIMIT  #{start},#{length}
+  	</select>
+  	<select id="selectGoodsWeeklyCount" parameterType="map" resultType="int">
+	    	select count(1) from xysc_goods t where t.is_promote = 1 and <![CDATA[ t.promote_weekly >#{nowDate}]]> and t.is_on_sale = 1 and t.is_delete = 0   
+  	</select>
+  	<select id="selectGoodsPromote" parameterType="map" resultMap="BaseResultMap">
+	    	select * from xysc_goods t where t.is_promote = 1 and <![CDATA[t.promote_end_date> #{nowDate}]]> and t.is_on_sale = 1 and t.is_delete = 0 
+		    LIMIT  #{start},#{length}
+  	</select>
+  	<select id="selectGoodsPromoteCount" parameterType="map" resultType="int">
+	    	select count(1) from xysc_goods t where t.is_promote = 1 and <![CDATA[t.promote_end_date> #{nowDate}]]> and t.is_on_sale = 1 and t.is_delete = 0 
+  	</select>
+  	
+  	<select id="selectGoodsPromoteV2" parameterType="map" resultMap="BaseResultMap">
+	    	SELECT xg.* ,if(xg.goods_number>0,1,0) as is_oos FROM xysc_goods as xg
+					inner join xysc_goods_cat as xgc on xg.goods_id = xgc.goods_id
+					left join ym_goods_statistic as ygs on xg.goods_id = ygs.goods_id
+			 where xg.is_promote = 1 and <![CDATA[ xg.promote_end_date >#{nowDate}]]>  and xg.is_on_sale = 1 and xg.is_delete = 0 
+	    	<if test="cat_id != null" >
+	    		AND (xg.cat_id = #{cat_id}  
+					     OR xgc.cat_id =  #{cat_id}  
+					     OR xg.cat_id IN (SELECT xc.cat_id FROM xysc_category AS xc WHERE xc.parent_id =  #{cat_id} ))
+	    	</if>
+	    	 <if test="sort_by != null" >
+       				<choose>
+    	    				<!--sort_by 排序条件，1上架，2人气，3销量，4价格-->
+        					<when test = "sort_by == 1 ">
+        						order by is_oos DESC,xg.add_time
+        					</when> 	
+            				<when test = "sort_by == 2">
+        	    				order by is_oos DESC,xg.click_count
+        					</when> 
+        					<when test = "sort_by == 3">
+        	    				order by is_oos DESC,ygs.15days
+        					</when> 
+        					<when test = "sort_by == 4">
+        	    				order by is_oos DESC,xg.shop_price
+        	    				<if test="sort_order != null" >
+        	    					<choose>
+			    	    				<!--sort_by: 0:降序, 1:升序-->
+			        					<when test = "sort_order == 0 ">
+			        					  DESC
+			        					</when>
+			        				</choose>
+        	    				</if>
+        					</when>    
+        			</choose>
+       		</if>
+		    LIMIT  #{start},#{length}
+  	</select>
+  	<select id="selectGoodsPromoteCountV2" parameterType="map" resultType="int">
+	    	select count(1) from xysc_goods xg inner join xysc_goods_cat as xgc on xg.goods_id = xgc.goods_id where xg.is_promote = 1 and <![CDATA[ xg.promote_end_date >#{nowDate}]]> and xg.is_on_sale = 1 and xg.is_delete = 0 
+	    	<if test="cat_id != null" >
+	    		AND (xg.cat_id = #{cat_id}  
+					     OR xgc.cat_id =  #{cat_id}  
+					     OR xg.cat_id IN (SELECT xc.cat_id FROM xysc_category AS xc WHERE xc.parent_id =  #{cat_id} ))
+	    	</if>
+  	</select>
+  	
+  	
+  	
+  	
+  	
+  	<insert id="insertMessage" useGeneratedKeys="true" keyProperty="mid" parameterType="com.shubilee.entity.Message">
+    insert into xysc_message (mid, case_id, uid, 
+      rid, order_id, goods_id, 
+      type, dateline, ip)
+    values (#{mid,jdbcType=INTEGER}, #{caseId,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, 
+      #{rid,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, 
+      #{type,jdbcType=BIT}, #{dateline,jdbcType=INTEGER}, #{ip,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertMessagePost" useGeneratedKeys="true" keyProperty="pid" parameterType="com.shubilee.entity.MessagePost">
+    insert into xysc_message_post (pid, mid, uid, 
+      rid, dateline, mess_nickname, 
+      p_rank, type, ip, invisible, 
+      content)
+    values (#{pid,jdbcType=INTEGER}, #{mid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, 
+      #{rid,jdbcType=INTEGER}, #{dateline,jdbcType=INTEGER}, #{messNickname,jdbcType=VARCHAR}, 
+      #{pRank,jdbcType=INTEGER}, #{type,jdbcType=BIT}, #{ip,jdbcType=VARCHAR}, #{invisible,jdbcType=BIT}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertMessageComment" useGeneratedKeys="true" keyProperty="cid" parameterType="com.shubilee.entity.MessageComment">
+    insert into xysc_message_comment (cid, mid, dateline, 
+      rank, ip)
+    values (#{cid,jdbcType=INTEGER}, #{mid,jdbcType=INTEGER}, #{dateline,jdbcType=INTEGER}, 
+      #{rank,jdbcType=REAL}, #{ip,jdbcType=VARCHAR})
+  </insert>
+  	<insert id="insertMessageImage" useGeneratedKeys="true" keyProperty="iid" parameterType="com.shubilee.entity.MessageImage" >
+    insert into xysc_message_image (iid, pid, path, 
+      dateline, img_status)
+    values (#{iid,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, 
+      #{dateline,jdbcType=INTEGER}, #{imgStatus,jdbcType=INTEGER})
+  </insert>
+  <update id="updateMessageImage" parameterType="Map">
+         update xysc_message_image set pid=#{pid} where iid= #{iid} 
+    </update>
+    <select id="selectBrandHot" parameterType="Map" resultMap="BrandHotResultMap">
+	    	SELECT
+				xbh.brand_id,
+				xb.brand_name,
+				xb.brand_ename,
+				xb.brand_logo
+			FROM
+				xysc_brand_hot xbh
+			INNER JOIN xysc_brand xb ON xbh.brand_id = xb.brand_id
+			WHERE
+				xbh.page =  #{page}  ORDER BY xbh.position
+			<if test="length != null" >
+			LIMIT #{start},#{length}
+			</if>
+  	</select>
+  	
+  	<select id="selectBrandItems" parameterType="Map" resultMap="BaseResultMap">
+	    	select xg.* ,if(xg.goods_number>0,1,0) as is_oos from xysc_goods xg 
+	    	where xg.brand_id = #{brand_id} 
+		    	  and xg.is_delete = 0  
+		    	  and xg.is_on_sale = 1 
+		    	  AND xg.cat_id !=97 
+	    	 <if test="sort_by != null" >
+       				<choose>
+    	    				<!--sort_by 排序条件，1上架，2人气，3销量，4价格-->
+        					<when test = "sort_by == 1 ">
+        						order by is_oos DESC,xg.add_time
+        					</when> 	
+            				<when test = "sort_by == 2">
+        	    				order by is_oos DESC,xg.click_count
+        					</when> 
+        					<when test = "sort_by == 3">
+        	    				order by is_oos DESC,xg.click_count
+        					</when> 
+        					<when test = "sort_by == 4">
+        	    				order by is_oos DESC,xg.shop_price
+        	    				<if test="sort_order != null" >
+        	    					<choose>
+			    	    				<!--sort_by: 0:降序, 1:升序-->
+			        					<when test = "sort_order == 0 ">
+			        					  DESC
+			        					</when>
+			        				</choose>
+        	    				</if>
+        					</when>    
+        			</choose>
+       		</if>
+	    	<if test="sort_by == null" >
+	    		order by is_oos DESC,xg.add_time
+	    	</if>
+			LIMIT #{start},#{length}
+  	</select>
+  	<select id="selectBrandItemsCount" parameterType="Map" resultType="int">
+	    	select count(1) from xysc_goods xg  where xg.brand_id = #{brand_id} and xg.is_delete = 0 and xg.is_on_sale = 1 AND xg.cat_id !=97 
+  	</select>
+  	<select id="selectEventItems" parameterType="map" resultMap="BaseResultMap">
+	    	select * from xysc_goods t where t.goods_id in <foreach collection="goods_ids" item="goods_ids"  open="(" separator="," close=")">#{goods_ids}</foreach>  order by t.is_promote DESC
+  	</select>
+  	<select id="selectYmZipcodeByZip" parameterType="int" resultMap="YmZipcodeResultMap">
+	    	select * from ym_zipcode t where t.zip = = #{zip}
+  	</select>
+  	<select id="selectYmZipcode"  resultMap="YmZipcodeResultMap">
+	    	select * from ym_zipcode
+  	</select>
+  	<select id="selectGoodsByGoodsIds" parameterType="String" resultMap="BaseResultMap">
+	    	select * from xysc_goods xg where xg.goods_id in <foreach collection="goods_ids" item="goods_ids"  open="(" separator="," close=")">#{goods_ids}</foreach>
+  	</select>
+  	
+  	<select id="selectGoodsZipcodeLimit" parameterType="int" resultMap="ShopZipcodeLimitMap">
+	    	select xszl.* from xysc_shop_district_zipcode xszl inner join  xysc_goods xg on xszl.rule_id = xg.zipcode_limit_id  where xg.goods_id = #{goods_id}
+  	</select>
+  	<select id="selectVendorZipcodeLimitByGoodsId" parameterType="int" resultMap="ShopZipcodeLimitMap">
+	    	SELECT
+				xszl.*
+			FROM
+				xysc_shop_district_zipcode xszl
+			INNER JOIN xysc_vendor_info xvi ON xszl.rule_id = xvi.zipcode_limit_id
+			INNER JOIN xysc_goods xg ON xvi.vendor_id = xg.vendor_id
+			WHERE xg.goods_id = #{goods_id}
+  	</select>
+</mapper>

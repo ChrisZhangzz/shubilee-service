@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.BonusLookupDao">
+   <resultMap id="BaseResultMap" type="com.shubilee.entity.BonusLookup" >
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="cat_id" property="catId" jdbcType="INTEGER" />
+    <result column="brand_id" property="brandId" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="VendorMap" type="com.shubilee.entity.Vendors">
+    <id column="vendor_id" jdbcType="INTEGER" property="vendorId" />
+    <result column="vendor_name" jdbcType="VARCHAR" property="vendorName" />
+    <result column="vendor_ename" jdbcType="VARCHAR" property="vendorEname" />
+    <result column="quality" jdbcType="LONGVARCHAR" property="quality" />
+    <result column="quality_en" jdbcType="LONGVARCHAR" property="qualityEn" />
+    <result column="points" jdbcType="LONGVARCHAR" property="points" />
+    <result column="points_en" jdbcType="LONGVARCHAR" property="pointsEn" />
+    <result column="return_policy" jdbcType="LONGVARCHAR" property="returnPolicy" />
+    <result column="return_policy_en" jdbcType="LONGVARCHAR" property="returnPolicyEn" />
+    <result column="delivery" jdbcType="LONGVARCHAR" property="delivery" />
+    <result column="delivery_en" jdbcType="LONGVARCHAR" property="deliveryEn" />
+  </resultMap>
+    <select id="selectBonusLookupByTypeId" parameterType="int" resultMap="BaseResultMap">
+        select * from xysc_bonus_lookup where type_id=#{type_id}
+    </select>   
+    <select id="countNumByBonusTypeAndVendorId" parameterType="Map" resultType="int">
+         select count(*) from xysc_bonus_vendor xbv inner join xysc_user_bonus  xub on xbv.type_id = xub.bonus_type_id    where xbv.vendor_id = #{vendor_id} and xub.bonus_id = #{bonus_id}
+    </select>
+    <select id="selectVendorByBonusTypeId" parameterType="Map" resultMap="VendorMap">
+         select xv.* from xysc_vendor_info xv inner join xysc_bonus_vendor xbv on xv.vendor_id = xbv.vendor_id where xbv.type_id = #{bonus_id}
+    </select>
+   <update id="updateBonusCountByBonusTypeId" parameterType="int">
+    update xysc_user_bonus set bonus_count = bonus_count-1 where bonus_id = #{bonus_id}
+  </update> 
+  <select id="selectBonusCountByBonusTypeId" parameterType="Map" resultType="String">
+         select bonus_count from xysc_user_bonus where bonus_id = #{bonus_id} and is_delete = 0
+    </select>
+</mapper>

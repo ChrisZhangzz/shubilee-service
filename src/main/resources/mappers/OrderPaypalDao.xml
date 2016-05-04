@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.OrderPaypalDao">
+  <resultMap id="BaseResultMap" type="com.shubilee.entity.OrderPaypal" >
+    <id column="rec_id" property="recId" jdbcType="INTEGER" />
+    <result column="order_sn" property="orderSn" jdbcType="VARCHAR" />
+    <result column="transaction_type" property="transactionType" jdbcType="VARCHAR" />
+    <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="payer_id" property="payerId" jdbcType="VARCHAR" />
+    <result column="pay_date" property="payDate" jdbcType="VARCHAR" />
+    <result column="total_amount" property="totalAmount" jdbcType="DECIMAL" />
+    <result column="paypal_charge" property="paypalCharge" jdbcType="DECIMAL" />
+    <result column="payment_type" property="paymentType" jdbcType="VARCHAR" />
+    <result column="payment_status" property="paymentStatus" jdbcType="VARCHAR" />
+    <result column="merchant_account" property="merchantAccount" jdbcType="VARCHAR" />
+  </resultMap>
+	<select id="selectOrderPaypalByOrderSn" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from xysc_order_paypal where order_sn= #{order_sn}
+	</select>
+	<insert id="insert" parameterType="com.shubilee.entity.OrderPaypal">
+		insert into xysc_order_paypal (order_sn, transaction_type,
+		transaction_id, token, payer_id,
+		pay_date, total_amount, paypal_charge,
+		payment_type, payment_status, merchant_account
+		)
+		values (#{orderSn,jdbcType=VARCHAR}, #{transactionType,jdbcType=VARCHAR},
+		#{transactionId,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR},
+		#{payerId,jdbcType=VARCHAR},
+		#{payDate,jdbcType=VARCHAR}, #{totalAmount,jdbcType=DECIMAL}, #{paypalCharge,jdbcType=DECIMAL},
+		#{paymentType,jdbcType=VARCHAR}, #{paymentStatus,jdbcType=VARCHAR},
+		#{merchantAccount,jdbcType=VARCHAR}
+		)
+	</insert>
+    
+  	   
+</mapper>

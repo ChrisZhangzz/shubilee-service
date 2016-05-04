@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.AddressDao">
+	<resultMap id="AddressResultMap" type="com.shubilee.entity.UserAddress">
+		<id column="address_id" property="address_id" jdbcType="INTEGER" />
+		<result column="address_name" property="address_name" jdbcType="VARCHAR" />
+		<result column="user_id" property="user_id" jdbcType="INTEGER" />
+		<result column="is_primary" property="is_primary" jdbcType="INTEGER" />
+		<result column="consignee" property="consignee" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="country" property="country" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="district" property="district" jdbcType="INTEGER" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="address2" property="address2" jdbcType="VARCHAR" />
+		<result column="zipcode" property="zipcode" jdbcType="VARCHAR" />
+		<result column="tel" property="tel" jdbcType="VARCHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="sign_building" property="sign_building"
+			jdbcType="VARCHAR" />
+		<result column="best_time" property="best_time" jdbcType="VARCHAR" />
+		<result column="consignee_firstname" property="consignee_firstname"
+			jdbcType="VARCHAR" />
+		<result column="consignee_lastname" property="consignee_lastname"
+			jdbcType="VARCHAR" />
+		<result column="verified" property="verified" jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="AddressMap" type="com.shubilee.entity.Address">
+		<id column="address_id" property="address_id" jdbcType="INTEGER" />
+		<result column="is_primary" property="is_primary" jdbcType="INTEGER" />
+		<result column="consignee_firstname" property="firstname"
+			jdbcType="VARCHAR" />
+		<result column="consignee_lastname" property="lastname"
+			jdbcType="VARCHAR" />
+		<result column="province" property="state" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="address" property="address1" jdbcType="VARCHAR" />
+		<result column="address2" property="address2" jdbcType="VARCHAR" />
+		<result column="zipcode" property="zipcode" jdbcType="VARCHAR" />
+		<result column="tel" property="phone" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="getAddressBookByUid" parameterType="int" resultMap="AddressMap">
+		SELECT
+			address_id,
+			is_primary,
+			consignee_firstname,
+			consignee_lastname,
+			province,
+			city,
+			address,
+			address2,
+			zipcode,
+			tel,
+			email
+		FROM
+			xysc_user_address
+		WHERE
+			user_id = #{user_id,jdbcType=INTEGER}
+		ORDER BY
+			is_primary DESC
+	</select>
+	<select id="getAddressBookByAddid" parameterType="int" resultMap="AddressResultMap">
+		SELECT * FROM xysc_user_address WHERE address_id = #{addId}
+	</select>
+
+	<select id="getAddressDefaultByUid" parameterType="int" resultMap="AddressResultMap">
+		SELECT * FROM xysc_user_address WHERE user_id = #{user_id} and is_primary = 1
+	</select>
+
+	<insert id="insert" parameterType="com.shubilee.entity.UserAddress">
+		insert into xysc_user_address (address_id, address_name, user_id,
+			is_primary, consignee, email,
+			country, province, city,
+			district, address, address2,
+			zipcode, tel, mobile,
+			sign_building, best_time, consignee_firstname,
+			consignee_lastname, verified)
+		values (#{address_id,jdbcType=INTEGER}, #{address_name,jdbcType=VARCHAR},
+			#{user_id,jdbcType=INTEGER},
+			#{is_primary,jdbcType=INTEGER}, #{consignee,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+			#{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR},
+			#{city,jdbcType=VARCHAR},
+			#{district,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{address2,jdbcType=VARCHAR},
+			#{zipcode,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR},
+			#{mobile,jdbcType=VARCHAR},
+			#{sign_building,jdbcType=VARCHAR}, #{best_time,jdbcType=VARCHAR}, #{consignee_firstname,jdbcType=VARCHAR},
+			#{consignee_lastname,jdbcType=VARCHAR}, #{verified,jdbcType=INTEGER})
+		<selectKey resultType="int" keyProperty="address_id">  
+       		select  LAST_INSERT_ID()
+    	</selectKey>  		
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.shubilee.entity.UserAddress">
+		update xysc_user_address
+		set address_name = #{address_name,jdbcType=VARCHAR},
+			user_id = #{user_id,jdbcType=INTEGER},
+			consignee = #{consignee,jdbcType=VARCHAR},
+			email = #{email,jdbcType=VARCHAR},
+			country = #{country,jdbcType=VARCHAR},
+			province = #{province,jdbcType=VARCHAR},
+			city = #{city,jdbcType=VARCHAR},
+			district = #{district,jdbcType=INTEGER},
+			address = #{address,jdbcType=VARCHAR},
+			address2 = #{address2,jdbcType=VARCHAR},
+			zipcode = #{zipcode,jdbcType=VARCHAR},
+			tel = #{tel,jdbcType=VARCHAR},
+			mobile = #{mobile,jdbcType=VARCHAR},
+			sign_building = #{sign_building,jdbcType=VARCHAR},
+			best_time = #{best_time,jdbcType=VARCHAR},
+			consignee_firstname = #{consignee_firstname,jdbcType=VARCHAR},
+			consignee_lastname = #{consignee_lastname,jdbcType=VARCHAR}
+		where address_id = #{address_id,jdbcType=INTEGER}
+	</update>	
+	<delete id="deleteByPrimaryKey" parameterType="int">
+		delete from xysc_user_address
+		where address_id = #{address_id,jdbcType=INTEGER}
+	</delete>
+	<select id="countByPrimaryKey" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    	select count(address_id) from xysc_user_address where address_id = #{address_id,jdbcType=INTEGER}
+  	</select>
+	<select id="countByUid" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    	select count(address_id) from xysc_user_address where user_id = #{user_id,jdbcType=INTEGER}
+  	</select>  	
+	<update id="updateIsPrimaryByPKUid" parameterType="Map">
+		update xysc_user_address
+		set is_primary = case 
+		when address_id = #{address_id,jdbcType=INTEGER} then 1
+		else 0 
+		end
+		where user_id = #{user_id,jdbcType=INTEGER}
+	</update>	  	
+	<update id="updateIsPrimaryByUid" parameterType="int">
+		update xysc_user_address
+		set is_primary = 1
+		where user_id = #{user_id,jdbcType=INTEGER} LIMIT 1
+	</update>
+</mapper>

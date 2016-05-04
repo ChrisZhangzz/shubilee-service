@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.BrandDao">
+    <resultMap id="BaseResultMap" type="com.shubilee.entity.Brand">
+	   <id column="brand_id" property="brandId" jdbcType="INTEGER" />
+	    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+	    <result column="brand_ename" property="brandEname" jdbcType="VARCHAR" />
+	    <result column="brand_logo" property="brandLogo" jdbcType="VARCHAR" />
+	    <result column="site_url" property="siteUrl" jdbcType="VARCHAR" />
+	    <result column="sort_order" property="sortOrder" jdbcType="TINYINT" />
+	    <result column="is_show" property="isShow" jdbcType="BIT" />
+	    <result column="is_index_page" property="isIndexPage" jdbcType="BIT" />
+	    <result column="alphabetic_index" property="alphabeticIndex" jdbcType="VARCHAR" />
+	    <result column="brand_cat" property="brandCat" jdbcType="INTEGER" />
+	    <result column="attr_id" property="attrId" jdbcType="INTEGER" />
+	    <result column="attr_value" property="attrValue" jdbcType="VARCHAR" />
+	    <result column="attr_evalue" property="attrEvalue" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="BrandNameResultMap" type="com.shubilee.entity.BrandName">
+	    <result column="brand_id" jdbcType="INTEGER" property="brand_id" />
+	    <result column="brand_name" jdbcType="VARCHAR" property="brand_name" />
+	    <result column="brand_ename" jdbcType="VARCHAR" property="brand_ename" />
+	    <result column="alphabetic_index" jdbcType="VARCHAR" property="alphabetic_index" />
+    </resultMap>
+	<resultMap id="BrandAttrMap" type="com.shubilee.entity.BrandAttr" >
+	    <id column="brand_attr_id" property="brandAttrId" jdbcType="INTEGER" />
+	    <result column="brand_id" property="brandId" jdbcType="INTEGER" />
+	    <result column="attr_id" property="attrId" jdbcType="INTEGER" />
+	    <result column="attr_value" property="attrValue" jdbcType="LONGVARCHAR" />
+    	<result column="attr_evalue" property="attrEvalue" jdbcType="LONGVARCHAR" />
+	  </resultMap>
+    <select id="selectNameByBrandId" parameterType="int" resultMap="BrandNameResultMap">
+	    SELECT *
+	    FROM xysc_brand
+	    WHERE brand_id = #{brand_id}
+    </select>
+    <select id="selectBrandAttrByBrandId" parameterType="int" resultMap="BrandAttrMap">
+	    SELECT *
+	    FROM xysc_brand_attr
+	    WHERE brand_id = #{brand_id}
+    </select>
+    
+	 <select id="selectCatBrands" parameterType="int" resultMap="BrandNameResultMap">
+	     SELECT DISTINCT a.brand_id AS brand_id, a.brand_name AS brand_name, a.brand_ename AS brand_ename,a.alphabetic_index AS alphabetic_index
+	 	 FROM xysc_brand AS a
+	 	 INNER JOIN (SELECT xysc_goods.brand_id, xysc_goods.goods_id, xysc_goods.cat_id
+	             	 FROM xysc_goods
+	             	 WHERE  xysc_goods.is_delete = 0
+	             	)b 
+	 	 INNER JOIN xysc_goods_cat AS c
+	 	 ON a.brand_id = b.brand_id AND b.goods_id = c.goods_id
+	 	 WHERE ((b.cat_id=#{cat_id}) OR (c.cat_id=#{cat_id})) AND ( a.is_show = 1 ) 
+	    </select>
+    <select id="selectBrandInfo" parameterType="int" resultMap="BaseResultMap">
+	    	    SELECT xb.*,xba.attr_id,xba.attr_value,xba.attr_evalue
+	    FROM xysc_brand xb left join xysc_brand_attr xba on xb.brand_id = xba.brand_id
+	    WHERE xb.brand_id = #{brand_id}
+    </select>
+    <select id="selectBrands" parameterType="map" resultMap="BaseResultMap">
+	   select xb.* from xysc_brand xb 
+	   where 1=1 
+	   <if test="cat_id != null" >
+	   and xb.brand_cat = #{cat_id}
+	   </if>
+	  <if test="index != null" >  
+	       <choose>
+				<when test = "index == 'OTHER' ">
+					<![CDATA[ and xb.alphabetic_index not in ('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z')]]>
+				</when> 	
+   				<when test = "index != 'OTHER' ">
+    				and xb.alphabetic_index = #{index}
+				</when> 
+			</choose>
+	   </if>
+	   order by xb.alphabetic_index,xb.brand_cat
+    </select>
+</mapper>

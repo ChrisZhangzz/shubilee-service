@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+</head>
+
+
+<body>
+   <div style="background-color:#F2F2F2;min-height: 100%!important;width: 100%!important;padding:10px;">    
+     <div style="width:600px;margin:0 auto;background-color:#FFF;box-shadow:3px 6px 6px -6px #666;">
+     
+      <p style="text-align:center;padding: 10px 0px 0px 0px;margin: 0;">
+       <a href="http://www.yamibuy.com">
+        <img src="http://cdn.yamibuy.com/images/cn/index/logo.png" width="250" height="60" alt=""/>
+       </a>
+      </p>
+      
+      <div style="margin-top:15px;">
+       <div>
+        <div style="padding-bottom:3px;margin:0 30px;border-bottom:3px solid #333;">
+     <table width="100%">
+      <tr>
+       <td>
+         <ul style="margin:0;overflow:hidden">
+          <li style="float:left;list-style:none;font-size:12px;border-right:1px solid #000;padding:0 14px;">
+           <a href="http://www.yamibuy.com" style="color:#000;text-decoration:none;">Home</a>
+          </li>
+          <li style="float:left;list-style:none;font-size:12px;border-right:1px solid #000;padding:0 14px;">
+           <a href="http://www.yamibuy.com" style="color:#000;text-decoration:none;">Snack</a>
+          </li>          
+          <li style="float:left;list-style:none;font-size:12px;border-right:1px solid #000;padding:0 14px;">
+           <a href="http://www.yamibuy.com" style="color:#000;text-decoration:none;">Beauty</a>
+          </li>
+          <li style="float:left;list-style:none;font-size:12px;border-right:1px solid #000;padding:0 14px;">
+           <a href="http://www.yamibuy.com" style="color:#000;text-decoration:none;">Life</a>
+          </li>
+          <li style="float:left;list-style:none;font-size:12px;padding:0 14px;">
+           <a href="http://www.yamibuy.com" style="color:#000;text-decoration:none;">Sale</a>
+          </li>
+         </ul>
+        </td>
+        <td align="right">
+         <p style="margin:0;font-weight:bold;font-size:12px;">Free shippping over $49</p>
+        </td>
+       </tr>
+      </table>    
+    </div>
+   </div>
+  </div>
+  
+  <div style="margin-top:30px;padding:0 50px;overflow:hidden;">
+   <p>
+    <span style="font-size:15px;font-weight:700;padding-right:10px;">ORDER CONFIRMATION</span>
+    <span style="background-color:#F25950;color:#FFF;padding:2px 10px;font-size:12px;">
+    Order No.：<p th:text="${order_sn}"></p>
+    </span>
+   </p>
+   <p style="font-size:13px;color:#666;margin-bottom:20px;">Dear&nbsp;</p><p th:text="${consignee}"></p>
+   <p style="font-size:13px;color:#666;margin-bottom:20px;">Thank you for shopping at YAMIBUY(<a href="www.yamibuy.com">www.yamibuy.com</a>).We hope you had a good time shopping with us.</p>
+   <p style="font-size:13px;color:#666;margin-bottom:40px;">We will send you a email containing your package tracking number when your order is shipped.</p>
+   <p style="font-size:13px;color:#666;margin-bottom:10px;">Customer service</p>
+   
+   <p style="font-size:12px;color:#666;margin:0;">280 Machlin ct, City of Industry, CA 91789</p>
+   <p style="font-size:12px;color:#666;margin:0;">Phone: 1-800-407-9710 (Mon-Fri 9am-6pm PST)</p>
+   <p style="font-size:12px;color:#666;margin:0;">Email: customerservice@yamibuy.com</p>
+   <p style="font-size:12px;color:#666;margin:0 0 30px 0;">Website: <a href="http://www.yamibuy.com">www.yamibuy.com</a></p>
+   
+   <hr style="background-color:#888;clear:both;margin-top:30px;"/>
+
+   <div>
+    <table width="100%">
+     <tr>
+      <td colspan="2" style="width:60%;"><p style="font-size:12px;">Item</p></td>
+      <td align="center" style="width:20%;"><p style="font-size:12px;">Quantity</p></td>
+      <td align="center"><p style="font-size:12px;">Price</p></td>
+     </tr>
+     <tr th:each="goodsInfo : ${goodsInfo}">
+      <td>
+       <div style="border:1px solid #666;padding:5px;">
+        <img th:src="${goodsInfo.goodsThumb}" width="80"/>
+       </div>
+      </td> 
+      <td>
+       <p style="font-size:12px" th:text="${goodsInfo.goodsEname}"></p>
+      </td>
+      <td align="center">
+       <p style="font-size:12px" th:text="${goodsInfo.goodsNumber}"></p>
+      </td>
+      <td align="center">
+       <p style="font-size:12px" th:text="${goodsInfo.goodsPrice}"></p>
+      </td>
+     </tr>
+    </table>   
+   </div>
+   
+   <hr style="background-color:#888;clear:both;margin-top:30px;"/>
+   
+   <div style="padding: 20px 0 20px 0">
+    <table width="100%">
+     <tr>
+      <td>
+       <table style="margin-bottom:10px;">
+        <tr>
+         <td style="width:120px;font-size:12px;"><b>Payment Info</b></td>
+        </tr>
+        <tr>
+         <td style="font-size:12px;">Pay Time</td>
+         <td style="font-size:12px;"><p th:text="${pay_time}"></p></td>
+        </tr> 
+        <tr>
+         <td style="font-size:12px;">Pay Method</td>
+         <td style="font-size:12px;"><p th:text="${pay_method}"></p></td>
+        </tr>
+       </table>
+       <table style="margin-bottom:10px;">
+        <tr>
+         <td style="font-size:12px;"><b>Billing Info</b></td>
+        </tr>
+        <tr>
+         <td style="font-size:12px;"><p th:text="${address_zd}"></p>&nbsp;<p th:text="${address2_zd}"></p></td>
+        </tr> 
+        <tr> 
+         <td style="font-size:12px;"><p th:text="${city_zd}"></p>,<p th:text="${province_zd}"></p>,<p th:text="${zipcode_zd}"></p></td>
+        </tr>
+        <tr> 
+         <td style="font-size:12px;"><p th:text="${country_zd}"></p></td>
+        </tr> 
+       </table> 
+       <table style="margin-bottom:10px;">
+        <tr>
+         <td style="font-size:12px;"><b>Shipping Info</b></td>
+        </tr>
+        <tr>
+         <td style="font-size:12px;"><p th:text="${address}"></p>&nbsp;<p th:text="${address2}"></p></td>
+        </tr>
+        <tr> 
+         <td style="font-size:12px;"><p th:text="${city}"></p>,<p th:text="${province}"></p>,<p th:text="${zipcode}"></p></td>
+        </tr>
+        <tr> 
+         <td style="font-size:12px;"><p th:text="${country}"></p></td>
+        </tr> 
+       </table>                 
+      </td>
+      <td valign="top">
+       <table style="margin-bottom:20px;font-size:12px">
+        <tr>
+         <td style="font-size:12px;">Subtotal</td>
+         <td style="font-size:12px;"><p th:text="${subtotal}"></p></td>
+        </tr>
+        <tr>
+         <td style="font-size:12px;">Shipping</td> 
+         <td style="font-size:12px;"><p th:text="${shipping}"></p></td>
+        </tr>
+        <tr>
+         <td style="font-size:12px;">Tax</td>
+         <td style="font-size:12px;"><p th:text="${tax}"></p></td>
+        </tr> 
+        <tr>
+         <td style="font-size:12px;"><b>Total</b></td>
+         <td style="font-size:12px;"><b><p th:text="${total}"></p></b></td>
+        </tr>
+       </table>     
+      </td>
+     </tr>
+    </table>   
+   </div>
+   
+   
+  </div><!-- content ends-->
+ 
+  <!--footer-->
+  <div style="background-color:#F25950;padding:20px;margin-top:30px;">
+   <table width="100%">
+    <tr>
+     <td>
+      <div style="margin-left:50px">
+       <img src="http://cdn.yamibuy.com/images/cn/index/logo-small-ww.png" width="100"/>
+      </div> 
+     </td>
+     <td>
+      <p style="color:#FFF;margin:0 0 0 100px;font-size:12px;">For any question please call or email</p>
+      <p style="color:#FFF;margin:0 0 0 100px;font-size:12px;">Call <a style="color:#FFF;text-decoration:none;">800-407-9710</a></p>
+      <p style="color:#FFF;margin:0 0 0 100px;font-size:12px;">Email <a style="color:#FFF;text-decoration:none;">customerservice@yamibuy.com</a></p>
+     </td>
+    </tr>  
+   </table>
+  </div>
+ </div>
+</div>  
+</body>
+    
+
+</html>

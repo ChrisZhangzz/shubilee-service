@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.ActivityGiftDao">
+   <resultMap id="BaseResultMap" type="com.shubilee.entity.ActivityGift">
+    <id column="act_id" jdbcType="INTEGER" property="actId" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="goods_number" jdbcType="INTEGER" property="goodsNumber" />
+  </resultMap>
+    <select id="countByGid" parameterType="int" resultType="int">
+        select count(act_id) from xysc_activity_gift where goods_id= #{goods_id}
+    </select>   
+    <select id="selectActivityGiftByActId" parameterType="int" resultMap="BaseResultMap">
+        select * from xysc_activity_gift where act_id= #{act_id}
+    </select> 
+</mapper>

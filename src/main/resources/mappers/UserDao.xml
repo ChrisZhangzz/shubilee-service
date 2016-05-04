@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.UserDao">
+
+
+
+
+
+	<select id="selectBonusTypeByBounsId" parameterType="Integer" resultType="com.shubilee.entity.BonusType">
+        select distinct c.* 
+        from shu_order_info as a
+        inner join shu_user_bonus as b
+        inner join shu_bonus_type as c
+        on a.bonus_id=b.bonus_id and b.bonus_type_id=c.type_id
+        where a.bonus_id = #{bonus_id} 
+    </select>
+
+
+
+
+
+    <select id="selectUsersByID" parameterType="int" resultType="Users">
+        select * from shu_users where user_id= #{id}
+    </select>
+    <select id="selectUsersByName" parameterType="String" resultType="Users">
+        select * from shu_users where user_name= #{name}
+    </select>
+    <select id="getUserName" parameterType="int" resultType="String">
+        select user_name from shu_users where user_id= #{id}
+    </select>
+	<select id="getPasswordSalt" parameterType="String" resultType="Users">
+		select user_id,first_name,last_name,password,salt from shu_users where email= #{email}
+	</select>   
+	<update id="setPasswordSalt" parameterType="Users">
+		update shu_users set password=#{password},salt=#{salt},last_login=#{lastLogin},pwd_change=1 where email= #{email}
+	</update>
+	<update id="setPasswordSaltByUid" parameterType="Users">
+		update shu_users set password=#{password},salt=#{salt},pwd_change=1 where user_Id= #{user_Id}
+	</update>	
+	<select id="getPassword" parameterType="int" resultType="String">
+		select password from shu_users where  user_id= #{id}
+	</select> 
+	
+	<select id="selectUserCountByUserName" parameterType="String" resultType="int">
+		select count(*)from shu_users where  user_name= #{user_name}
+	</select> 
+	
+	<select id="selectUIdByEmail" parameterType="String" resultType="Integer">
+		select user_id from shu_users where  email= #{email}
+	</select> 
+	
+	
+    <insert id="insertUsersByEmailId" parameterType="map">
+
+	</insert>
+	
+	
+	 <insert id="insertUsersByEmail" parameterType="map">
+		INSERT INTO shu_users (
+			email,
+			password,
+			question,
+			alias,
+			msn,
+			qq,
+			office_phone,
+			home_phone,
+			mobile_phone,
+			credit_line,
+			passwd_question,
+			passwd_answer,
+			truename,
+			user_name,
+			salt,
+			parent_id
+		)
+		VALUES
+		(
+			#{email},
+			#{password},
+			#{email},
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			0.0,
+			"",
+			"",
+			"",
+			#{user_name},
+			#{newSalt},
+		    #{parent_id}
+		)
+	</insert>
+	
+	
+	  		
+</mapper>

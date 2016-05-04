@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.CartDao">
+    <resultMap id="BaseResultMap" type="com.shubilee.entity.Cart">
+        <id column="rec_id" jdbcType="INTEGER" property="rec_id" />
+	    <result column="user_id" jdbcType="INTEGER" property="user_id" />
+	    <result column="session_id" jdbcType="CHAR" property="session_id" />
+	    <result column="goods_id" jdbcType="INTEGER" property="goods_id" />
+	    <result column="goods_sn" jdbcType="VARCHAR" property="goods_sn" />
+	    <result column="vendor_id" jdbcType="INTEGER" property="vendor_id" />
+	    <result column="vendor_name" jdbcType="VARCHAR" property="vendor_name" />
+	    <result column="vendor_ename" jdbcType="VARCHAR" property="vendor_ename" />
+	    <result column="product_id" jdbcType="INTEGER" property="product_id" />
+	    <result column="goods_name" jdbcType="VARCHAR" property="goods_name" />
+	    <result column="goods_ename" jdbcType="VARCHAR" property="goods_ename" />
+	    <result column="cost" jdbcType="DECIMAL" property="cost" />
+	    <result column="tax" jdbcType="DECIMAL" property="tax" />
+	    <result column="market_price" jdbcType="DECIMAL" property="market_price" />
+	    <result column="goods_price" jdbcType="DECIMAL" property="goods_price" />
+	    <result column="goods_number" jdbcType="INTEGER" property="goods_number" />
+	    <result column="goods_number_stock" jdbcType="INTEGER" property="goods_number_stock" />
+	    <result column="shop_price_stock" jdbcType="DECIMAL" property="shop_price_stock" />
+	    <result column="is_promote_stock" jdbcType="BIT" property="is_promote_stock" />
+	    <result column="promote_price_stock" jdbcType="DECIMAL" property="promote_price_stock" />
+    	<result column="promote_start_date_stock" jdbcType="INTEGER" property="promote_start_date_stock" />
+    	<result column="promote_end_date_stock" jdbcType="INTEGER" property="promote_end_date_stock" />
+    	<result column="promote_countdown_stock" jdbcType="VARCHAR" property="promote_countdown_stock" />
+    	<result column="promote_weekly_stock" jdbcType="VARCHAR" property="promote_weekly_stock" />
+	    <result column="goods_thumb" jdbcType="VARCHAR" property="goods_thumb" />
+	    <result column="is_real" jdbcType="BIT" property="is_real" />
+	    <result column="extension_code" jdbcType="VARCHAR" property="extension_code" />
+	    <result column="parent_id" jdbcType="INTEGER" property="parent_id" />
+	    <result column="rec_type" jdbcType="BIT" property="rec_type" />
+	    <result column="is_gift" jdbcType="INTEGER" property="is_gift" />
+	    <result column="is_shipping" jdbcType="BIT" property="is_shipping" />
+	    <result column="can_handsel" jdbcType="TINYINT" property="can_handsel" />
+	    <result column="goods_attr_id" jdbcType="VARCHAR" property="goods_attr_id" />
+	    <result column="deal_price" jdbcType="DECIMAL" property="deal_price" />
+	    <result column="is_delete" jdbcType="BIT" property="isDelete" />
+	    <result column="is_on_sale" jdbcType="BIT" property="isOnSale" />
+	     <result column="is_limited" jdbcType="BIT" property="isLimited" />
+        <result column="limited_number" jdbcType="INTEGER" property="limitedNumber" />
+        <result column="limited_quantity" jdbcType="INTEGER" property="limitedQuantity" />
+        <result column="sub_tree" jdbcType="VARCHAR" property="subTree" />
+        <result column="brand_id" jdbcType="INTEGER" property="brand_id" />
+        <result column="cat_id" jdbcType="INTEGER" property="cat_id" />
+        <result column="give_Integral_stock" jdbcType="INTEGER" property="give_Integral_stock" />
+        <result column="is_district" jdbcType="TINYINT" property="isDistrict" />
+        <result column="is_district" jdbcType="TINYINT" property="isDistrict" />
+        <result column="is_1day" jdbcType="TINYINT" property="is1day" />
+        <result column="zipcode_limit_id" jdbcType="TINYINT" property="zipcodeLimitId" />
+  </resultMap>
+	<select id="selectCartsForRedis" parameterType="String" resultMap="BaseResultMap">
+		         SELECT
+						xg.goods_id,
+				    	xg.vendor_id,
+			      		xv.vendor_name,
+						xv.vendor_ename,
+						xg.goods_name,
+				    	xg.goods_ename,
+						xg.goods_number AS goods_number_stock,
+						xg.cost,
+						xg.goods_sn,
+						0 as product_id,
+						xg.market_price,
+						xg.is_real,
+						xg.extension_code,
+			      		xg.shop_price as shop_price_stock,
+						xg.is_promote as is_promote_stock,
+						xg.promote_price as promote_price_stock,
+					  	xg.promote_countdown as promote_countdown_stock,
+						xg.promote_start_date as promote_start_date_stock,
+						xg.promote_end_date as promote_end_date_stock,
+						xg.promote_weekly as promote_weekly_stock,
+						xg.give_Integral as give_Integral_stock,
+						xg.goods_thumb,
+						xg.is_on_sale,
+						xg.is_delete,
+						xg.is_limited,
+						xg.limited_number,
+						xg.limited_quantity,
+					  xg.brand_id,
+					  xcs.sub_tree,
+						xg.cat_id,
+						xg.is_district,
+						xg.is_1day,
+						xg.zipcode_limit_id  
+					FROM xysc_goods AS xg 
+					INNER JOIN xysc_vendor_info AS xv ON xv.vendor_id = xg.vendor_id
+					INNER JOIN xysc_goods_cat xgc ON xgc.goods_id = xg.goods_id
+					INNER JOIN xysc_category_sub xcs ON xcs.cat_id = xgc.cat_id
+					WHERE xg.goods_id in <foreach collection="goods_ids" item="goods_ids"  open="(" separator="," close=")">#{goods_ids}</foreach> order by xg.goods_id,xv.vendor_id
+    </select>
+    <select id="selectCartForRedisByGid" parameterType="int" resultMap="BaseResultMap">
+		         SELECT
+						xg.goods_id,
+				    	xg.vendor_id,
+			      		xv.vendor_name,
+						xv.vendor_ename,
+						xg.goods_name,
+				    	xg.goods_ename,
+						xg.goods_number AS goods_number_stock,
+						xg.cost,
+						xg.goods_sn,
+						0 as product_id,
+						xg.market_price,
+						xg.is_real,
+						xg.extension_code,
+			      		xg.shop_price as shop_price_stock,
+						xg.is_promote as is_promote_stock,
+						xg.promote_price as promote_price_stock,
+					  	xg.promote_countdown as promote_countdown_stock,
+						xg.promote_start_date as promote_start_date_stock,
+						xg.promote_end_date as promote_end_date_stock,
+						xg.promote_weekly as promote_weekly_stock,
+						xg.give_Integral as give_Integral_stock,
+						xg.goods_thumb,
+						xg.is_on_sale,
+						xg.is_delete,
+						xg.is_limited,
+						xg.limited_number,
+						xg.limited_quantity,
+					  xg.brand_id,
+					  xcs.sub_tree,
+						xg.cat_id,						
+						xg.is_district,
+						xg.is_1day,
+						xg.zipcode_limit_id   
+					FROM xysc_goods AS xg 
+					INNER JOIN xysc_vendor_info AS xv ON xv.vendor_id = xg.vendor_id
+					INNER JOIN xysc_goods_cat xgc ON xgc.goods_id = xg.goods_id
+					INNER JOIN xysc_category_sub xcs ON xcs.cat_id = xgc.cat_id
+					WHERE xg.goods_id = #{goods_id} order by xv.vendor_id
+    </select>
+    <select id="selectCartsBySession_id" parameterType="String" resultMap="BaseResultMap">
+		        SELECT xc.*,xg.brand_id,xcs.sub_tree,xg.cat_id
+				FROM xysc_cart xc
+				INNER JOIN xysc_goods xg ON xc.goods_id = xg.goods_id
+				INNER JOIN xysc_goods_cat xgc ON xgc.goods_id = xg.goods_id
+				INNER JOIN xysc_category_sub xcs ON xcs.cat_id = xgc.cat_id
+				WHERE xc.session_id = #{session_id} order by xc.vendor_id
+    </select>
+    <select id="selectCartsByUserid" parameterType="int" resultMap="BaseResultMap">
+    		        SELECT xc.*,xg.brand_id,xcs.sub_tree,xg.cat_id
+				FROM xysc_cart xc
+				INNER JOIN xysc_goods xg ON xc.goods_id = xg.goods_id
+				INNER JOIN xysc_goods_cat xgc ON xgc.goods_id = xg.goods_id
+				INNER JOIN xysc_category_sub xcs ON xcs.cat_id = xgc.cat_id
+				WHERE xc.user_id= #{user_id} order by xc.vendor_id
+    </select>
+    
+    <select id="selectCarts4ViewByTemp_id" parameterType="String" resultMap="BaseResultMap">
+         SELECT
+			xc.*, xv.vendor_name,
+			xv.vendor_ename,
+			xg.goods_number AS goods_number_stock,
+            xg.shop_price as shop_price_stock,
+			xg.is_promote as is_promote_stock,
+			xg.promote_price as promote_price_stock,
+		    xg.promote_countdown as promote_countdown_stock,
+			xg.promote_start_date as promote_start_date_stock,
+			xg.promote_end_date as promote_end_date_stock,
+			xg.promote_weekly as promote_weekly_stock,
+			xg.give_Integral as give_Integral_stock,
+			xg.goods_thumb,
+			xg.is_on_sale,
+			is_delete,
+			xg.is_limited,
+			xg.limited_number,
+			xg.limited_quantity,
+		  xg.brand_id,
+		  xcs.sub_tree,xg.cat_id
+		FROM xysc_cart AS xc
+		INNER JOIN xysc_vendor_info AS xv ON xc.vendor_id = xv.vendor_id
+		INNER JOIN xysc_goods AS xg ON xc.goods_id = xg.goods_id
+		INNER JOIN xysc_goods_cat xgc ON xgc.goods_id = xg.goods_id
+		INNER JOIN xysc_category_sub xcs ON xcs.cat_id = xgc.cat_id
+		WHERE xc.session_id = #{temp_id} order by xc.vendor_id
+    </select>
+    
+    <select id="selectCarts4ViewByUserid" parameterType="int" resultMap="BaseResultMap">
+             SELECT
+			xc.*, xv.vendor_name,
+			xv.vendor_ename,
+			xg.goods_number AS goods_number_stock,
+            xg.shop_price as shop_price_stock,
+			xg.is_promote as is_promote_stock,
+			xg.promote_price as promote_price_stock,
+		    xg.promote_countdown as promote_countdown_stock,
+			xg.promote_start_date as promote_start_date_stock,
+			xg.promote_end_date as promote_end_date_stock,
+			xg.promote_weekly as promote_weekly_stock,
+			xg.give_Integral as give_Integral_stock,
+			xg.goods_thumb,
+			xg.is_on_sale,
+			is_delete,
+			xg.is_limited,
+			xg.limited_number,
+			xg.limited_quantity,
+		  xg.brand_id,
+		  xcs.sub_tree,xg.cat_id
+		FROM xysc_cart AS xc
+		INNER JOIN xysc_vendor_info AS xv ON xc.vendor_id = xv.vendor_id
+		INNER JOIN xysc_goods AS xg ON xc.goods_id = xg.goods_id
+		INNER JOIN xysc_goods_cat xgc ON xgc.goods_id = xg.goods_id
+		INNER JOIN xysc_category_sub xcs ON xcs.cat_id = xgc.cat_id
+		WHERE xc.user_id= #{user_id}  order by xc.vendor_id
+    </select>
+    
+     <select id="selectCarts4ViewByUidGoodsid" parameterType="map" resultMap="BaseResultMap">
+             SELECT
+			xc.*, xv.vendor_name,
+			xv.vendor_ename,
+			xg.goods_number AS goods_number_stock,
+            xg.shop_price as shop_price_stock,
+			xg.is_promote as is_promote_stock,
+			xg.promote_price as promote_price_stock,
+		    xg.promote_countdown as promote_countdown_stock,
+			xg.promote_start_date as promote_start_date_stock,
+			xg.promote_end_date as promote_end_date_stock,
+			xg.promote_weekly as promote_weekly_stock,
+			xg.give_Integral as give_Integral_stock,
+			xg.goods_thumb,
+			xg.is_on_sale,
+			is_delete,
+			xg.is_limited,
+			xg.limited_number,
+			xg.limited_quantity,
+		  xg.brand_id,
+		  xcs.sub_tree,xg.cat_id
+		FROM xysc_cart AS xc
+		INNER JOIN xysc_vendor_info AS xv ON xc.vendor_id = xv.vendor_id
+		INNER JOIN xysc_goods AS xg ON xc.goods_id = xg.goods_id
+		INNER JOIN xysc_goods_cat xgc ON xgc.goods_id = xg.goods_id
+		INNER JOIN xysc_category_sub xcs ON xcs.cat_id = xgc.cat_id
+		WHERE xc.user_id= #{user_id}  and xc.goods_id =  #{goods_id} order by xc.vendor_id
+    </select>
+    
+    <select id="selectCarts4ViewByTemp_idGoodsid" parameterType="map" resultMap="BaseResultMap">
+             SELECT
+			xc.*, xv.vendor_name,
+			xv.vendor_ename,
+			xg.goods_number AS goods_number_stock,
+            xg.shop_price as shop_price_stock,
+			xg.is_promote as is_promote_stock,
+			xg.promote_price as promote_price_stock,
+		    xg.promote_countdown as promote_countdown_stock,
+			xg.promote_start_date as promote_start_date_stock,
+			xg.promote_end_date as promote_end_date_stock,
+			xg.promote_weekly as promote_weekly_stock,
+			xg.give_Integral as give_Integral_stock,
+			xg.goods_thumb,
+			xg.is_on_sale,
+			is_delete,
+			xg.is_limited,
+			xg.limited_number,
+			xg.limited_quantity,
+		  xg.brand_id,
+		  xcs.sub_tree,xg.cat_id
+		FROM xysc_cart AS xc
+		INNER JOIN xysc_vendor_info AS xv ON xc.vendor_id = xv.vendor_id
+		INNER JOIN xysc_goods AS xg ON xc.goods_id = xg.goods_id
+		INNER JOIN xysc_goods_cat xgc ON xgc.goods_id = xg.goods_id
+		INNER JOIN xysc_category_sub xcs ON xcs.cat_id = xgc.cat_id
+		WHERE xc.session_id = #{temp_id}  and xc.goods_id =  #{goods_id} order by xc.vendor_id
+    </select>
+    <select id="selectCartsBySession_idAndVendorId" parameterType="Map" resultMap="BaseResultMap">
+    		        SELECT xc.*,xg.brand_id,xcs.sub_tree,xg.cat_id
+				FROM xysc_cart xc
+				INNER JOIN xysc_goods xg ON xc.goods_id = xg.goods_id
+				INNER JOIN xysc_goods_cat xgc ON xgc.goods_id = xg.goods_id
+				INNER JOIN xysc_category_sub xcs ON xcs.cat_id = xgc.cat_id
+				WHERE xc.session_id = #{session_id} and xc.vendor_id = #{vendor_id} order by xc.vendor_id
+    </select>
+    <select id="selectCartsByUseridAndVendorId" parameterType="Map" resultMap="BaseResultMap">
+        		        SELECT xc.*,xg.brand_id,xcs.sub_tree,xg.cat_id
+				FROM xysc_cart xc
+				INNER JOIN xysc_goods xg ON xc.goods_id = xg.goods_id
+				INNER JOIN xysc_goods_cat xgc ON xgc.goods_id = xg.goods_id
+				INNER JOIN xysc_category_sub xcs ON xcs.cat_id = xgc.cat_id
+				WHERE xc.user_id= #{user_id} and xc.vendor_id = #{vendor_id} order by xc.vendor_id
+    </select>    
+    <select id="selectCarts" parameterType="com.shubilee.entity.Cart" resultMap="BaseResultMap">
+           		        SELECT xc.*,xg.brand_id,xcs.sub_tree,xg.cat_id
+				FROM xysc_cart xc
+				INNER JOIN xysc_goods xg ON xc.goods_id = xg.goods_id
+				INNER JOIN xysc_goods_cat xgc ON xgc.goods_id = xg.goods_id
+				INNER JOIN xysc_category_sub xcs ON xcs.cat_id = xgc.cat_id where xc.goods_id=#{goods_id}
+        <if test="user_id>0">
+         and xc.user_id=#{user_id} 
+        </if>
+        <if test="session_id != null">
+         and xc.session_id= #{session_id} 
+        </if>
+    </select>
+     <insert id="insert" parameterType="com.shubilee.entity.Cart">
+	    insert into xysc_cart (rec_id,user_id, session_id, goods_id, goods_sn, product_id,vendor_id, goods_name, goods_ename, cost, tax, market_price, goods_price, 
+	      					   goods_number, is_real, extension_code, parent_id, rec_type, is_gift, is_shipping, can_handsel, goods_attr_id, deal_price, goods_attr)
+	                   values (#{rec_id,jdbcType=INTEGER},#{user_id,jdbcType=INTEGER}, #{session_id,jdbcType=CHAR}, 
+	                           #{goods_id,jdbcType=INTEGER}, #{goods_sn,jdbcType=VARCHAR}, #{product_id,jdbcType=INTEGER},  #{vendor_id,jdbcType=INTEGER}, 
+	      					   #{goods_name,jdbcType=VARCHAR}, #{goods_ename,jdbcType=VARCHAR}, #{cost,jdbcType=DECIMAL}, 
+	                           #{tax,jdbcType=DECIMAL}, #{market_price,jdbcType=DECIMAL}, #{goods_price,jdbcType=DECIMAL}, 
+						       #{goods_number,jdbcType=INTEGER}, #{is_real,jdbcType=BIT}, #{extension_code,jdbcType=VARCHAR}, 
+						       #{parent_id,jdbcType=INTEGER}, #{rec_type,jdbcType=BIT}, #{is_gift,jdbcType=INTEGER}, 
+						       #{is_shipping,jdbcType=BIT}, #{can_handsel,jdbcType=TINYINT}, #{goods_attr_id,jdbcType=VARCHAR}, 
+						       #{deal_price,jdbcType=DECIMAL}, #{goods_attr,jdbcType=LONGVARCHAR})
+			      
+      <selectKey resultType="int" keyProperty="rec_id">  
+       		select  LAST_INSERT_ID()
+    	</selectKey>			       
+						       
+     </insert> 
+   <select id="selectRecidByUidGid" parameterType="map" resultType="int">
+        select t.rec_id from xysc_cart t where t.user_id = #{user_id} and t.goods_id = #{goods_id}
+    </select>  
+     <select id="selectRecidByTempidGid" parameterType="map" resultType="int">
+        select t.rec_id from xysc_cart t where t.session_id = #{temp_id} and t.goods_id = #{goods_id}
+    </select>
+     
+     
+     <update id="updateGoodNumOfCart" parameterType="map">
+    update xysc_cart
+    <set>
+        goods_number = #{goods_number},
+    </set>
+      where rec_id = #{rec_id}
+  	</update> 
+  	
+  	<update id="updateGoodPriceOfCart" parameterType="map">
+    update xysc_cart
+    <set>
+        goods_price = #{goods_price},
+    </set>
+      where rec_id = #{rec_id}
+  	</update>
+  	
+    <delete id="deleteCartByTempid" parameterType="String">
+         delete from xysc_cart where session_id= #{session_id}
+    </delete>
+    <delete id="deleteCartByUid" parameterType="int">
+         delete from xysc_cart where user_id= #{user_id}
+    </delete>
+    <delete id="deleteActByUid" parameterType="int">
+         delete from xysc_cart where user_id= #{user_id} and is_gift = 1
+    </delete>
+    <delete id="deleteActByTempid" parameterType="String">
+         delete from xysc_cart where session_id= #{tempId} and is_gift = 1
+    </delete>
+    <delete id="deleteGoodsByTempid"  parameterType="Map">
+         delete from xysc_cart where session_id= #{tempId} and goods_id = #{goods_id}
+    </delete>
+    <delete id="deleteGoodsByUid"  parameterType="Map">
+         delete from xysc_cart where user_id= #{uid} and goods_id = #{goods_id}
+    </delete>
+    <update id="updateGoodsByTempid" parameterType="Map">
+         update xysc_cart set goods_number=#{goods_number} where session_id= #{tempId} and goods_id = #{goods_id}
+    </update>  
+    <update id="updateGoodsByUid" parameterType="Map">
+         update xysc_cart set goods_number=#{goods_number} where user_id= #{uid} and goods_id = #{goods_id}
+    </update>  
+    <update id="updateUserIdByTempid" parameterType="Cart">
+         update xysc_cart set user_id=#{user_id},session_id="" where session_id= #{session_id}
+    </update> 
+    <update id="updateTaxByUidAndGid" parameterType="Map">
+         update xysc_cart set tax=#{tax} where user_id= #{uid} and goods_id = #{goods_id}
+    </update>  
+    <update id="updateTaxByUid" parameterType="Map">
+         update xysc_cart set tax=#{tax} where user_id= #{uid} 
+    </update> 
+    <update id="updateDealPriceByRecId" parameterType="Map">
+         update xysc_cart set deal_price = #{deal_price} where rec_id = #{rec_id}
+    </update> 
+    <update id="updateDealPriceAndTax" parameterType="Map">
+         update xysc_cart set deal_price = #{deal_price},tax=  #{tax} where user_id= #{uid} and goods_id = #{goods_id}
+    </update> 
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.PointLotteryLogDao">
+    
+  <resultMap id="BaseResultMap" type="com.shubilee.entity.PointLotterylog" >
+    <id column="rec_id" property="recId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="get_point" property="getPoint" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="INTEGER" />
+  </resultMap>
+  
+  
+  <insert id="insert" parameterType="com.shubilee.entity.PointLotterylog" >
+    insert into xysc_point_lottery_log (rec_id, user_id, get_point, 
+      time)
+    values (#{recId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{getPoint,jdbcType=INTEGER}, 
+      #{time,jdbcType=INTEGER})
+  </insert>
+</mapper>

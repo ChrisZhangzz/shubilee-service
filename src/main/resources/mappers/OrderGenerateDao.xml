@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.OrderGenerateDao">
+	<resultMap id="BaseResultMap" type="com.shubilee.entity.OrderGenerate">
+	    <result column="temp_id" jdbcType="VARCHAR" property="tempId" />
+	    <result column="user_id" jdbcType="INTEGER" property="userId" />
+	    <result column="bonus_id" jdbcType="INTEGER" property="bonusId" />
+	    <result column="shipping_id" jdbcType="INTEGER" property="shippingId" />
+	    <result column="shipping_add" jdbcType="INTEGER" property="shippingAdd" />
+	    <result column="profile_id" jdbcType="VARCHAR" property="profileId" />
+	    <result column="point_flag" jdbcType="INTEGER" property="pointFlag" />
+	    <result column="vendor_id" jdbcType="INTEGER" property="vendorId" />
+	    <association property="shipping" column="shipping_id" javaType="com.shubilee.entity.Shipping">  
+        	<id column="shipping_id" property="shippingId" jdbcType="TINYINT" />
+		    <result column="shipping_code" property="shippingCode" jdbcType="VARCHAR" />
+		    <result column="shipping_name" property="shippingName" jdbcType="VARCHAR" />
+		    <result column="shipping_desc" property="shippingDesc" jdbcType="VARCHAR" />
+		    <result column="shipping_fee" property="shippingFee" jdbcType="DECIMAL" />
+		    <result column="free_shipping_amount" property="freeShippingAmount" jdbcType="DECIMAL" />
+		    <result column="insure" property="insure" jdbcType="VARCHAR" />
+		    <result column="support_cod" property="supportCod" jdbcType="BIT" />
+		    <result column="enabled" property="enabled" jdbcType="BIT" />
+		    <result column="print_bg" property="printBg" jdbcType="VARCHAR" />
+		    <result column="print_model" property="printModel" jdbcType="BIT" />
+		    <result column="shipping_order" property="shippingOrder" jdbcType="TINYINT" />
+		    <result column="vendor_id" jdbcType="INTEGER" property="vendorId" />
+		    <result column="is_primary" jdbcType="INTEGER" property="isPrimary" /> 
+        </association> 
+        <association property="vendors" column="vendor_id" javaType="com.shubilee.entity.Vendors">  
+        	<id column="vendor_id" jdbcType="INTEGER" property="vendorId" />
+		    <result column="vendor_name" jdbcType="VARCHAR" property="vendorName" />
+		    <result column="vendor_ename" jdbcType="VARCHAR" property="vendorEname" />
+		    <result column="quality" jdbcType="LONGVARCHAR" property="quality" />
+		    <result column="quality_en" jdbcType="LONGVARCHAR" property="qualityEn" />
+		    <result column="points" jdbcType="LONGVARCHAR" property="points" />
+		    <result column="points_en" jdbcType="LONGVARCHAR" property="pointsEn" />
+		    <result column="return_policy" jdbcType="LONGVARCHAR" property="returnPolicy" />
+		    <result column="return_policy_en" jdbcType="LONGVARCHAR" property="returnPolicyEn" />
+		    <result column="delivery" jdbcType="LONGVARCHAR" property="delivery" />
+		    <result column="delivery_en" jdbcType="LONGVARCHAR" property="deliveryEn" />
+        </association>
+        <association property="userAddress" column="address_id" javaType="com.shubilee.entity.UserAddress">  
+        	 <id column="address_id" jdbcType="INTEGER" property="address_id" />
+		    <result column="address_name" jdbcType="VARCHAR" property="address_name" />
+		    <result column="user_id" jdbcType="INTEGER" property="user_id" />
+		    <result column="is_primary" jdbcType="INTEGER" property="is_primary" />
+		    <result column="consignee" jdbcType="VARCHAR" property="consignee" />
+		    <result column="email" jdbcType="VARCHAR" property="email" />
+		    <result column="country" jdbcType="VARCHAR" property="country" />
+		    <result column="province" jdbcType="VARCHAR" property="province" />
+		    <result column="city" jdbcType="VARCHAR" property="city" />
+		    <result column="district" jdbcType="INTEGER" property="district" />
+		    <result column="address" jdbcType="VARCHAR" property="address" />
+		    <result column="address2" jdbcType="VARCHAR" property="address2" />
+		    <result column="zipcode" jdbcType="VARCHAR" property="zipcode" />
+		    <result column="tel" jdbcType="VARCHAR" property="tel" />
+		    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+		    <result column="sign_building" jdbcType="VARCHAR" property="sign_building" />
+		    <result column="best_time" jdbcType="VARCHAR" property="best_time" />
+		    <result column="consignee_firstname" jdbcType="VARCHAR" property="consignee_firstname" />
+		    <result column="consignee_lastname" jdbcType="VARCHAR" property="consignee_lastname" />
+        </association>
+        <association property="userProfile" column="profile_id" javaType="com.shubilee.entity.UserProfile">  
+        	<id column="profile_id" jdbcType="VARCHAR" property="profile_id" />
+		    <result column="user_id" jdbcType="INTEGER" property="user_id" />
+		    <result column="firstname" jdbcType="VARCHAR" property="firstname" />
+		    <result column="lastname" jdbcType="VARCHAR" property="lastname" />
+		    <result column="card_type" jdbcType="VARCHAR" property="card_type" />
+		    <result column="tail" jdbcType="INTEGER" property="tail" />
+		    <result column="exp_year" jdbcType="VARCHAR" property="exp_year" />
+		    <result column="exp_month" jdbcType="VARCHAR" property="exp_month" />
+		    <result column="address_id" jdbcType="INTEGER" property="address_id" />
+		    <result column="is_primary" jdbcType="INTEGER" property="is_primary" />
+		    <association property="address" column="profile_id" javaType="com.shubilee.entity.UserAddress">  
+	        	<id column="address_id" property="address_id" jdbcType="INTEGER" />
+				<result column="address_name" property="address_name" jdbcType="VARCHAR" />
+				<result column="user_id" property="user_id" jdbcType="INTEGER" />
+				<result column="is_primary" property="is_primary" jdbcType="INTEGER" />
+				<result column="consignee" property="consignee" jdbcType="VARCHAR" />
+				<result column="email" property="email" jdbcType="VARCHAR" />
+				<result column="country" property="country" jdbcType="VARCHAR" />
+				<result column="province" property="province" jdbcType="VARCHAR" />
+				<result column="city" property="city" jdbcType="VARCHAR" />
+				<result column="district" property="district" jdbcType="INTEGER" />
+				<result column="address" property="address" jdbcType="VARCHAR" />
+				<result column="address2" property="address2" jdbcType="VARCHAR" />
+				<result column="zipcode" property="zipcode" jdbcType="VARCHAR" />
+				<result column="tel" property="tel" jdbcType="VARCHAR" />
+				<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+				<result column="sign_building" property="sign_building"
+					jdbcType="VARCHAR" />
+				<result column="best_time" property="best_time" jdbcType="VARCHAR" />
+				<result column="consignee_firstname" property="consignee_firstname"
+					jdbcType="VARCHAR" />
+				<result column="consignee_lastname" property="consignee_lastname"
+					jdbcType="VARCHAR" />
+        	</association>
+        </association>
+	  </resultMap>
+    <select id="selectOrderGenerateByTempId" parameterType="Map" resultMap="BaseResultMap">
+        select * from xysc_order_generate xog 
+        LEFT JOIN xysc_shipping xs ON xog.shipping_id = xs.shipping_id 
+        INNER JOIN xysc_vendor_info xvi ON xog.vendor_id = xvi.vendor_id
+		LEFT JOIN xysc_user_address xua ON xog.shipping_add = xua.address_id
+		LEFT JOIN xysc_user_profile xup ON xog.profile_id = xup.profile_id
+        where xog.temp_id= #{temp_id} 
+    </select>
+    <select id="selectOrderGenerateByUserId" parameterType="Map"  resultMap="BaseResultMap">
+        select DISTINCT xog.*,xs.*,xvi.*,xua.*,xup.*  from xysc_order_generate xog 
+        LEFT JOIN xysc_shipping xs ON xog.shipping_id = xs.shipping_id
+        INNER JOIN xysc_vendor_info xvi ON xog.vendor_id = xvi.vendor_id
+		LEFT JOIN xysc_user_address xua ON xog.shipping_add = xua.address_id
+		LEFT JOIN xysc_user_profile xup ON xog.profile_id = xup.profile_id 
+        where xog.user_id= #{user_id}
+    </select>
+    <select id="selectOrderGenerateByTempIdAndVendorId" parameterType="Map" resultMap="BaseResultMap">
+        select * from xysc_order_generate where temp_id= #{temp_id} and vendor_id = #{vendor_id}
+    </select>
+    <select id="selectOrderGenerateByUserIdAndVendorId" parameterType="Map"  resultMap="BaseResultMap">
+        select * from xysc_order_generate where user_id= #{user_id} and vendor_id = #{vendor_id}
+    </select>
+    <select id="countByTempId" parameterType="String"  resultType="int">
+        select count(*) from xysc_order_generate where temp_id= #{temp_id} 
+    </select>
+    <select id="countByUserId" parameterType="int"  resultType="int">
+        select count(*) from xysc_order_generate where user_id= #{user_id} 
+    </select>
+    
+    
+    
+     <insert id="insert" parameterType="com.shubilee.entity.OrderGenerate" >
+    insert into xysc_order_generate (temp_id, user_id, bonus_id,shipping_id, shipping_add, profile_id,billing_add)
+    values (#{tempId,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{bonusId,jdbcType=INTEGER}, 
+      #{shippingId,jdbcType=INTEGER}, #{shippingAdd,jdbcType=INTEGER}, #{profileId,jdbcType=VARCHAR}, #{pointFlag,jdbcType=INTEGER}, #{vendorId,jdbcType=INTEGER})
+  	</insert>
+  	<insert id="insertSelective" parameterType="com.shubilee.entity.OrderGenerate">
+    insert into xysc_order_generate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tempId != null">
+        temp_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="bonusId != null">
+        bonus_id,
+      </if>
+      <if test="shippingId != null">
+        shipping_id,
+      </if>
+      <if test="shippingAdd != null">
+        shipping_add,
+      </if>
+      <if test="profileId != null">
+        profile_id,
+      </if>
+      <if test="pointFlag != null">
+        point_flag,
+      </if>
+      <if test="vendorId != null">
+        vendor_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tempId != null">
+        #{tempId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="bonusId != null">
+        #{bonusId,jdbcType=INTEGER},
+      </if>
+      <if test="shippingId != null">
+        #{shippingId,jdbcType=INTEGER},
+      </if>
+      <if test="shippingAdd != null">
+        #{shippingAdd,jdbcType=INTEGER},
+      </if>
+      <if test="profileId != null">
+        #{profileId,jdbcType=VARCHAR},
+      </if>
+      <if test="pointFlag != null">
+        #{pointFlag,jdbcType=INTEGER},
+      </if>
+      <if test="vendorId != null">
+        #{vendorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+	<update id="updateByTempId" parameterType="map" >
+	    update xysc_order_generate
+	    set user_id = #{orderGenerate.userId,jdbcType=INTEGER},
+	      bonus_id = #{orderGenerate.bonusId,jdbcType=INTEGER},
+	      shipping_id = #{orderGenerate.shippingId,jdbcType=INTEGER},
+	      shipping_add = #{orderGenerate.shippingAdd,jdbcType=INTEGER},
+	      profile_id = #{orderGenerate.profileId,jdbcType=VARCHAR},
+	      point_flag = #{orderGenerate.pointFlag,jdbcType=INTEGER},
+	      vendor_id = #{orderGenerate.vendorId,jdbcType=INTEGER}
+	    where temp_id = #{orderGenerate.tempId,jdbcType=VARCHAR}
+	  </update>
+	  
+	  <update id="updateByUId" parameterType="map" >
+	    update xysc_order_generate
+	    set temp_id = #{orderGenerate.tempId,jdbcType=VARCHAR},
+	      bonus_id = #{orderGenerate.bonusId,jdbcType=INTEGER},
+	      shipping_id = #{orderGenerate.shippingId,jdbcType=INTEGER},
+	      shipping_add = #{orderGenerate.shippingAdd,jdbcType=INTEGER},
+	      profile_id = #{orderGenerate.profileId,jdbcType=VARCHAR},
+	      point_flag = #{orderGenerate.pointFlag,jdbcType=INTEGER},
+	      vendor_id = #{orderGenerate.vendorId,jdbcType=INTEGER}
+	    where user_id = #{orderGenerate.userId,jdbcType=INTEGER}
+	  </update>
+	  
+	  <update id="updateUIdByTempId" parameterType="map" >
+	    update xysc_order_generate
+	    set user_id = #{orderGenerate.userId,jdbcType=INTEGER},
+	      temp_id = ""
+	    where temp_id = #{orderGenerate.tempId,jdbcType=VARCHAR}
+	  </update>
+	  <update id="updateBonsIdByTempId" parameterType="map" >
+	    update xysc_order_generate
+	    set bonus_id = #{bonus_id}
+	    where temp_id = #{temp_id}
+	  </update>
+	  <update id="updateBonsIdByUId" parameterType="map" >
+	    update xysc_order_generate
+	    set bonus_id = #{bonus_id}
+	    where user_id = #{user_id}
+	  </update>
+	  <update id="updateShippingIdByUId" parameterType="map" >
+	    update xysc_order_generate
+	    set shipping_id = #{shipping_id}
+	    where user_id = #{user_id} and vendor_id = #{vendor_id}
+	  </update>
+	  <update id="updateProfileIdByUId" parameterType="map" >
+	    update xysc_order_generate
+	    set profile_id = #{profile_id}
+	    where user_id = #{user_id} 
+	  </update>
+	  <update id="updateShippingAddByUId" parameterType="map" >
+	    update xysc_order_generate
+	    set shipping_add = #{shipping_add}
+	    where user_id = #{user_id} 
+	  </update>
+	  <update id="updatePointFlagByUId" parameterType="map" >
+	    update xysc_order_generate
+	    set point_flag = #{point_flag}
+	    where user_id = #{user_id} 
+	  </update>
+	  <delete id="deleteOrderGenerateByTempId" parameterType="String">
+                delete from xysc_order_generate where temp_id =  #{temp_id}
+  	   </delete>
+  	   <delete id="deleteOrderGenerateByUId" parameterType="int">
+                delete from xysc_order_generate where user_id = #{user_id} 
+  	   </delete>
+  	   <delete id="deleteByTempIdAndVendorId" parameterType="Map">
+                delete from xysc_order_generate where temp_id =  #{temp_id} and vendor_id = #{vendor_id}
+  	   </delete>
+  	   
+  	   <delete id="deleteByUIdAndVendorId" parameterType="Map">
+                delete from xysc_order_generate where user_id =  #{user_id} and vendor_id = #{vendor_id}
+  	   </delete>
+  	   
+  	   
+</mapper>

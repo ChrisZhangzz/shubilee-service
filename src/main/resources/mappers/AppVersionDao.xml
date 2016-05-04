@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.AppVersionDao">
+	<resultMap id="BaseResultMap" type="com.shubilee.entity.AppVersion" >
+	    <result column="rec_id" property="recId" jdbcType="INTEGER" />
+	    <result column="version" property="version" jdbcType="VARCHAR" />
+	    <result column="version_desc" property="versionDesc" jdbcType="VARCHAR" />
+	    <result column="version_edesc" property="versionEdesc" jdbcType="VARCHAR" />
+	    <result column="update_time" property="updateTime" jdbcType="INTEGER" />
+	    <result column="is_update" property="isUpdate" jdbcType="INTEGER" />
+  	</resultMap>
+
+	<select id="selectAppVersion" resultMap="BaseResultMap">
+		SELECT * FROM  xysc_app_version t order by t.update_time;
+	</select>
+
+</mapper>

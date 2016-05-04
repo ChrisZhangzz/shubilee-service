@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.UsersDao">
+
+<resultMap id="BaseResultMap" type="com.shubilee.entity.Users">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="first_name" jdbcType="VARCHAR" property="firstName" />
+    <result column="last_name" jdbcType="VARCHAR" property="lastName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
+    <result column="wait_list_id" jdbcType="INTEGER" property="waitListId" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="pay_points" jdbcType="INTEGER" property="payPoints" />
+    <result column="rank_points" jdbcType="INTEGER" property="rankPoints" />
+    <result column="user_rank" jdbcType="TINYINT" property="userRank" />
+	<result column="zipcode" property="zipcode" jdbcType="VARCHAR" />
+    <result column="shipping_address_id" jdbcType="INTEGER" property="shippingAddressId" />
+    <result column="billing_address_id" jdbcType="INTEGER" property="billingAddressId" />
+    <result column="reg_time" jdbcType="INTEGER" property="regTime" />
+    <result column="last_login" jdbcType="INTEGER" property="lastLogin" />
+    <result column="member_expire_date" jdbcType="DATE" property="memberExpireDate" />
+    <result column="last_sent_date" jdbcType="DATE" property="lastSentDate" />
+    <result column="last_ip" jdbcType="VARCHAR" property="lastIp" />
+    <result column="visit_count" jdbcType="INTEGER" property="visitCount" />
+    <result column="is_special" jdbcType="TINYINT" property="isSpecial" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="flag" jdbcType="TINYINT" property="flag" />
+    <result column="invitation_code" jdbcType="TINYINT" property="invitationCode" />
+    <result column="mobile_phone" jdbcType="VARCHAR" property="mobilePhone" />
+    <result column="is_validated" jdbcType="TINYINT" property="isValidated" />
+    <result column="subscribed" jdbcType="BIT" property="subscribed" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+  </resultMap>
+ 
+   
+    <select id="selectUserInfoByID" parameterType="int" resultMap="BaseResultMap">
+        select * from shu_users where user_id= #{user_id}
+    </select>
+    
+    
+  <update id="updateUserNameByUid" parameterType="map">
+    update shu_users t set t.first_name = #{first_name},t.last_name = #{last_name} where t.user_id = #{user_id}
+  </update> 
+  <update id="updateEmailByUid" parameterType="map">
+    update shu_users t set t.email = #{email} where t.user_id = #{user_id}
+  </update>   
+  <update id="updatePointByUid" parameterType="map">
+     update shu_users t set t.pay_points = t.pay_points - #{point} where t.user_id = #{user_id}
+  </update> 
+ 
+  <select id="selectUsersByInviteCode" parameterType="map" resultType="int">
+        SELECT count(1)  FROM shu_users t where t.invitation_code = #{invite_code}
+    </select>
+  <select id="selectUserInfoByInviteCode" parameterType="map" resultMap="BaseResultMap">
+        select * from shu_users where invitation_code = #{invite_code}
+    </select>
+  <update id="updateInviteCodeByUid" parameterType="map">
+    update shu_users t set t.invitation_code = #{invite_code} where t.user_id = #{user_id}
+  </update>
+  <update id="updateUserTypeByUid" parameterType="map">
+    update shu_users t set t.user_type = #{user_type} where t.user_id = #{user_id}
+  </update>
+
+  <update id="updateUserInfoByUid" parameterType="map">
+    update shu_users t set t.first_name = #{first_name},t.last_name = #{last_name},t.zipcode = #{zipcode},t.email = #{email} where t.user_id = #{user_id}
+  </update> 
+   <update id="updateFirstOrderTimeByUid" parameterType="map">
+    update shu_users t set t.first_order_time = UNIX_TIMESTAMP()  where t.user_id = #{user_id}
+  </update> 
+	   <select id="selectUsersByID" parameterType="int" resultMap="BaseResultMap">
+        select * from shu_users where user_id= #{user_id}
+    </select>
+	  		
+	<insert id="insertUsers"  parameterType="com.shubilee.entity.Users">
+		INSERT INTO shu_users (
+			email,
+			first_name,
+			last_name,
+			password,
+			user_type,
+			salt,
+			zipcode,
+			reg_time,
+			last_login
+		)
+		VALUES
+		(
+			#{email,jdbcType=VARCHAR},
+			#{firstName,jdbcType=VARCHAR},
+			#{lastName,jdbcType=VARCHAR},
+			#{password,jdbcType=VARCHAR},
+			#{userType,jdbcType=INTEGER},
+			#{salt,jdbcType=VARCHAR},
+			#{zipcode,jdbcType=INTEGER},
+			#{regTime,jdbcType=INTEGER},
+			#{lastLogin,jdbcType=INTEGER}
+		)
+	</insert>
+</mapper>
