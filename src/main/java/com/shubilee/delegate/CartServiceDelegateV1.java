@@ -37,7 +37,6 @@ import com.shubilee.entity.Profile;
 import com.shubilee.entity.Shipping;
 import com.shubilee.entity.TaxLookup;
 import com.shubilee.entity.Token;
-import com.shubilee.entity.User;
 import com.shubilee.entity.UserAddress;
 import com.shubilee.entity.UserProfile;
 import com.shubilee.entity.Users;
@@ -447,7 +446,7 @@ public class CartServiceDelegateV1 {
 				int uid = Integer.parseInt(tokenIn.getData());
 				
 				//获取逻辑运算所需要数据 start
-				User user = userService.selectUsersByID(uid);
+				Users user = userService.selectUsersByID(uid);
 				lstCartTemp = cartRedisService.selectCartsForRedis(tokenIn);
 				List<OrderGenerate> lstOrderGenerateTemp = orderGenerateRedisService.selectAllForOrderGenerate(tokenIn);
 				
@@ -553,7 +552,8 @@ public class CartServiceDelegateV1 {
 				//3、积分合计
 				//使用积分
 				//积分对应可使用金额
-				BigDecimal pointPrice = BigDecimal.valueOf(Long.parseLong(String.valueOf(user.getPay_points()))).divide(new BigDecimal(100.00));
+				BigDecimal pointPrice =new BigDecimal(0);
+				//BigDecimal pointPrice = BigDecimal.valueOf(Long.parseLong(String.valueOf(user.getPay_points()))).divide(new BigDecimal(100.00));
 				if(pointFlag==1){
 					//如果积分对应金额小于等于订单总价
 					if(pointPrice.compareTo(yamibuyOrderAccont)<=0){
@@ -569,7 +569,7 @@ public class CartServiceDelegateV1 {
 				else{
 					//如果积分对应金额小于等于订单总价
 					if(pointPrice.compareTo(yamibuyOrderAccont)<=0){
-						pointDisplay = user.getPay_points();
+						//pointDisplay = user.getPay_points();
 					}
 					else{
 						pointDisplay =  yamibuyOrderAccont.multiply(new BigDecimal(100)).intValue();

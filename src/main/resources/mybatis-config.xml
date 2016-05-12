@@ -8,7 +8,7 @@
 	</settings>
     <typeAliases> 
         <typeAlias alias="Goods" type="com.shubilee.entity.Goods"/> 
-        <typeAlias alias="Users" type="com.shubilee.entity.User"/> 
+        <typeAlias alias="Users" type="com.shubilee.entity.Users"/> 
         <typeAlias alias="Cart" type="com.shubilee.entity.Cart"/> 
         <typeAlias alias="Activity" type="com.shubilee.entity.Activity"/> 
     </typeAliases>

@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Param;
 
 import com.shubilee.common.WriteData;
 import com.shubilee.entity.Cart;
-import com.shubilee.entity.User;
 
 public interface CartService {
 	

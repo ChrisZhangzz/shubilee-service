@@ -23,7 +23,6 @@ import com.shubilee.entity.PointLotterySet;
 import com.shubilee.entity.PointLotterylog;
 import com.shubilee.entity.Profile;
 import com.shubilee.entity.Template;
-import com.shubilee.entity.User;
 import com.shubilee.entity.UserAddress;
 import com.shubilee.entity.UserInfoOrder;
 import com.shubilee.entity.UserInfoOrderMaxCat;
@@ -35,15 +34,15 @@ import com.shubilee.entity.Vendors;
 public interface UserService {
 	public String getUserName(int uid);
 	
-    public User selectUsersByID(int id);
+    public Users selectUsersByID(int id);
 	
-    public User getPasswordSalt(String email);
+    public Users getPasswordSalt(String email);
 
     public String getPassword(int id);
     
-    public void setPasswordSalt(User user);
+    public void setPasswordSalt(Users user);
     
-    public void setPasswordSaltByUid(User user);
+    public void setPasswordSaltByUid(Users user);
 
     public List<UserAddress> getAddressBookByUid(int id);    
 

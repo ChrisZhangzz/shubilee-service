@@ -21,7 +21,6 @@ import com.shubilee.common.YamiConstant;
 import com.shubilee.entity.AppSP;
 import com.shubilee.entity.AppVersion;
 import com.shubilee.entity.Token;
-import com.shubilee.entity.User;
 import com.shubilee.service.UserService;
 
 @Service

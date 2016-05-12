@@ -9,7 +9,6 @@ import com.shubilee.common.WriteData;
 import com.shubilee.entity.Cart;
 import com.shubilee.entity.DiscoveryInfo;
 import com.shubilee.entity.Message4Discovery;
-import com.shubilee.entity.User;
 
 public interface DiscoveryInfoService {
 

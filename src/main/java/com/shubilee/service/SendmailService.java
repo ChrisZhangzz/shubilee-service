@@ -9,7 +9,6 @@ import com.shubilee.entity.Address;
 import com.shubilee.entity.MailTemplates;
 import com.shubilee.entity.Profile;
 import com.shubilee.entity.Sendmail;
-import com.shubilee.entity.User;
 import com.shubilee.entity.UserAddress;
 import com.shubilee.entity.UserProfile;
 import com.shubilee.entity.Vendors;

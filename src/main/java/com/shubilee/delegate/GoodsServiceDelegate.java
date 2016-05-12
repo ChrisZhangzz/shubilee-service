@@ -53,7 +53,7 @@ import com.shubilee.entity.SearchBar;
 import com.shubilee.entity.Shipping;
 import com.shubilee.entity.ShopDistrictZipcode;
 import com.shubilee.entity.Token;
-import com.shubilee.entity.User;
+import com.shubilee.entity.Users;
 import com.shubilee.entity.Vendors;
 import com.shubilee.entity.YmZipcode;
 import com.shubilee.redis.entity.CartRedis;
@@ -3018,9 +3018,9 @@ public class GoodsServiceDelegate {
 		Map<String,Object> result = new HashMap<String,Object>();
 		int countNum = userService.checkRemindFlag(uid, gid);
 		if(countNum>0){
-			User user = userService.selectUsersByID(uid);
+			Users user = userService.selectUsersByID(uid);
 			result.put("remindFlag", 1);
-			result.put("email", user.getQuestion());
+			//result.put("email", user.getQuestion());
 		}else{
 			result.put("remindFlag", 0);
 			result.put("email", "");

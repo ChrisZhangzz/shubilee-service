@@ -3,6 +3,8 @@ package test.shubilee.delegate;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -11,6 +13,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
 import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
@@ -19,6 +23,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import com.shubilee.common.CardType;
 import com.shubilee.common.DateUtil;
@@ -29,8 +35,8 @@ import com.shubilee.delegate.SecurityServiceDelegate;
 import com.shubilee.delegate.TransactionDelegate;
 import com.shubilee.delegate.UserServiceDelegate;
 import com.shubilee.entity.Token;
-import com.shubilee.entity.User;
 import com.shubilee.entity.UserAddress;
+import com.shubilee.entity.Users;
 import com.shubilee.service.UserService;
 
 public class UserServiceTest {
@@ -78,8 +84,8 @@ public class UserServiceTest {
 	}	
 	@Test
 	public void testLoginUserException4() throws Exception{
-		User user = new User();
-		user.setEc_salt("3299");
+		Users user = new Users();
+		user.setSalt("3299");
 		user.setPassword("319be2d76a64027af4ac6ae36fa9c249");
 		EasyMock.expect(userService.getPasswordSalt("12@sina.com")).andReturn(user);
 		
@@ -88,6 +94,39 @@ public class UserServiceTest {
 		Map<String, Object> result = userServiceDelegate.loginUser(token,"12@sina.com", "1234567");		
 	}	
 	@Test
+	public void testSendMail() throws Exception{
+		try {
+			Context data = new Context();
+			data.setVariable("user_name", "zhang");
+			data.setVariable("reset_email_en", "33333");
+			TemplateEngine templateEngine = new TemplateEngine();
+			String emailContent = templateEngine.process("ResetPasswordEmail", data);
+			  HtmlEmail htmlEmail = new HtmlEmail();
+			  htmlEmail.setHostName("smtp.gmail.com");
+			  htmlEmail.addTo("chris.zhang@yamibuy.com", "haha");
+			  htmlEmail.setFrom("chris.zhang@yamibuy.com", "Me");
+			  htmlEmail.setSubject("title");
+			  htmlEmail.setSSLOnConnect(true);
+			  htmlEmail.setStartTLSEnabled(true);
+			  htmlEmail.setSmtpPort(587);
+			  // embed the image and get the content id
+			  URL url = new URL("http://www.apache.org/images/asf_logo_wide.gif");
+			  String cid = htmlEmail.embed(url, "Apache logo");
+			  
+			  // set the html message
+			  htmlEmail.setHtmlMsg(emailContent);
+			  
+			// send the email
+			  htmlEmail.send();
+		} catch (MalformedURLException e) {
+			System.out.println("Failed to send email");
+			System.out.println(e.toString());
+		} catch (EmailException e) {
+			System.out.println("Failed to send email");
+			System.out.println(e.toString());
+		}
+	}
+	/*	@Test
 	public void testLoginUser() throws Exception{
 		EasyMock.expect(securityServiceDelegate.getToken(EasyMock.eq(250), EasyMock.isA(String.class), EasyMock.isA(String.class))).andReturn("M456");
 		User user = new User();
@@ -114,7 +153,7 @@ public class UserServiceTest {
 		EasyMock.verify(userService);
 		EasyMock.verify(transactionDelegate);
 		
-	}
+	}*/
 	
 	@Test
 	public void testNewAddressException1() throws Exception{

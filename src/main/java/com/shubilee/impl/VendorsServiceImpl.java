@@ -9,11 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.shubilee.dao.AddressDao;
 import com.shubilee.dao.ProfileDao;
-import com.shubilee.dao.UserDao;
 import com.shubilee.dao.VendorsDao;
 import com.shubilee.entity.Address;
 import com.shubilee.entity.Profile;
-import com.shubilee.entity.User;
 import com.shubilee.entity.UserAddress;
 import com.shubilee.entity.UserProfile;
 import com.shubilee.entity.Vendors;

@@ -10,7 +10,6 @@ import com.shubilee.entity.Cart;
 import com.shubilee.entity.OrderGenerate;
 import com.shubilee.entity.OrderInfo;
 import com.shubilee.entity.PurchaseInfo;
-import com.shubilee.entity.User;
 
 public interface OrderInfoService {
 

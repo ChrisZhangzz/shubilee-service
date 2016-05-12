@@ -85,7 +85,6 @@ import com.shubilee.entity.Location;
 import com.shubilee.entity.Token;
 import com.shubilee.entity.TrackDetail;
 import com.shubilee.entity.TrackMessage;
-import com.shubilee.entity.User;
 import com.shubilee.entity.UserAddress;
 import com.shubilee.service.PaymentService;
 import com.shubilee.service.UserService;

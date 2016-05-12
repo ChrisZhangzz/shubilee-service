@@ -3,6 +3,7 @@ package com.shubilee.delegate;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -25,6 +26,9 @@ import net.paymentech.ws.ProfileResponseElement;
 import net.paymentech.ws.PaymentechGateway.wsdl.PaymentechGateway_wsdl.PaymentechGatewayLocator;
 import net.paymentech.ws.PaymentechGateway.wsdl.PaymentechGateway_wsdl.PaymentechGatewayPortType;
 
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
 import org.apache.ibatis.annotations.Param;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,7 +67,6 @@ import com.shubilee.entity.Profile;
 import com.shubilee.entity.PurchaseInfo;
 import com.shubilee.entity.Sendmail;
 import com.shubilee.entity.Token;
-import com.shubilee.entity.User;
 import com.shubilee.entity.UserAddress;
 import com.shubilee.entity.UserInfoOrder;
 import com.shubilee.entity.UserInfoOrderMaxCat;
@@ -139,15 +142,101 @@ public class UserServiceDelegate {
 	}
 	
 
-    public User selectUsersByID(int id){
+    public Users selectUsersByID(int id){
 
 		// add your business logic here
 		
 		return userService.selectUsersByID(id);
     }
-    
+    /*
+	发送邮件接口
+	@param String token
+	@param String FromMail
+	@param String toMail
+	@param String mailType    1、注册邀请邮件   2、单品分享邮件
+	@param String title
+	@param String content
+	@return Map<String,Object> 
+	*/
+	public Map<String, Object> sendMail(String token, String mailType, String toMail, String mailCatgory,  String title,String firstName,Context data){
+		Map<String,Object> result  = new HashMap<String,Object>();
+		Gson gson = new Gson(); 
+		Token tokenIn = gson.fromJson( StringUtil.decode(token), Token.class);
+		int uid = Integer.parseInt(tokenIn.getData());
+		String email  = new String();
+		
+		//获取邀请人信息及邀请码
+		Users users = userService.selectUserInfoByUid(uid);
+		String inviteUrl= "https://www.yamibuy.com/cn/login.php"+"?invite_code="+users.getInvitationCode();
+		switch (mailType){
+			//1、单品分享邮件
+			case "1":
+				try {
+					String emailContent = templateEngine.process(mailCatgory, data);
+					  HtmlEmail htmlEmail = new HtmlEmail();
+					  htmlEmail.setHostName("smtp.gmail.com");
+					  htmlEmail.addTo(toMail, firstName);
+					  htmlEmail.setAuthenticator(new DefaultAuthenticator("chris.zhang@yamibuy.com", "1982525light"));
+					  htmlEmail.setFrom("chris.zhang@yamibuy.com", "Me");
+					  htmlEmail.setSubject(title);					  
+					  //htmlEmail.setSSLOnConnect(true);
+					  htmlEmail.setStartTLSEnabled(true);
+					  htmlEmail.setSmtpPort(587);
+					  // embed the image and get the content id
+					  URL url = new URL("http://www.apache.org/images/asf_logo_wide.gif");
+					  String cid = htmlEmail.embed(url, "Apache logo");
+					  
+					  // set the html message
+					  htmlEmail.setHtmlMsg(emailContent);
+					  
+					// send the email
+					  htmlEmail.send();
+				} catch (MalformedURLException e) {
+					logger.fatal("Failed to send email");
+					logger.fatal(e.toString());
+				} catch (EmailException e) {
+					logger.fatal("Failed to send email");
+					logger.fatal(e.toString());
+				}
+				break;				
+			//2、注册邀请邮件
+			case "2":
+				
+				
+/*				data = new Context();
+				data.setVariable("user_email", users.getEmail());
+				//data.setVariable("user_name", users.getUserName());
+				data.setVariable("register_url", inviteUrl);
+				data.setVariable("content", content);
+				email = templateEngine.process("InviteFriends", data);
+				try{
+		    		Sendmail sendmail = new Sendmail();
+		        	sendmail.setContent(email);
+
+		        	sendmail.setName(toMail);
+		        	sendmail.setEmail(toMail);
+		        	sendmail.setCount((short)YamiConstant.INT_ZERO);
+		        	sendmail.setSendTime(Integer.parseInt(DateUtil.getNowLong().toString()));
+		        	sendmail.setSubject("Greetings from Yamibuy.com");
+		        	transactionDelegate.transactionAddSendMail(sendmail);
+		    		}catch (Exception e){
+						logger.fatal("Failed to insert sendmail of Friend Invite letter");
+						logger.fatal(e.toString());
+		    		}*/			
+
+				
+				break;
+		
+		}
+		
+		result.put("token", token);
+		result.put("status", 1);
+		
+		
+		return result;
+	}
 	public Map<String, Object> registerUser_sendEmail(String token, String emailTemp,
-			String pwd, String firstName, String lastName, String zipcode) throws Exception {
+			String pwd, String firstName, String lastName, String zipcode, String sex, String birthday) throws Exception {
 		if(!StringUtil.checkEmail(emailTemp)){
 			throw new YamiException(YamiConstant.ERRORCODE_ER1603,ErrorCodeEnum.ER1603.getMsg());	
 		}
@@ -158,13 +247,12 @@ public class UserServiceDelegate {
 			throw new YamiException(YamiConstant.ERRORCODE_ER1610,ErrorCodeEnum.ER1610.getMsg());	
 		} 
 		//如果有email重名 报错
-		User user = userService.getPasswordSalt(emailTemp);
+		Users user = userService.getPasswordSalt(emailTemp);
 		if(user!=null)
 		{
 			throw new YamiException(YamiConstant.ERRORCODE_ER1302,ErrorCodeEnum.ER1302.getMsg());
 		}
 		Map<String, Object> model = new HashMap<String, Object>();
-		String email=emailTemp; 		
 		
 		Random random = new Random();
 		String newSalt = String.valueOf(random.nextInt(YamiConstant.RANDOM_SALT_RANGE));
@@ -181,89 +269,163 @@ public class UserServiceDelegate {
 		String temp="";
 		temp=String.valueOf(time);
 		Integer date=Integer.valueOf(temp); 	
-		
 		users.setRegTime(date);
 		users.setLastLogin(date);
 		
 		//users.setAvatar(avatar);
-		users.setEmail(email);
+		users.setEmail(emailTemp);
 		users.setPassword(password);
 		users.setFirstName(firstName);
 		users.setLastName(lastName);
+		users.setUserType(0);
+		users.setZipcode(zipcode);
+		users.setSex(Integer.valueOf(sex));
+		users.setBirthday(DateUtil.parseDate(birthday));
 		//users.setParentId(parent_id);
 		users.setSalt(newSalt);
 		users.setPayPoints(YamiConstant.INT_ZERO);
 		
 		userService.insertUsersByEmail(users.getEmail(),users);
+		
 		int uid= userService.selectUIdByEmail(users.getEmail());
 		String auth = StringUtil.EncoderByMd5(users.getSalt(), String.valueOf(uid), YamiConstant.ENCTIMES);
 		int userType = 0;
 		String newToken = securityServiceDelegate.getToken(uid, users.getSalt(), auth,userType);
+		Context data = new Context();
+		data.setVariable("user_name", firstName);
+		data.setVariable("reset_email_en", password);
+		sendMail(newToken, "1","chris.zhang@yamibuy.com","ResetPasswordEmail", "Test email",firstName,data);
+
+		  
 		
 		model.put("token",newToken);
 		return model;		
 	}
     
-	public Map<String, Object> registerUser_verifyEmail(String token, String emailTemp,
-			String pwd, String firstName, String lastName, String zipcode) throws Exception {
+	public Map<String, Object> registerUser_verifyEmail(String token,
+			String pwd) throws Exception {
+		String newSalt="";
+		String salt="";
+		Gson gson = new Gson(); 
+		Token tokenIn = gson.fromJson( StringUtil.decode(token), Token.class);
+		int uid = Integer.parseInt(tokenIn.getData());
 
-		String email=emailTemp;
-		
-		
-		Random random = new Random();
-		String newSalt = String.valueOf(random.nextInt(YamiConstant.RANDOM_SALT_RANGE));
 		Map<String, Object> model = new HashMap<String, Object>();
-		String password = StringUtil.EncoderByMd5(newSalt, pwd, YamiConstant.ENCTIMES);  
+		Users user = userService.selectUsersByID(uid);
+		salt = user.getSalt();
+		String password = user.getPassword();
+		if(!password.equals(pwd)){
+			throw new YamiException(YamiConstant.ERRORCODE_ER1306,ErrorCodeEnum.ER1306.getMsg());			
+		}		
+		Random random = new Random();
+		do {
+			newSalt = String.valueOf(random.nextInt(YamiConstant.RANDOM_SALT_RANGE));
+		} while (newSalt.equals(salt));
+		password = StringUtil.EncoderByMd5(newSalt, pwd, YamiConstant.ENCTIMES);
+		user.setSalt(newSalt);
+		user.setPassword(password);
+		user.setLastLogin(Integer.parseInt(DateUtil.getNowLong().toString()));
 
-		//添加 user数据库
 
-		long time=System.currentTimeMillis()/1000;
+		transactionDelegate.transactionLogin(user,tokenIn);
 		
-		Users users= new Users();
-		
-		//String avatar= "images/avatar/s1.png";
-
-		
-		String temp="";
-		temp=String.valueOf(time);
-		Integer date=Integer.valueOf(temp); 	
-		
-		users.setRegTime(date);
-		users.setLastLogin(date);
-		
-		//users.setAvatar(avatar);
-		users.setEmail(email);
-		users.setPassword(password);
-		users.setFirstName(firstName);
-		users.setLastName(lastName);
-		//users.setParentId(parent_id);
-		users.setSalt(newSalt);
-		users.setPayPoints(YamiConstant.INT_ZERO);
-		
-		userService.insertUsersByEmail(users.getEmail(),users);
-		int uid= userService.selectUIdByEmail(users.getEmail());
-		String auth = StringUtil.EncoderByMd5(users.getSalt(), String.valueOf(uid), YamiConstant.ENCTIMES);
-		int userType = 0;
-		String newToken = securityServiceDelegate.getToken(uid, users.getSalt(), auth,userType);
-		
+		String auth = StringUtil.EncoderByMd5(newSalt, String.valueOf(uid), YamiConstant.ENCTIMES);
+		int userType = 1;
+		String newToken = securityServiceDelegate.getToken(uid, newSalt, auth,userType);
 		model.put("token",newToken);
 		return model;
 	}
     
+	public Map<String, Object> loginUser(String token, String email, String pwd)
+			throws Exception {
+		
+		if(!StringUtil.checkEmail(email)){
+			throw new YamiException(YamiConstant.ERRORCODE_ER1601,ErrorCodeEnum.ER1601.getMsg());	
+		}
+		if(!StringUtil.checkMoneLength(pwd, 6)){
+			throw new YamiException(YamiConstant.ERRORCODE_ER1602,ErrorCodeEnum.ER1602.getMsg());	
+		}
+		
+		String newSalt = null;
+		Map<String, Object> model = new HashMap<String, Object>();
+		Gson gson = new Gson();
+		
+		//1.get ecSalt and password(MD5) from DB.
+		Users user = userService.getPasswordSalt(email);
+		
+	    //logger.info("token="+token+";email="+email+";pwd="+pwd);
+		if (null==user) {
+			throw new YamiException(YamiConstant.ERRORCODE_ER1301,ErrorCodeEnum.ER1301.getMsg());
+		}		
+		String salt = user.getSalt();
+		
+		//2.calculate the password(MD5) with password(parameter) and ecSalt(DB).
+		String password = StringUtil.EncoderByMd5(salt, pwd, YamiConstant.ENCTIMES);
+		int uid =  user.getUserId();
+		
+	    //logger.info("password(MD5)="+password);
+	    
+	    //3.compare password(MD5).
+		if (!password.equals(user.getPassword())) {
+			throw new YamiException(YamiConstant.ERRORCODE_ER1301,ErrorCodeEnum.ER1301.getMsg());
+		}
+		
+		//4.calculate the NEW password(MD5) with password(parameter) and NEW ecSalt(random).
+		Random random = new Random();
+		do {
+			newSalt = String.valueOf(random.nextInt(YamiConstant.RANDOM_SALT_RANGE));
+		} while (newSalt.equals(salt));
+		password = StringUtil.EncoderByMd5(newSalt, pwd, YamiConstant.ENCTIMES);
+
+	    //logger.info("salt="+salt);
+	    //logger.info("new salt="+ newSalt);
+	    //logger.info("new password="+password);
+		user.setSalt(newSalt);
+		user.setPassword(password);
+		user.setEmail(email);
+		user.setLastLogin(Integer.parseInt(DateUtil.getNowLong().toString()));
+
+		Token tokenIn = gson.fromJson(StringUtil.decode(token), Token.class);
+
+		String auth = StringUtil.EncoderByMd5(newSalt, String.valueOf(uid), YamiConstant.ENCTIMES);
+		//5.return userId, userName and new token.
+		String newToken = securityServiceDelegate.getToken(uid, newSalt, auth,1);
+		model.put("uid", uid);
+		model.put("name", user.getFirstName());
+		model.put("token",newToken);
+		
+	    //logger.info("retrun model="+model);
+		//6.update new password(MD5) and ecSalt to DB.
+		//7.update the userId of cart and clear tempId.
+		transactionDelegate.transactionLogin(user,tokenIn);
+		
+		return model;
+
+	}
+	
+	public Map<String, Object> logoutUser(String token) throws Exception {
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		String tempid = securityServiceDelegate.getTempId();
+		result = securityServiceDelegate.getToken4Tempid(tempid);
+		return result;
+		
+	}	
+	
 	public Map<String, Object> forgetPassword(String token, String email)
 			throws Exception {
 		EmailToken emailToken = new EmailToken();
 		Map<String, Object> model = new HashMap<String, Object>();
 		Gson gson = new Gson();
-		User user = userService.getPasswordSalt(email);
+		Users user = userService.getPasswordSalt(email);
 		if(user==null){
 			throw new YamiException(YamiConstant.ERRORCODE_ER1307,ErrorCodeEnum.ER1307.getMsg());				
 		}
-		String uname = user.getUser_Name();
-		Integer user_id = user.getUser_Id();
+		String uname = user.getFirstName();
+		Integer user_id = user.getUserId();
 		int timeout = 3600*USER_EMAIL_EXP;
 		long exp = DateUtil.timeFormat(DateUtil.getNowDateTimeAllString())+timeout;
-		String hash = StringUtil.EncoderByMd5(user.getEc_salt(),String.valueOf(user_id)); 
+		String hash = StringUtil.EncoderByMd5(user.getSalt(),String.valueOf(user_id)); 
 		emailToken.setUid(user_id);
 		emailToken.setExp(exp);
 		emailToken.setHash(hash);
@@ -290,7 +452,7 @@ public class UserServiceDelegate {
 			throw new YamiException(YamiConstant.ERRORCODE_ER1305, ErrorCodeEnum.ER1305.getMsg());
 		}
 		user_id = emailToken.getUid();
-		String salt = userService.selectUsersByID(user_id).getEc_salt();
+		String salt = userService.selectUsersByID(user_id).getSalt();
 		long exp = emailToken.getExp();
 		String hash = emailToken.getHash();		
 		if (!hash.equals(StringUtil.EncoderByMd5(salt, String.valueOf(user_id)))) {
@@ -306,10 +468,10 @@ public class UserServiceDelegate {
 
 	    //logger.info("new salt="+ newSalt);
 	    //logger.info("new password="+password);
-	    User user = new User();
-		user.setEc_salt(newSalt);
+	    Users user = new Users();
+		user.setSalt(newSalt);
 		user.setPassword(password);
-		user.setUser_Id(user_id);
+		user.setUserId(user_id);
 
 
 		transactionDelegate.transactionResetPassword(user);
@@ -319,81 +481,7 @@ public class UserServiceDelegate {
 		return result;
 	}
 	
-	public Map<String, Object> loginUser(String token, String email, String pwd)
-			throws Exception {
-		
-		if(!StringUtil.checkEmail(email)){
-			throw new YamiException(YamiConstant.ERRORCODE_ER1601,ErrorCodeEnum.ER1601.getMsg());	
-		}
-		if(!StringUtil.checkMoneLength(pwd, 6)){
-			throw new YamiException(YamiConstant.ERRORCODE_ER1602,ErrorCodeEnum.ER1602.getMsg());	
-		}
-		
-		String newSalt = null;
-		Map<String, Object> model = new HashMap<String, Object>();
-		Gson gson = new Gson();
-		
-		//1.get ecSalt and password(MD5) from DB.
-		User user = userService.getPasswordSalt(email);
-		
-	    //logger.info("token="+token+";email="+email+";pwd="+pwd);
-		if (null==user) {
-			throw new YamiException(YamiConstant.ERRORCODE_ER1301,ErrorCodeEnum.ER1301.getMsg());
-		}		
-		String salt = user.getEc_salt();
-		
-		//2.calculate the password(MD5) with password(parameter) and ecSalt(DB).
-		String password = StringUtil.EncoderByMd5(salt, pwd, YamiConstant.ENCTIMES);
-		int uid =  user.getUser_Id();
-		
-	    //logger.info("password(MD5)="+password);
-	    
-	    //3.compare password(MD5).
-		if (!password.equals(user.getPassword())) {
-			throw new YamiException(YamiConstant.ERRORCODE_ER1301,ErrorCodeEnum.ER1301.getMsg());
-		}
-		
-		//4.calculate the NEW password(MD5) with password(parameter) and NEW ecSalt(random).
-		Random random = new Random();
-		do {
-			newSalt = String.valueOf(random.nextInt(YamiConstant.RANDOM_SALT_RANGE));
-		} while (newSalt.equals(salt));
-		password = StringUtil.EncoderByMd5(newSalt, pwd, YamiConstant.ENCTIMES);
-
-	    //logger.info("salt="+salt);
-	    //logger.info("new salt="+ newSalt);
-	    //logger.info("new password="+password);
-		user.setEc_salt(newSalt);
-		user.setPassword(password);
-		user.setEmail(email);
-		user.setLastLogin(Integer.parseInt(DateUtil.getNowLong().toString()));
-
-		Token tokenIn = gson.fromJson(StringUtil.decode(token), Token.class);
-
-		String auth = StringUtil.EncoderByMd5(newSalt, String.valueOf(uid), YamiConstant.ENCTIMES);
-		//5.return userId, userName and new token.
-		String newToken = securityServiceDelegate.getToken(uid, newSalt, auth);
-		model.put("uid", uid);
-		model.put("name", user.getUser_Name());
-		model.put("token",newToken);
-		
-	    //logger.info("retrun model="+model);
-		//6.update new password(MD5) and ecSalt to DB.
-		//7.update the userId of cart and clear tempId.
-		transactionDelegate.transactionLogin(user,tokenIn);
-		
-		return model;
-
-	}
 	
-	public Map<String, Object> logoutUser(String token) throws Exception {
-
-		Map<String, Object> result = new HashMap<String, Object>();
-		String tempid = securityServiceDelegate.getTempId();
-		result = securityServiceDelegate.getToken4Tempid(tempid);
-		return result;
-		
-	}	
 	
 	public Map<String, Object> getAddressBook(String token) throws Exception {
 
@@ -1871,8 +1959,8 @@ public class UserServiceDelegate {
 			lstItems.add(item);
 		}
 		result.put("items", lstItems);
-		User user = userService.selectUsersByID(uid);
-		result.put("email", user.getQuestion());
+		Users user = userService.selectUsersByID(uid);
+		//result.put("email", user.getQuestion());
 		result.put("token", token);
 		
 		return result;
@@ -1892,10 +1980,10 @@ public class UserServiceDelegate {
 		if(countNum==0){
 			result  = transactionDelegate.transactionAddRemind(token,gid);
 		}else{
-			User user = userService.selectUsersByID(uid);
+			Users user = userService.selectUsersByID(uid);
 			result.put("token", token);
 			result.put("status", 1);
-			result.put("email", user.getQuestion());
+			//result.put("email", user.getQuestion());
 			
 		}
 		return result;

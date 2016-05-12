@@ -11,7 +11,6 @@ import com.shubilee.entity.Cart;
 import com.shubilee.entity.Goods;
 import com.shubilee.entity.OrderGoods;
 import com.shubilee.entity.OrderInfo;
-import com.shubilee.entity.User;
 import com.shubilee.entity.Vendors;
 
 public interface CompositeQueryService {

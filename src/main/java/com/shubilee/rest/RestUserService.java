@@ -33,7 +33,7 @@ import com.shubilee.delegate.TransactionDelegate;
 import com.shubilee.delegate.UserServiceDelegate;
 import com.shubilee.delegate.UspsServiceDelegate;
 import com.shubilee.entity.Token;
-import com.shubilee.entity.User;
+import com.shubilee.entity.Users;
 import com.shubilee.service.UserService;
 
 @Service
@@ -125,7 +125,7 @@ public class RestUserService {
 	@Produces("application/json;charset=utf-8")
 	public Response getUserById(@QueryParam("uid") int uid) {
 
-		User result = userServiceDelegate.selectUsersByID(uid);
+		Users result = userServiceDelegate.selectUsersByID(uid);
 
 		return Response.status(Status.OK).entity(result).build();
 
@@ -252,12 +252,23 @@ public class RestUserService {
 	}
 	
 	@GET
-	@Path("/register")
+	@Path("/register_sendEmail")
 	@Produces("application/json;charset=utf-8")
-	public Response registerUser(@QueryParam("token") String token, @QueryParam("email") String email,
-			@QueryParam("pwd") String pwd, @QueryParam("invite_code") String invite_code) throws Exception {
+	public Response registerUser_sendEmail(@QueryParam("token") String token, @QueryParam("email") String email,
+			@QueryParam("pwd") String pwd, @QueryParam("firstName") String firstName, @QueryParam("lastName") String lastName, @QueryParam("zipcode") String zipcode, @QueryParam("sex") String sex, @QueryParam("birthday") String birthday) throws Exception {
 		
-		Map<String, Object> result = userServiceDelegate.registerUser(token, email, pwd, invite_code);
+		Map<String, Object> result = userServiceDelegate.registerUser_sendEmail(token, email, pwd, firstName, lastName, zipcode,sex,birthday);
+		return Response.status(Status.OK).entity(result).build();
+
+	}
+	
+	@GET
+	@Path("/register_verifyEmail")
+	@Produces("application/json;charset=utf-8")
+	public Response registerUser_verifyEmail(@QueryParam("token") String token, 
+			@QueryParam("pwd") String pwd) throws Exception {
+		
+		Map<String, Object> result = userServiceDelegate.registerUser_verifyEmail(token,  pwd);
 		return Response.status(Status.OK).entity(result).build();
 
 	}

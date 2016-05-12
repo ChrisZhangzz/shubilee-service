@@ -22,7 +22,6 @@ import com.shubilee.dao.PointLotterySetDao;
 import com.shubilee.dao.ProfileDao;
 import com.shubilee.dao.SendMailDao;
 import com.shubilee.dao.TemplateDao;
-import com.shubilee.dao.UserDao;
 import com.shubilee.dao.UsersDao;
 import com.shubilee.dao.VendorsDao;
 import com.shubilee.entity.Address;
@@ -42,7 +41,6 @@ import com.shubilee.entity.PointLotterySet;
 import com.shubilee.entity.PointLotterylog;
 import com.shubilee.entity.Profile;
 import com.shubilee.entity.Template;
-import com.shubilee.entity.User;
 import com.shubilee.entity.UserAddress;
 import com.shubilee.entity.UserInfoOrder;
 import com.shubilee.entity.UserInfoOrderMaxCat;
@@ -55,8 +53,6 @@ import com.shubilee.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private UserDao userDao;
 	@Autowired
 	private AppVersionDao appVersionDao;
 	@Autowired
@@ -104,27 +100,27 @@ public class UserServiceImpl implements UserService {
 	private AppSPDao appSPDao;
 	
 	public String getUserName(int uid) {
-		return userDao.getUserName(uid);
+		return usersDao.getUserName(uid);
 	}
 
-	public User selectUsersByID(int id) {
-		return userDao.selectUsersByID(id);
+	public Users selectUsersByID(int id) {
+		return usersDao.selectUsersByID(id);
 	}
 	
-	public User getPasswordSalt(String email) {
-		return userDao.getPasswordSalt(email);
+	public Users getPasswordSalt(String email) {
+		return usersDao.getPasswordSalt(email);
 	}
 	
 	public String getPassword(int id) {
-		return userDao.getPassword(id);
+		return usersDao.getPassword(id);
 	}
 	
-	public void setPasswordSalt(User user) {
-		userDao.setPasswordSalt(user);
+	public void setPasswordSalt(Users user) {
+		usersDao.setPasswordSalt(user);
 	}
 	
-	public void setPasswordSaltByUid(User user) {
-		userDao.setPasswordSaltByUid(user);
+	public void setPasswordSaltByUid(Users user) {
+		usersDao.setPasswordSaltByUid(user);
 	}
 	
 	public List<UserAddress> getAddressBookByUid(int id) {
@@ -271,17 +267,17 @@ public class UserServiceImpl implements UserService {
 	
 	public void insertUsersByEmail(String email, String password,String user_name,String newSalt,int parent_id) {
 		// TODO Auto-generated method stub
-		userDao.insertUsersByEmail(email,password,user_name,newSalt,parent_id);
+		usersDao.insertUsersByEmail(email,password,user_name,newSalt,parent_id);
 	}
 	
 	public int selectUserCountByUserName(String user_name) {
 
-		return userDao.selectUserCountByUserName(user_name);
+		return usersDao.selectUserCountByUserName(user_name);
 	}
 	
 	public Integer selectUIdByEmail(String email) {
 		// TODO Auto-generated method stub
-		return userDao.selectUIdByEmail(email);
+		return usersDao.selectUIdByEmail(email);
 	}
 
 	public void addIntegral(String addIntergralForRegister, int uid,long time, int type) {
@@ -300,7 +296,7 @@ public class UserServiceImpl implements UserService {
 
 	public BonusType getBonusTypeByBounsId(Integer bonusId) {
 		// TODO Auto-generated method stub
-		return userDao.selectBonusTypeByBounsId(bonusId);
+		return usersDao.selectBonusTypeByBounsId(bonusId);
 	}
 
 	public Users selectUserInfoByUid(int user_id){

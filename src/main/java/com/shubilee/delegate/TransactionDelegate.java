@@ -62,7 +62,6 @@ import com.shubilee.entity.Sendmail;
 import com.shubilee.entity.Shipping;
 import com.shubilee.entity.Template;
 import com.shubilee.entity.Token;
-import com.shubilee.entity.User;
 import com.shubilee.entity.UserAddress;
 import com.shubilee.entity.UserProfile;
 import com.shubilee.entity.Users;
@@ -160,18 +159,18 @@ public class TransactionDelegate {
 	private String OGWS_CUSTOMER_ACCOUNT_TYPE_CC;
 	
 	
-	public void transactionLogin(User user,Token tokenIn) throws Exception {
+	public void transactionLogin(Users user,Token tokenIn) throws Exception {
 
-		//update new password(MD5) and ecSalt to DB.
+		//update new password(MD5) and salt to DB.
 		userService.setPasswordSalt(user);
-		//update the userId of cart and clear tempId.
-		if (null != tokenIn) {
+		//TODO update the userId of cart and clear tempId.
+/*		if (null != tokenIn) {
 			String tempId = tokenIn.getData();
-			cartRedisServiceDelegate.updateUserIdByTempid(tempId,user.getUser_Id());
-		}
+			cartRedisServiceDelegate.updateUserIdByTempid(tempId,user.getUserId());
+		}*/
 	}
 	
-	public void transactionResetPassword(User user) throws Exception {
+	public void transactionResetPassword(Users user) throws Exception {
 
 		//update new password(MD5) and ecSalt to DB.
 		userService.setPasswordSaltByUid(user);
@@ -1799,7 +1798,7 @@ public class TransactionDelegate {
 		}
 	}
 //	users,token,YamiConstant.ADD_INTERGRAL_FOR_REGISTER,time,type
-	public String transactionRegister(Users users, String token, long time) throws Exception {
+/*	public String transactionRegister(Users users, String token, long time) throws Exception {
 		// TODO Auto-generated method stub
 		userService.insertUsersByEmail(users.getEmail(),users);
 		int uid= userService.selectUIdByEmail(users.getEmail());
@@ -1814,7 +1813,7 @@ public class TransactionDelegate {
 		}
 		//throw new RuntimeException();
 		return newToken;
-	}
+	}*/
 	
 	public void transactionResetPassword(String email,Integer user_id,String user_name,String link_cn,String link_en) throws Exception {
 		
@@ -2189,12 +2188,12 @@ public class TransactionDelegate {
 		int uid = Integer.parseInt(tokenIn.getData());
 		Map<String,Object> result = new HashMap<String,Object>();
 		userService.insertRemind(uid, gid);
-		User user = userService.selectUsersByID(uid);
+		Users user = userService.selectUsersByID(uid);
 		
 		
 		result.put("token", token);
 		result.put("status", 1);
-		result.put("email", user.getQuestion());
+		//result.put("email", user.getQuestion());
 		return result;
 	}
 	/*

@@ -37,11 +37,25 @@
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
   </resultMap>
  
-   
+
     <select id="selectUserInfoByID" parameterType="int" resultMap="BaseResultMap">
         select * from shu_users where user_id= #{user_id}
     </select>
-    
+	<select id="getPasswordSalt" parameterType="String" resultType="Users">
+		select user_id,first_name,last_name,password,salt from shu_users where email= #{email}
+	</select>   
+	<update id="setPasswordSalt" parameterType="Users">
+		update shu_users set password=#{password},salt=#{salt},last_login=#{lastLogin} where email= #{email}
+	</update> 
+	<select id="getPassword" parameterType="int" resultType="String">
+		select password from shu_users where  user_id= #{id}
+	</select> 
+	<select id="selectUserCountByUserName" parameterType="String" resultType="int">
+		select count(*)from shu_users where  user_name= #{user_name}
+	</select> 
+	<select id="selectUIdByEmail" parameterType="String" resultType="Integer">
+		select user_id from shu_users where  email= #{email}
+	</select> 						    
     
   <update id="updateUserNameByUid" parameterType="map">
     update shu_users t set t.first_name = #{first_name},t.last_name = #{last_name} where t.user_id = #{user_id}
@@ -75,7 +89,7 @@
 	   <select id="selectUsersByID" parameterType="int" resultMap="BaseResultMap">
         select * from shu_users where user_id= #{user_id}
     </select>
-	  		
+
 	<insert id="insertUsers"  parameterType="com.shubilee.entity.Users">
 		INSERT INTO shu_users (
 			email,
@@ -84,6 +98,8 @@
 			password,
 			user_type,
 			salt,
+			sex,
+			birthday,
 			zipcode,
 			reg_time,
 			last_login
@@ -96,6 +112,8 @@
 			#{password,jdbcType=VARCHAR},
 			#{userType,jdbcType=INTEGER},
 			#{salt,jdbcType=VARCHAR},
+			#{sex,jdbcType=INTEGER},
+			#{birthday,jdbcType=DATE},
 			#{zipcode,jdbcType=INTEGER},
 			#{regTime,jdbcType=INTEGER},
 			#{lastLogin,jdbcType=INTEGER}
