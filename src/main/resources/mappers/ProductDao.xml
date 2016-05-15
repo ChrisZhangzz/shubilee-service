@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shubilee.dao.ProductDao">
+
+
+
+	<resultMap id="BaseResultMap" type="com.shubilee.entity.Product">
+		<id column="product_id" jdbcType="INTEGER" property="product_id" />
+		<result column="product_sku" jdbcType="VARCHAR" property="product_sku" />
+		<result column="product_name" jdbcType="VARCHAR" property="product_name" />
+		<result column="upc" jdbcType="INTEGER" property="upc" />
+		<result column="product_description" jdbcType="VARCHAR"
+			property="product_description" />
+		<result column="brand_id" jdbcType="INTEGER" property="brand_id" />
+		<result column="brand_name" jdbcType="VARCHAR" property="brand_name" />
+		<result column="style_type" jdbcType="VARCHAR" property="style_type" />
+		<result column="style_name" jdbcType="VARCHAR" property="style_name" />
+		<result column="standard_price" jdbcType="DECIMAL" property="standard_price" />
+		<result column="member_price" jdbcType="DECIMAL" property="member_price" />
+		<result column="quantity" jdbcType="INTEGER" property="quantity" />
+		<result column="weight" jdbcType="DECIMAL" property="weight" />
+		<result column="size_us" jdbcType="VARCHAR" property="size_us" />
+		<result column="x_narrow" jdbcType="INTEGER" property="x_narrow" />
+		<result column="narrow" jdbcType="INTEGER" property="narrow" />
+		<result column="medium" jdbcType="INTEGER" property="medium" />
+		<result column="wide" jdbcType="INTEGER" property="wide" />
+		<result column="x_wide" jdbcType="INTEGER" property="x_wide" />
+		<result column="material" jdbcType="VARCHAR" property="material" />
+		<result column="color" jdbcType="VARCHAR" property="color" />
+		<result column="fit" jdbcType="VARCHAR" property="fit" />
+		<result column="outside_heel_height" jdbcType="DECIMAL"
+			property="outside_heel_height" />
+		<result column="inside_heel_height" jdbcType="DECIMAL"
+			property="inside_heel_height" />
+		<result column="shaft_height" jdbcType="DECIMAL" property="shaft_height" />
+		<result column="platform_height" jdbcType="DECIMAL" property="platform_height" />
+		<result column="calf_circumference" jdbcType="DECIMAL"
+			property="calf_circumference" />
+		<result column="heel_to_toe" jdbcType="DECIMAL" property="heel_to_toe" />
+		<result column="closure_type" jdbcType="VARCHAR" property="closure_type" />
+		<result column="image_url" jdbcType="VARCHAR" property="image_url" />
+		<result column="parentage" jdbcType="VARCHAR" property="parentage" />
+		<result column="parent_sku" jdbcType="VARCHAR" property="parent_sku" />
+		<result column="relationship_type" jdbcType="VARCHAR" property="relationship_type" />
+		<result column="variation_theme" jdbcType="VARCHAR" property="variation_theme" />
+	<collection property="images" column="product_sku" ofType="com.shubilee.entity.Image">  
+	        	<id column="image_id" property="image_id" jdbcType="INTEGER" />
+				<result column="product_sku" property="product_sku" jdbcType="VARCHAR" />
+				<result column="image_seq" property="image_seq" jdbcType="INTEGER" />
+				<result column="image_url" property="image_url" jdbcType="VARCHAR" />
+        </collection>		
+	</resultMap>
+
+
+
+
+
+	<select id="selectBySku" parameterType="map" resultMap="BaseResultMap">
+		select sp.*,si.*
+		from shu_products sp
+		left join shu_image si
+		on sp.product_sku = si.product_sku
+		where sp.product_sku = #{product_sku}
+	</select>
+	<update id="updateProductNum" parameterType="map">
+		update shu_products
+		set quantity = quantity - #{quantity} where product_sku
+		=
+		#{product_sku}
+	</update>
+
+	<select id="selectByParentSku" parameterType="int" resultMap="BaseResultMap">
+		select sp.*,si.*
+		from shu_products sp
+		left join shu_image si
+		on sp.product_sku = si.product_sku		
+		where sp.parent_sku = #{parent_sku} and
+		sp.parentage = 'Child'
+	</select>
+	<select id="selectSimilarBySCC" parameterType="map" resultMap="BaseResultMap">
+		select sp.*,si.*
+		from shu_products sp
+		left join shu_image si
+		on sp.product_sku = si.product_sku				
+		where sp.parentage = 'Child'
+		<if test="style_type != null">
+			and sp.style_type = #{style_type}
+		</if>
+		<if test="size_us != null">
+			and sp.size_us = #{size_us}
+		</if>
+		<if test="color != null">
+			and sp.color = #{color}
+		</if>
+	</select>
+	<select id="selectSizeByColor" parameterType="String" resultMap="String">
+		select size_us
+		from shu_products
+		where color = #{color} and parentage = 'Child'
+	</select>
+	<select id="filterBySSC" parameterType="map" resultMap="BaseResultMap">
+		select sp.*,si.*
+		from shu_products sp
+		left join shu_image si
+		on sp.product_sku = si.product_sku				
+		where sp.parentage = 'Child'
+		<if test="style_type != null">
+			and sp.style_type = #{style_type}
+		</if>
+		<if test="size_us != null">
+			and sp.size_us = #{size_us}
+		</if>
+		<if test="color != null">
+			and sp.color = #{color}
+		</if>
+		LIMIT #{start},#{leng}
+	</select>
+
+
+
+</mapper>
